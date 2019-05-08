@@ -40,13 +40,13 @@ class cb_p6_plugin extends cb_p6_core
 		
 		add_action( 'cb_p6_action_before_do_admin_page_tabs', array( &$this, 'pro_pitch' ) );
 
-
+		/* Old Widget notice  - can be used to show new notices.
 	   if(!isset($this->opt['widget_update_notice_shown']) AND !$this->opt['setup_is_being_done']) {
 			$this->queue_notice($this->lang['updated_widgets_notice'],'info','widget_update_notice','perma',true);	
 			$this->opt['widget_update_notice_shown']=true;
 			$this->update_opt();
 	   }
-			   
+		*/
 		// Do setup wizard if it was not done
 		if($this->opt['setup_is_being_done'])
 		{
