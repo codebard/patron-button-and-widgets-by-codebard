@@ -273,11 +273,7 @@ class cb_p6_plugin extends cb_p6_core
 
 			if(isset($checked_data->response[$this->internal['plugin_id'].'/index.php']) AND version_compare( $this->internal['version'], $checked_data->response[$this->internal['plugin_id'].'/index.php']->new_version, '<' ))
 			{
-				// place update link into update lang string :
-				
-				$update_link = $this->process_vars_to_template(array('plugin_update_url'=>$this->internal['plugin_update_url']),$this->lang['update_available']);
-
-				$this->queue_notice($update_link,'info','update_available','perma',true);		
+					
 			}
 			return $checked_data;
 		
@@ -293,34 +289,17 @@ class cb_p6_plugin extends cb_p6_core
 		 $our_plugin = $this->internal['plugin_slug'];
 
 		 // If an update has taken place and the updated type is plugins and the plugins element exists
-		 if( $options['action'] == 'update' && $options['type'] == 'plugin' && isset( $options['plugins'] ) ) {
+		if( $options['action'] == 'update' && $options['type'] == 'plugin' && isset( $options['plugins'] ) ) {
 		  // Iterate through the plugins being updated and check if ours is there
-		  foreach( $options['plugins'] as $plugin ) {
+			foreach( $options['plugins'] as $plugin ) {
 	
-		   if( $plugin == $our_plugin ) {
-			   
-				$this->dismiss_admin_notice(array('notice_id'=>'update_available','notice_type'=>'info'));
-				if($this->check_addon_exists('patron_plugin_pro')=='notinstalled')
-				{
-					
-					$this->opt['pro_pitch_done']=false;
-					$this->update_opt();				
-					$this->queue_notice($this->lang['cb_p6_a1_addon_available'],'info','pro_pitch','perma',true);
-					
+				if( $plugin == $our_plugin ) {
+				   
+									
 				
 				}
-				else
-				{
-					
-					$this->dismiss_admin_notice(array('notice_id'=>'pro_pitch','notice_type'=>'info'));
-					
-				}						
-			
 			}
-			}
-		 }
-		
-
+		}
 		
 		if(!current_user_can('manage_options'))
 		{
@@ -620,7 +599,7 @@ class cb_p6_plugin extends cb_p6_core
 		$append_to_content_order=$v2;
 	
 				
-		if(in_array('get_the_excerpt', $GLOBALS['wp_current_filter']) OR 'post' !== get_post_type() OR !is_singular('post')) {
+		if(in_array('get_the_excerpt', $GLOBALS['wp_current_filter']) OR 'page' == get_post_type() OR !is_singular() ) {
 			
 			return $content;
 		
