@@ -413,3 +413,12 @@ font-weight:bold;
 	
 	display:none;
 }
+
+
+#cb_p6_admin_message_screen {
+
+	display:block;
+	clear: both;
+	margin-top:30px;
+	line-height : 1.25;
+}

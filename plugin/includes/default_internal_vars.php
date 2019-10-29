@@ -24,7 +24,7 @@ $this->internal = array_replace_recursive(
 			
 			'save_license' => 1,
 		
-			'ignore the ones after this line they were allowed for development!'=>1,
+			'ignore the ones after this line they were allowed for development!' => 1,
 			
 		),
 			

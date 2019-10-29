@@ -9,7 +9,7 @@ class cb_p6_plugin extends cb_p6_core
 		add_action('init', array(&$this, 'init'));
 		
 		add_action('upgrader_process_complete', array(&$this, 'upgrade'),10, 2);
-		
+					
 		register_activation_hook( __FILE__, array(&$this,'activate' ));
 		
 		register_deactivation_hook(__FILE__, array(&$this,'deactivate'));
@@ -30,10 +30,11 @@ class cb_p6_plugin extends cb_p6_core
 	{
 		
 		add_menu_page( $this->lang['admin_menu_label'], $this->lang['admin_menu_label'], 'administrator', 'settings_'.$this->internal['id'], array(&$this,'do_settings_pages'), $this->internal['plugin_url'].'images/admin_menu_icon.png', 86 );
+		add_submenu_page( null, 'Patreon Button, Widgets and Plugin Admin Message', 'Admin message', 'manage_options', $this->internal['id'] . 'admin_message', array( &$this, 'admin_message_page' ) );
+		add_submenu_page( null, 'Installing Patreon WordPress', 'Installing Patreon WordPress', 'manage_options', $this->internal['id'] . '_install_pw', array( &$this, 'install_pw' ) );
 		
 	}
-	public function admin_init_p()
-	{
+	public function admin_init_p() {
 		
 		// Updates are important - Add update nag if update exist
 		add_filter( 'pre_set_site_transient_update_plugins', array(&$this, 'check_for_update' ),99 );
@@ -194,7 +195,7 @@ class cb_p6_plugin extends cb_p6_core
 	{
 		$current_screen=get_current_screen();
 
-		if($current_screen->base=='toplevel_page_settings_'.$this->internal['id'])
+		if($current_screen->base=='toplevel_page_settings_'.$this->internal['id'] OR $_REQUEST['page']== 'cb_p6_install_pw' )
 		{
 			wp_enqueue_style( $this->internal['id'].'-css-admin', $this->internal['plugin_url'].'plugin/includes/css/admin.css' );
 			
@@ -506,7 +507,9 @@ class cb_p6_plugin extends cb_p6_core
 		
 		}	
 
-		$user=$this->opt['quickstart']['site_account'];			
+		$user=$this->opt['quickstart']['site_account'];
+
+		
 			
 
 		// Lets check if what is saved is an url
@@ -521,6 +524,23 @@ class cb_p6_plugin extends cb_p6_core
 			$url='https://www.patreon.com/'.$user;
 			
 		}
+			
+		
+		// Add utm params
+		
+		$utm_source_url = site_url();
+		
+		// Check if this is a post.
+		
+		global $post;
+		
+		if ( $post ) {
+			// Override with content url if there is content
+			$utm_source_url =  get_permalink( $post );
+		}
+		
+		$url.='?utm_content=site_sidebar_widget&utm_medium=patron_button_and_widgets_plugin&utm_campaign=' . get_option( 'patreon-campaign-id', '' ) .'&utm_term=&utm_source=' . $utm_source_url;
+
 		// Lets shove in the target=_blank if open in new window is set :
 		
 		if($this->opt['quickstart']['open_new_window']=='yes')
@@ -566,10 +586,19 @@ class cb_p6_plugin extends cb_p6_core
 		{
 			$new_window=false;
 		}
-			
-	
+
+		if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
+			if ( current_user_can( 'manage_options' ) ) {
+				$button = 'Patreon button not appearing because you have not saved your Patreon profile url in Button settings - click <a href="'. admin_url( 'admin.php?page=settings_cb_p6&cb_p6_tab=quickstart' ) .'">here</a> to save it. Only you as an admin can see this message.';
+			}
+			else {
+				$button = '';
+			}
+		}
+		else {
+			$button = $this->make_to_patreon_link($url,$button,$this->opt['sidebar_widgets']['button_margin'],$max_width,$new_window);
+		}
 		
-		$button = $this->make_to_patreon_link($url,$button,$this->opt['sidebar_widgets']['button_margin'],$max_width,$new_window);
 		
 		$append.=$button;
 		
@@ -580,7 +609,7 @@ class cb_p6_plugin extends cb_p6_core
 
 		//************************Site Sidebar Widget EOF*********************************//
 		
-	}	
+	}
 
 
 	public function return_plugin_name_p($v1)
@@ -656,6 +685,21 @@ class cb_p6_plugin extends cb_p6_core
 			$url='https://www.patreon.com/'.$user;
 			
 		}	
+
+		// Add utm params
+		
+		$utm_source_url = site_url();
+		
+		// Check if this is a post.
+		
+		global $post;
+		
+		if ( $post ) {
+			// Override with content url if there is content
+			$utm_source_url =  get_permalink( $post );
+		}
+		
+		$url.='?utm_content=post_button&utm_medium=patron_button_and_widgets_plugin&utm_campaign=' . get_option( 'patreon-campaign-id', '' ) .'&utm_term=&utm_source=' . $utm_source_url;
 		
 
 		if(isset($this->opt['quickstart']['old_button']) AND $this->opt['quickstart']['old_button']=='yes')
@@ -694,14 +738,40 @@ class cb_p6_plugin extends cb_p6_core
 		{
 			$new_window='';
 		}
+		
+
 		if($this->opt['quickstart']['force_site_button']=='yes')
 		{
-			$append.= $this->make_to_patreon_link($url,$button,$this->opt['sidebar_widgets']['button_margin'],$max_width,$new_window);
+
+			if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
+				if ( current_user_can( 'manage_options' ) ) {
+					$append.= 'Patreon button not appearing because you have not saved your profile url in Button settings - click <a href="'. admin_url( 'admin.php?page=settings_cb_p6&cb_p6_tab=quickstart' ) .'">here</a> to save it. Only you as an admin can see this message.';
+				}
+				else {
+					$append.= '';
+				}
+			}
+			else {
+				$append.= $this->make_to_patreon_link($url,$button,$this->opt['sidebar_widgets']['button_margin'],$max_width,$new_window);
+			}			
 			
 		}
 		else
 		{
-			$append.= $this->make_to_patreon_link_to_profile($url,$button,$this->opt['sidebar_widgets']['button_margin'],$max_width,$new_window);
+
+			if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
+				if ( current_user_can( 'manage_options' ) ) {
+					$append.= 'This author has to set his or her Patreon vanity profile name in his profile before widget can link to his profile. Additionally we can\'t show the site Patreon profile link in its place either because have not saved site profile url in Button settings - either one of them must be saved for the widget to show the link - click <a href="'. admin_url( 'admin.php?page=settings_cb_p6&cb_p6_tab=quickstart' ) .'">here</a> to save site profile name for site\'s Patreon. Only you as an admin can see this message.';
+				}
+				else {
+					$append.= '';
+				}
+			}
+			else {
+				
+				$append.= $this->make_to_patreon_link_to_profile($url,$button,$this->opt['sidebar_widgets']['button_margin'],$max_width,$new_window);
+			}					
+
 		}
 	
 			
@@ -733,6 +803,245 @@ class cb_p6_plugin extends cb_p6_core
 		{
 			$user=$this->opt['quickstart']['site_account'];			
 			
+		}
+
+		// Lets check if what is saved is an url
+		if(substr($user,0,4)=='http')
+		{
+			// It is! Load the value to url value
+			$url=$user;
+		}
+		else
+		{
+			// This is a user name/slug. Make the url :
+			$url='https://www.patreon.com/'.$user;
+			
+		}
+		
+		// Add utm params
+		
+		$utm_source_url = site_url();
+		
+		// Check if this is a post.
+		
+		global $post;
+		
+		if ( $post ) {
+			// Override with content url if there is content
+			$utm_source_url =  get_permalink( $post );
+		}
+		
+		$url.='?utm_content=author_sidebar_widget&utm_medium=patron_button_and_widgets_plugin&utm_campaign=' . get_option( 'patreon-campaign-id', '' ) .'&utm_term=&utm_source=' . $utm_source_url;
+		
+
+		if($this->opt['quickstart']['old_button']=='yes')
+		{
+			$button=$this->internal['plugin_url'].'images/'."patreon-medium-button.png";
+			$max_width = '200';
+		}
+		else
+		{
+			
+			$button=$this->internal['plugin_url'].'images/'."become_a_patron_button.png";
+			$max_width = '200';
+			
+		}
+		
+		if($this->opt['quickstart']['custom_button']!='')
+		{
+			$button=$this->opt['quickstart']['custom_button'];
+			if($this->opt['quickstart']['custom_button_width']!='')
+			{
+				$max_width = $this->opt['quickstart']['custom_button_width'];
+				
+			}
+			else
+			{
+				$max_width = '200';
+			}
+			
+		}
+		if($this->opt['quickstart']['open_new_window']=='yes')
+		{
+			$new_window=true;
+		}
+		else
+		{
+			$new_window=false;
+		}
+
+		if($this->opt['quickstart']['force_site_button']=='yes')
+		{
+
+			if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
+				if ( current_user_can( 'manage_options' ) ) {
+					$button = 'Patreon button not appearing because you have not saved your profile url in Button settings - click <a href="'. admin_url( 'admin.php?page=settings_cb_p6&cb_p6_tab=quickstart' ) .'">here</a> to save it. Only you as an admin can see this message.';
+				}
+				else {
+					$button = '';
+				}
+			}
+			else {
+				$button = $this->make_to_patreon_link($url,$button,$this->opt['sidebar_widgets']['button_margin'],$max_width,$new_window);
+			}			
+			
+		}
+		else
+		{
+
+			if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
+				if ( current_user_can( 'manage_options' ) ) {
+					$button = 'This author has to set his or her Patreon vanity profile name in his profile before widget can link to his profile. Additionally we can\'t show the site Patreon profile link in its place either because have not saved site profile url in Button settings - either one of them must be saved for the widget to show the link - click <a href="'. admin_url( 'admin.php?page=settings_cb_p6&cb_p6_tab=quickstart' ) .'">here</a> to save site profile name for site\'s Patreon. Only you as an admin can see this message.';
+				}
+				else {
+					$button = '';
+				}
+			}
+			else {
+				
+				$button = $this->make_to_patreon_link_to_profile($url,$button,$this->opt['sidebar_widgets']['button_margin'],$max_width,$new_window);
+			}					
+
+		}
+		
+	
+		$append.=$button;
+		
+		$append.='</div>';
+
+		return $append;
+		
+	}
+	public function site_goals_sidebar_widget_p($v1)
+	{
+		$content=$v1;
+				
+		//if(in_array('get_the_excerpt', $GLOBALS['wp_current_filter']) OR 'post' !== get_post_type()) $return = $content;
+	
+		global $post;
+		
+		
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		
+		if( !class_exists( 'Patreon_Wordpress' ) ) {
+			if ( current_user_can( 'manage_options' ) ) {
+				$append = '<p>';
+				$append .= $this->lang['pw_install_message_14'];
+				$append .=  '</p>';
+				$append .=  '<p>';
+				$append .=  $this->lang['pw_install_message_12'];
+				$append .=  '</p>';
+				return $append;
+			}
+			else {
+				return '';
+			}
+			
+		}	
+		
+		// If setup needs doing or any access credential is kaput, prompt for setup.
+		
+		// Some convoluted logic. could be handled better
+		if( ( !$setup_done AND $api_version == '2' ) OR 
+		
+			(	!get_option( 'patreon-client-id', false ) 
+				AND !get_option( 'patreon-client-secret', false ) 
+				AND !get_option( 'patreon-creators-access-token' , false )
+				AND !get_option( 'patreon-creators-refresh-token' , false )
+			) OR 
+			
+			(	get_option( 'patreon-client-id', false ) == ''
+				OR get_option( 'patreon-client-secret', false ) == '' 
+				OR get_option( 'patreon-creators-access-token' , false ) == ''
+				OR get_option( 'patreon-creators-refresh-token' , false ) == ''
+			)
+			
+		) {
+			if ( current_user_can( 'manage_options' ) ) {
+				$append = '<p>';
+				$append .= $this->lang['pw_install_message_13'];
+				$append .=  '</p>';
+				$append .=  '<p>';
+				$append .=  $this->lang['pw_install_message_12'];
+				$append .=  '</p>';
+				return $append;
+			}
+		}
+		
+		$get_url=get_permalink();
+		$append = '';
+		$append .= '<div class="'.$this->internal['prefix'].'patreon_author_widget" style="text-align:'.$this->opt['sidebar_widgets']['insert_text_align'].' !important;">';
+		
+		
+		$goals = get_option( 'patreon-campaign-goals',  false );
+		
+		if ( !$goals ) {
+			
+			include_once ( $this->internal['plugin_path'] . 'plugin/includes/api_extender.php' );
+			
+			$api_client = new api_extender( get_option( 'patreon-creators-access-token', false ) );
+			// We have to set the token again because the token in parent is private...
+			$api_client->temp_access_token = get_option( 'patreon-creators-access-token', false );
+			$goals = $api_client->fetch_goals();
+
+
+			if ( is_array( $goals ) AND isset( $goals['data'] ) ) {
+				update_option( 'patreon-campaign-goals', $goals );
+			}
+			
+		}
+
+		$goals = get_option( 'patreon-campaign-goals', false );
+		
+		$no_goals_flag = false;
+		
+		if ( !$goals  OR !is_array( $goals ) OR !isset( $goals['included'][0]['attributes']['amount_cents'] ) ) {
+			$append .= 'There are no goals in this campaign...';
+			$no_goals_flag = true;
+		}
+		
+		$picked_one_goal = false;
+		
+		if ( !$no_goals_flag ) {
+			
+			foreach ( $goals['included'] as $key => $value ) {
+				
+				if ( $goals['included'][$key]['attributes']['completed_percentage'] == '100' ) {
+					continue;
+				}
+				
+				if ( $picked_one_goal ) {
+					continue;
+				}
+				
+				$append .= $goals['included'][$key]['attributes']['title'];
+				$append .= '<br />';
+				$append .= '<div style="font-size:125%;font-weight: bold;">' . $goals['included'][$key]['attributes']['completed_percentage'] .  $this->lang['goal_percent_complete'] . '</div>';
+				$append .= '<br />';
+				$append .= $goals['included'][$key]['attributes']['description'];
+				$append .= '<br />';
+				$append .= '<br />';
+				$append .= 
+				
+				$picked_one_goal = true;
+			}
+		}
+		
+		if ( !$picked_one_goal AND !$no_goals_flag) {
+			
+			// No goals or goals dont exist.
+			$append .= 'All goals accomplished! Thanks!';			
+			
+		}
+		
+		$author_id = get_the_author_meta('ID');
+		
+		$user=esc_attr( get_the_author_meta( $this->internal['prefix'].'patreon_user', $author_id ) );
+
+		if($this->opt['quickstart']['force_site_button']=='yes' OR $user=='')
+		{
+			$user=$this->opt['quickstart']['site_account'];			
+			
 		}	
 
 		// Lets check if what is saved is an url
@@ -747,6 +1056,21 @@ class cb_p6_plugin extends cb_p6_core
 			$url='https://www.patreon.com/'.$user;
 			
 		}
+		
+		// Add utm params
+		
+		$utm_source_url = site_url();
+		
+		// Check if this is a post.
+		
+		global $post;
+		
+		if ( $post ) {
+			// Override with content url if there is content
+			$utm_source_url =  get_permalink( $post );
+		}
+		
+		$url.='?utm_content=goals_widget_button&utm_medium=patron_button_and_widgets_plugin&utm_campaign=' . get_option( 'patreon-campaign-id', '' ) .'&utm_term=&utm_source=' . $utm_source_url;
 
 		if($this->opt['quickstart']['old_button']=='yes')
 		{
@@ -819,6 +1143,31 @@ class cb_p6_plugin extends cb_p6_core
 			$message=str_replace('{authorname}',$author_name,$message);
 		}
 		return $message;			
+		
+	}
+	public function site_goals_sidebar_widget_message_p($message)
+	{
+	
+		global $post;
+		
+		if( class_exists( 'Patreon_Wordpress' ) ) {
+			
+			if($this->opt['quickstart']['force_site_button']=='yes')
+			{
+				$site_name=$bloginfo = get_bloginfo( 'name', 'raw' );
+				$message=str_replace('{authorname}',$site_name,$message);			
+	
+			}
+			else
+			{
+				$author_name=get_the_author_meta('display_name');
+				$message=str_replace('{authorname}',$author_name,$message);
+			}			
+				
+			return $message;
+		}
+		
+		
 		
 	}
 	
@@ -916,6 +1265,161 @@ class cb_p6_plugin extends cb_p6_core
 		$this->update_opt();
 	
 	}
+	// Plugin installer bloc taken from wpreset tutorial https://wpreset.com/programmatically-automatically-download-install-activate-wordpress-plugins/
+	// Installer from Patron Pro not used here since its too elaborate for a simple install operation
+	public function install_pw_p() {
+ 
+		if ( !is_admin() OR !current_user_can('manage_options') ) {
+			return;
+		}
+		
+		echo '<div id="cb_p6_admin_message_screen">';
+
+		echo '<div id="cb_p6_admin_message_page"><h1 style="margin-top: 0px;">Installing Patreon WordPress!</h1><div id="cb_p6_admin_message_content">';
+
+		// modify these variables with your new/old plugin values
+		$plugin_slug = 'patreon-connect/patreon.php';
+		$plugin_zip  = 'https://downloads.wordpress.org/plugin/patreon-connect.latest-stable.zip';
+
+		echo $this->lang['pw_install_message_1'];
+		echo $this->lang['pw_install_message_2'];
+		echo $this->lang['pw_install_message_3'];
+
+		include_once( ABSPATH . 'wp-admin/includes/plugin-install.php' ); //for plugins_api..
+		
+		//includes necessary for Plugin_Upgrader and Plugin_Installer_Skin
+		include_once( ABSPATH . 'wp-admin/includes/file.php' );
+		include_once( ABSPATH . 'wp-admin/includes/misc.php' );
+		include_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
+		
+		if ( $this->is_plugin_installed( $plugin_slug ) ) {
+			echo $this->lang['pw_install_message_4'];
+			$this->upgrade_plugin( $plugin_slug );
+			$installed = true;
+		} else {
+			echo $this->lang['pw_install_message_5'];
+			$installed = $this->install_plugin( $plugin_zip );
+		}
+
+		if ( !is_wp_error( $installed ) && $installed ) {
+			echo $this->lang['pw_install_message_6'];
+			$activate = activate_plugin( $plugin_slug );
+			 
+			if ( is_null($activate) ) {
+				echo $this->lang['pw_install_message_8'];
+
+				// Check if site is connected
+				
+				// Show a notice if setup was not done
+				$setup_done = get_option( 'patreon-setup-done', false );
+				
+				// Check if this site is a v2 site - temporary until we move to make all installations v2
+				$api_version = get_option( 'patreon-installation-api-version', false );
+				
+				// If setup needs doing or any access credential is kaput, prompt for setup.
+				
+				// Some convoluted logic. could be handled better
+				if( ( !$setup_done AND $api_version == '2' ) OR 
+				
+					(	!get_option( 'patreon-client-id', false ) 
+						AND !get_option( 'patreon-client-secret', false ) 
+						AND !get_option( 'patreon-creators-access-token' , false )
+						AND !get_option( 'patreon-creators-refresh-token' , false )
+					) OR 
+					
+					(	get_option( 'patreon-client-id', false ) == ''
+						OR get_option( 'patreon-client-secret', false ) == '' 
+						OR get_option( 'patreon-creators-access-token' , false ) == ''
+						OR get_option( 'patreon-creators-refresh-token' , false ) == ''
+					)
+					
+				) {
+					echo $this->lang['pw_install_message_10'];
+				}
+				else {
+					// All ok, just redirect to widgets page
+					echo $this->lang['pw_install_message_11'];
+					
+				}				
+			}
+		} else {
+			
+			echo $this->lang['pw_install_message_9'];
+			
+		}
+	  
+		echo '</div></div>';
+		echo '</div>';
+	}
+	   
+	public function is_plugin_installed_p( $slug ) {
+	  if ( ! function_exists( 'get_plugins' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+	  }
+	  $all_plugins = get_plugins();
+	   
+	  if ( !empty( $all_plugins[$slug] ) ) {
+		return true;
+	  } else {
+		return false;
+	  }
+	}
+	 
+	public function install_plugin_p( $plugin_zip ) {
+	  include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+	  wp_cache_flush();
+	   
+	  $upgrader = new Plugin_Upgrader();
+	  $installed = $upgrader->install( $plugin_zip );
+	 
+	  return $installed;
+	}
+	 
+	public function upgrade_plugin_p( $plugin_slug ) {
+	  include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+	  wp_cache_flush();
+	   
+	  $upgrader = new Plugin_Upgrader();
+	  $upgraded = $upgrader->upgrade( $plugin_slug );
+	 
+	  return $upgraded;
+	}
+	// Plugin installer block EOF	
+	
+    public function admin_message_page_p() {
+		
+		if(!current_user_can('manage_options')) {
+			
+			echo 'Sorry, you need to be an admin to view this page';
+			return;
+		}
+		
+		echo '<div id="cb_p6_admin_message_screen">';
+	
+			// Put some defaults so sites with warnings on will be fine
+			$heading = $this->lang['admin_message_default_title'];
+			$content = $this->lang['admin_message_default_content'];
+			
+			if ( isset( $_REQUEST['cb_p6_admin_message_title'] ) ) {
+				$heading = $this->lang[ $_REQUEST['cb_p6_admin_message_title'] ];
+			}
+			if ( isset( $_REQUEST['cb_p6_admin_message_content'] ) ) {
+				$content = $this->lang[ $_REQUEST['cb_p6_admin_message_content'] ];
+			}
+			
+			echo '<div id="cb_p6_admin_message_page"><h1 style="margin-top: 0px;">' . $heading . '</h1><div id="cb_p6_admin_message_content">' . $content . '</div></div>';
+		
+			echo '</div>';
+		
+    }
+	public function get_plugin_version_p( $slug ) {
+		
+		$plugin_data = get_plugin_data( $slug );
+		return $plugin_data['Version'];
+		
+	}
+
+
 }
 
 
