@@ -411,16 +411,26 @@ class cb_p6_sidebar_goals_site_widget extends WP_Widget {
 				else {
 					?>
 					<p>
+					Goals widget shows your financial goals.
+					</p>
+					<p>
 					  <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label> 
 					  <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
 					</p>
 					<p>
-					  <label for="<?php echo $this->get_field_id('message'); ?>"><?php echo $this->cb_p6->lang['message_over_button'] ?></label> 
+					  <label for="<?php echo $this->get_field_id('message'); ?>">Message over goal (optional)</label> 
 					  <input class="widefat" id="<?php echo $this->get_field_id('message'); ?>" name="<?php echo $this->get_field_name('message'); ?>" type="text" value="<?php echo $message ?>" />
 					</p>
 					<p>
+					Widget preview:
+					</p>
+					<p>
 					  <?php echo $this->cb_p6->site_goals_sidebar_widget(); ?>
-					</p>		
+					</p>
+					<hr>
+					<p>
+					<?php echo $this->cb_p6->lang['new_patreon_widget_message_in_widget_desc']; ?>
+					</p>
 					
 					<?php
 					

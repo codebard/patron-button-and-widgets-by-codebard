@@ -807,8 +807,12 @@ PRIMARY KEY  (".$key."_id)
 			$tab='dashboard';
 		
 		}
+		$referrer = '';
+		if (isset( $_SERVER['HTTP_REFERER'] ) ) {
+			$referrer = $_SERVER['HTTP_REFERER'];
+		}
 		
-		$template_vars=array('tab'=>$tab,'referer'=>$_SERVER['HTTP_REFERER']);
+		$template_vars=array('tab'=>$tab,'referer'=>$referrer);
 
 		// We don't want admin settings page headers and footers to be filtered by anyone. Therefore we don't use load_template here
 		

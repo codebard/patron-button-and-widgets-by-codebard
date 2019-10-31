@@ -38,7 +38,9 @@ class cb_p6_plugin extends cb_p6_core
 		
 		// Updates are important - Add update nag if update exist
 		add_filter( 'pre_set_site_transient_update_plugins', array(&$this, 'check_for_update' ),99 );
-		
+		add_filter( 'pre_set_site_transient_update_plugins', array(&$this, 'check_for_update' ),99 );
+		add_action( 'admin_enqueue_scripts',  array(&$this, 'load_pointers' ) );
+		add_filter( $this->internal['prefix'].'admin_pointers-dashboard', array( &$this, 'widgets_pointer' ) );
 		add_action( 'cb_p6_action_before_do_admin_page_tabs', array( &$this, 'pro_pitch' ) );
 
 		/* Old Widget notice  - can be used to show new notices.
@@ -195,7 +197,7 @@ class cb_p6_plugin extends cb_p6_core
 	{
 		$current_screen=get_current_screen();
 
-		if($current_screen->base=='toplevel_page_settings_'.$this->internal['id'] OR $_REQUEST['page']== 'cb_p6_install_pw' )
+		if($current_screen->base=='toplevel_page_settings_'.$this->internal['id'] OR ( isset( $_REQUEST['page']) AND $_REQUEST['page']== 'cb_p6_install_pw' ) )
 		{
 			wp_enqueue_style( $this->internal['id'].'-css-admin', $this->internal['plugin_url'].'plugin/includes/css/admin.css' );
 			
@@ -942,7 +944,7 @@ class cb_p6_plugin extends cb_p6_core
 		// If setup needs doing or any access credential is kaput, prompt for setup.
 		
 		// Some convoluted logic. could be handled better
-		if( ( !$setup_done AND $api_version == '2' ) OR 
+		if( ( !$this->opt['setup_done'] AND $api_version == '2' ) OR 
 		
 			(	!get_option( 'patreon-client-id', false ) 
 				AND !get_option( 'patreon-client-secret', false ) 
@@ -1021,7 +1023,6 @@ class cb_p6_plugin extends cb_p6_core
 				$append .= $goals['included'][$key]['attributes']['description'];
 				$append .= '<br />';
 				$append .= '<br />';
-				$append .= 
 				
 				$picked_one_goal = true;
 			}
@@ -1418,8 +1419,68 @@ class cb_p6_plugin extends cb_p6_core
 		return $plugin_data['Version'];
 		
 	}
+	public function load_pointers_p( $hook_suffix ) {
 
+		// Taken from wptuts tutorial
+			 
+		$screen = get_current_screen();
+		$screen_id = $screen->id;
+		
+		// Get pointers for this screen
+		$pointers = apply_filters( 'cb_p6_admin_pointers-' . $screen_id, array() );
+		 
+		if ( ! $pointers || ! is_array( $pointers ) ) {
+			return;
+		}
+	 
+		// Get dismissed pointers
+		$dismissed = explode( ',', (string) get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', true ) );
+		$valid_pointers =array();
+	 
+		// Check pointers and remove dismissed ones.
+		foreach ( $pointers as $pointer_id => $pointer ) {
+	 
+			// Sanity check
+			if ( in_array( $pointer_id, $dismissed ) || empty( $pointer )  || empty( $pointer_id ) || empty( $pointer['target'] ) || empty( $pointer['options'] ) ) {
+				continue;
+			}
+				
+			$pointer['pointer_id'] = $pointer_id;
+	 
+			// Add the pointer to $valid_pointers array
+			$valid_pointers['pointers'][] =  $pointer;
+		}
+			
+		// No valid pointers? Stop here.
+		if ( empty( $valid_pointers ) ) {
+			return;
+		}
 
+		// Add pointers style to queue.
+		wp_enqueue_style( 'wp-pointer' );
+	 
+		// Add pointers script to queue. Add custom script.
+		wp_enqueue_script( $this->internal['id'].'-pointer', $this->internal['plugin_url'].'plugin/includes/scripts/pointers.js', array( 'wp-pointer' ) );
+	 
+		// Add pointer options to script.
+		wp_localize_script( $this->internal['id'].'-pointer', 'cbp6Pointer', $valid_pointers );
+				
+	}
+
+	public function widgets_pointer_p( $p ) {
+		
+		$p['xyz140'] = array(
+			'target' => '#menu-appearance',
+			'options' => array(
+				'content' => sprintf( '<h3> %s </h3> <p> %s </p>',
+					$this->lang['new_patreon_widget_pointer_title'],
+					$this->lang['new_patreon_widget_pointer_message']
+				),
+				'position' => array( 'edge' => 'top', 'align' => 'middle' )
+			)
+		);
+		return $p;
+	}
 }
 
 

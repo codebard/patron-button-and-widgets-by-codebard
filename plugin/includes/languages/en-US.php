@@ -283,6 +283,9 @@ You may view your existing tickets via \'View Tickets\' or open a new ticket via
 	'pw_install_message_11' => '<br>Great! Now you can use your widget! Click <a href="' . admin_url( 'widgets.php' )  . '">here</a> to go to Widgets page.',
 	'pw_install_message_12' => 'Only you as admin can see the above message',
 	'goal_percent_complete' => '% complete',
+	'new_patreon_widget_pointer_title' => 'You have a new Patreon widget!',
+	'new_patreon_widget_pointer_message' => 'A new Patreon widget, "Goals" widget was added to your widgets. <a href="https://codebard.com/patron-pro-addon-for-patreon-wordpress?utm_content=cb_p6_new_patreon_widget_notice&utm_medium=patron_button_and_widgets_plugin&utm_campaign=&utm_term=&utm_source=" target="_blank">Get Patron Plugin Pro</a> to add "Custom Patron Greeting" widget that allows you to show customized greeting messages to your patrons based on their tier, and future advanced widgets.',
+	'new_patreon_widget_message_in_widget_desc' => '<a href="https://codebard.com/patron-pro-addon-for-patreon-wordpress?utm_content=cb_p6_goals_widget_info&utm_medium=patron_button_and_widgets_plugin&utm_campaign=&utm_term=&utm_source=" target="_blank">Get Patron Plugin Pro</a> to add "Custom Patron Greeting" widget that allows you to show customized greeting messages to your patrons based on their tier, and future advanced widgets.',
 	
 );
 
