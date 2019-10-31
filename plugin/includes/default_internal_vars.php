@@ -10,13 +10,12 @@ $this->internal = array_replace_recursive(
 		'id' => 'cb_p6',
 		'plugin_id' => 'patron-button-and-widgets-by-codebard',
 		'prefix' => 'cb_p6_',
-		'version' => '2.0.7',
+		'version' => '2.0.8',
 		'plugin_name' => 'Patreon Button, Widgets and Plugin by CodeBard',
 		
 		'callable_from_request' => array(
 			
 			'save_settings' => 1,
-			
 			'reset_languages' => 1,
 			'save_language' => 1,
 			'choose_language' => 1,

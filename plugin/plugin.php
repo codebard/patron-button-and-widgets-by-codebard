@@ -976,9 +976,16 @@ class cb_p6_plugin extends cb_p6_core
 		
 		
 		$goals = get_option( 'patreon-campaign-goals',  false );
+		$last_updated = get_option( 'patreon-campaign-goals-last-updated',  false );
+
+		$update = false;
 		
-		if ( !$goals ) {
-			
+		if ( !$last_updated OR $last_updated <= ( time()-( 60*60*24 ) ) ) {
+			$update = true;
+		}
+
+		if ( !$goals OR $update ) {
+
 			include_once ( $this->internal['plugin_path'] . 'plugin/includes/api_extender.php' );
 			
 			$api_client = new api_extender( get_option( 'patreon-creators-access-token', false ) );
@@ -989,6 +996,7 @@ class cb_p6_plugin extends cb_p6_core
 
 			if ( is_array( $goals ) AND isset( $goals['data'] ) ) {
 				update_option( 'patreon-campaign-goals', $goals );
+				update_option( 'patreon-campaign-goals-last-updated', time() );
 			}
 			
 		}
@@ -1469,12 +1477,18 @@ class cb_p6_plugin extends cb_p6_core
 
 	public function widgets_pointer_p( $p ) {
 		
+		$widget_pointer_message = $this->lang['new_patreon_widget_pointer_message'];
+		
+		if ( is_plugin_active( 'patron-plugin-pro/index.php' ) ) {
+			$widget_pointer_message = $this->lang['new_patreon_widget_pointer_message_for_pp_users'];		
+		}
+		
 		$p['xyz140'] = array(
 			'target' => '#menu-appearance',
 			'options' => array(
 				'content' => sprintf( '<h3> %s </h3> <p> %s </p>',
 					$this->lang['new_patreon_widget_pointer_title'],
-					$this->lang['new_patreon_widget_pointer_message']
+					$widget_pointer_message
 				),
 				'position' => array( 'edge' => 'top', 'align' => 'middle' )
 			)
