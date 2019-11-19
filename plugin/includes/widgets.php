@@ -237,7 +237,7 @@ class cb_p6_sidebar_site_widget extends WP_Widget {
 		global $cb_p6;
 		
 		
-	    if($this->cb_p6->opt['sidebar_widgets']['hide_site_widget_on_single_post_page']=='yes' AND is_singular('post'))
+	    if( $this->cb_p6->opt['sidebar_widgets']['hide_site_widget_on_single_post_page']=='yes' AND is_singular('post'))
 		{
 			// Dont show the site widget on single post page 
 			return;

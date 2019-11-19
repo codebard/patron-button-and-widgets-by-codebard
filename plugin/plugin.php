@@ -51,7 +51,7 @@ class cb_p6_plugin extends cb_p6_core
 	   }
 		*/
 		// Do setup wizard if it was not done
-		if($this->opt['setup_is_being_done'])
+		if( isset( $this->opt['setup_is_being_done'] ) AND $this->opt['setup_is_being_done'] )
 		{
 			add_action($this->internal['prefix'].'action_before_do_settings_pages',array(&$this,'do_setup_wizard'),99,1);
 		}	
@@ -511,37 +511,7 @@ class cb_p6_plugin extends cb_p6_core
 
 		$user=$this->opt['quickstart']['site_account'];
 
-		
-			
-
-		// Lets check if what is saved is an url
-		if(substr($user,0,4)=='http')
-		{
-			// It is! Load the value to url value
-			$url=$user;
-		}
-		else
-		{
-			// This is a user name/slug. Make the url :
-			$url='https://www.patreon.com/'.$user;
-			
-		}
-			
-		
-		// Add utm params
-		
-		$utm_source_url = site_url();
-		
-		// Check if this is a post.
-		
-		global $post;
-		
-		if ( $post ) {
-			// Override with content url if there is content
-			$utm_source_url =  get_permalink( $post );
-		}
-		
-		$url.='?utm_content=site_sidebar_widget&utm_medium=patron_button_and_widgets_plugin&utm_campaign=' . get_option( 'patreon-campaign-id', '' ) .'&utm_term=&utm_source=' . $utm_source_url;
+		$url = $this->make_to_patreon_url( $user, 'site_sidebar_widget' );
 
 		// Lets shove in the target=_blank if open in new window is set :
 		
@@ -671,38 +641,10 @@ class cb_p6_plugin extends cb_p6_core
 		
 		if($this->opt['quickstart']['force_site_button']=='yes' OR $user=='')
 		{
-			$user=$this->opt['quickstart']['site_account'];	
-		
+			$user=$this->opt['quickstart']['site_account'];
 		}
 		
-		// Lets check if what is saved is an url
-		if(substr($user,0,4)=='http')
-		{
-			// It is! Load the value to url value
-			$url=$user;
-		}
-		else
-		{
-			// This is a user name/slug. Make the url :
-			$url='https://www.patreon.com/'.$user;
-			
-		}	
-
-		// Add utm params
-		
-		$utm_source_url = site_url();
-		
-		// Check if this is a post.
-		
-		global $post;
-		
-		if ( $post ) {
-			// Override with content url if there is content
-			$utm_source_url =  get_permalink( $post );
-		}
-		
-		$url.='?utm_content=post_button&utm_medium=patron_button_and_widgets_plugin&utm_campaign=' . get_option( 'patreon-campaign-id', '' ) .'&utm_term=&utm_source=' . $utm_source_url;
-		
+		$url = $this->make_to_patreon_url( $user, 'post_button' );		
 
 		if(isset($this->opt['quickstart']['old_button']) AND $this->opt['quickstart']['old_button']=='yes')
 		{
@@ -718,7 +660,7 @@ class cb_p6_plugin extends cb_p6_core
 		}
 		
 		if(isset($this->opt['quickstart']['custom_button']) AND $this->opt['quickstart']['custom_button']!='')
-		{			
+		{	
 			$button=$this->opt['quickstart']['custom_button'];
 			if($this->opt['quickstart']['custom_button_width']!='')
 			{
@@ -806,35 +748,8 @@ class cb_p6_plugin extends cb_p6_core
 			$user=$this->opt['quickstart']['site_account'];			
 			
 		}
-
-		// Lets check if what is saved is an url
-		if(substr($user,0,4)=='http')
-		{
-			// It is! Load the value to url value
-			$url=$user;
-		}
-		else
-		{
-			// This is a user name/slug. Make the url :
-			$url='https://www.patreon.com/'.$user;
-			
-		}
 		
-		// Add utm params
-		
-		$utm_source_url = site_url();
-		
-		// Check if this is a post.
-		
-		global $post;
-		
-		if ( $post ) {
-			// Override with content url if there is content
-			$utm_source_url =  get_permalink( $post );
-		}
-		
-		$url.='?utm_content=author_sidebar_widget&utm_medium=patron_button_and_widgets_plugin&utm_campaign=' . get_option( 'patreon-campaign-id', '' ) .'&utm_term=&utm_source=' . $utm_source_url;
-		
+		$url = $this->make_to_patreon_url( $user, 'author_sidebar_widget' );		
 
 		if($this->opt['quickstart']['old_button']=='yes')
 		{
@@ -1043,43 +958,9 @@ class cb_p6_plugin extends cb_p6_core
 			
 		}
 		
-		$author_id = get_the_author_meta('ID');
-		
-		$user=esc_attr( get_the_author_meta( $this->internal['prefix'].'patreon_user', $author_id ) );
+		$user=$this->opt['quickstart']['site_account'];			
 
-		if($this->opt['quickstart']['force_site_button']=='yes' OR $user=='')
-		{
-			$user=$this->opt['quickstart']['site_account'];			
-			
-		}	
-
-		// Lets check if what is saved is an url
-		if(substr($user,0,4)=='http')
-		{
-			// It is! Load the value to url value
-			$url=$user;
-		}
-		else
-		{
-			// This is a user name/slug. Make the url :
-			$url='https://www.patreon.com/'.$user;
-			
-		}
-		
-		// Add utm params
-		
-		$utm_source_url = site_url();
-		
-		// Check if this is a post.
-		
-		global $post;
-		
-		if ( $post ) {
-			// Override with content url if there is content
-			$utm_source_url =  get_permalink( $post );
-		}
-		
-		$url.='?utm_content=goals_widget_button&utm_medium=patron_button_and_widgets_plugin&utm_campaign=' . get_option( 'patreon-campaign-id', '' ) .'&utm_term=&utm_source=' . $utm_source_url;
+		$url = $this->make_to_patreon_url( $user, 'goals_widget_button' );	
 
 		if($this->opt['quickstart']['old_button']=='yes')
 		{
@@ -1204,8 +1085,6 @@ class cb_p6_plugin extends cb_p6_core
 		
 		}
 		
-		$url = $this->make_to_patreon_url($url);
-		
 		return '<a rel="nofollow"'.$new_window.' href="'.$url.'"><img style="margin-top: '.$this->opt['sidebar_widgets']['button_margin'].';margin-bottom: '.$this->opt['sidebar_widgets']['button_margin'].';max-width:'.$max_width.'px;width:100%;height:auto;" src="'.$button.'"></a>';
 		
 		
@@ -1223,17 +1102,57 @@ class cb_p6_plugin extends cb_p6_core
 		
 		}
 		
-		$url = $this->make_to_patreon_url($url);
-		
 		return '<a rel="nofollow"'.$new_window.' href="'.$url.'"><img style="margin-top: '.$this->opt['sidebar_widgets']['button_margin'].';margin-bottom: '.$this->opt['sidebar_widgets']['button_margin'].';max-width:'.$max_width.'px;width:100%;height:auto;" src="'.$button.'"></a>';
 		
 		
 	}
-	public function make_to_patreon_url_p($url)
+	public function make_to_patreon_url_p( $user, $utm_content )
 	{
-		// wrapper to add some params and filter the url.
-		// For now we cant do that because patreon doesnt recognize urls with parameters
-		// $url = add_query_arg( 'utm_content', 'patron_widgets_plugin_link', $url );
+		// wrapper to add some params and filter the url.		
+
+		// Lets check if what is saved is an url
+		if(substr($user,0,4)=='http') {
+			// It is! Load the value to url value
+			$url = $user;
+		}
+		else {
+			
+			// Check if an int user id was dropped in
+			if ( is_numeric( $user ) ) {
+				// This is a user name/slug. Make the url :
+				$url = 'https://www.patreon.com/user?u='.$user;
+				
+			}
+			else {
+				// This is a user id. Make relevant link.
+				
+				$url = 'https://www.patreon.com/'.$user;
+			}
+			
+		}
+		
+		// Add utm params
+		
+		$utm_source_url = site_url();
+		
+		// Check if this is a post.
+		
+		global $post;
+		
+		if ( $post ) {
+			// Override with content url if there is content
+			$utm_source_url =  get_permalink( $post );
+		}
+		
+		$utm_params = 'utm_content=' . $utm_content . '&utm_medium=patron_button_and_widgets_plugin&utm_campaign=' . get_option( 'patreon-campaign-id', '' ) .'&utm_term=&utm_source=' . $utm_source_url;
+		
+		// Simple check to see if creator url has ? (for non vanity urls)
+		$append_with = '?';
+		if ( strpos( $url, '?' ) !== false ) {
+			$append_with = '&';
+		}
+
+		$url .= $append_with . $utm_params;
 		
 		return $url;
 		
@@ -1468,10 +1387,10 @@ class cb_p6_plugin extends cb_p6_core
 		wp_enqueue_style( 'wp-pointer' );
 	 
 		// Add pointers script to queue. Add custom script.
-		wp_enqueue_script( $this->internal['id'].'-pointer', $this->internal['plugin_url'].'plugin/includes/scripts/pointers.js', array( 'wp-pointer' ) );
+		wp_enqueue_script( $this->internal['id'] . '-pointer', $this->internal['plugin_url'] . 'plugin/includes/scripts/pointers.js', array( 'wp-pointer' ) );
 	 
 		// Add pointer options to script.
-		wp_localize_script( $this->internal['id'].'-pointer', 'cbp6Pointer', $valid_pointers );
+		wp_localize_script( $this->internal['id'] . '-pointer', 'cbp6Pointer', $valid_pointers );
 				
 	}
 
