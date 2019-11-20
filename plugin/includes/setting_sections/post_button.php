@@ -5,6 +5,17 @@ $tab=$_REQUEST[$this->internal['prefix'].'tab'];
 
 echo $this->do_admin_settings_form_header($tab);
 
+		$show_button_under_posts_checked_yes = '';
+		$show_button_under_posts_checked_no = '';
+		$show_message_over_post_button_checked_yes = '';
+		$show_message_over_post_button_checked_no = '';
+		$post_button_align_checked_left = '';
+		$post_button_align_checked_center = '';
+		$post_button_align_checked_right = '';
+		$post_insert_text_align_checked_left = '';
+		$post_insert_text_align_checked_center = '';
+		$post_insert_text_align_checked_right = '';
+
 		if(isset($this->opt[$tab]['show_button_under_posts']) AND $this->opt[$tab]['show_button_under_posts']=='yes')
 		{
 		

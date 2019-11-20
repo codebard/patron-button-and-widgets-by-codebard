@@ -10,6 +10,13 @@ echo $this->do_admin_settings_form_header($tab);
 			
 			$tab=$_REQUEST[$this->internal['prefix'].'tab'];
 		}
+		
+		$open_new_window_checked_yes = '';
+		$open_new_window_checked_no = '';
+		$force_site_checked_yes = '';
+		$force_site_checked_no = '';
+		$use_old_patreon_button_yes = '';
+		$use_old_patreon_button_no = '';
 
 
 		if(isset($this->opt[$tab]['open_new_window']) AND $this->opt[$tab]['open_new_window']=='yes')

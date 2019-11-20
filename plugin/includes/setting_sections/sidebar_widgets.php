@@ -6,7 +6,11 @@ $tab=$_REQUEST[$this->internal['prefix'].'tab'];
 
 echo $this->do_admin_settings_form_header($tab);
 
-
+		$hide_site_widget_on_single_post_page_checked_yes = '';
+		$hide_site_widget_on_single_post_page_checked_no = '';
+		$widget_insert_text_align_checked_left = '';
+		$widget_insert_text_align_checked_center = '';
+		$widget_insert_text_align_checked_right = '';
 
 		if(isset($this->opt[$tab]['hide_site_widget_on_single_post_page']) AND $this->opt[$tab]['hide_site_widget_on_single_post_page']=='yes')
 		{
