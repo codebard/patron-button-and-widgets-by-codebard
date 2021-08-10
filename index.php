@@ -3809,6 +3809,11 @@ PRIMARY KEY  (".$key."_id)
 
 require('plugin/plugin.php');
 
+register_activation_hook($cb_p6->internal['plugin_path'].'index.php',array(&$cb_p6,'activate'));
+
+register_deactivation_hook( $cb_p6->internal['plugin_path'].'index.php', array(&$cb_p6,'deactivate'));
+
+
 require('plugin/includes/direct_includes.php');
 
 require('plugin/includes/widgets.php');

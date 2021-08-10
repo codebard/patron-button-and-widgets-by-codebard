@@ -77,6 +77,21 @@ jQuery(document).ready(function($) {
         });
     });
 	
+
+	
+	jQuery(document).on( 'click', '.cb_p6_notice .notice-dismiss', function(e) {
+
+		jQuery.ajax({
+			url: ajaxurl,
+			type:"POST",
+			dataType : 'html',
+			data: {
+				action: 'cb_p6_dismiss_admin_notice',
+				notice_id: jQuery( this ).parent().attr( "id" ),
+			}
+		});
+	});	
+	
 	jQuery(document).on('click', '.cb_p6_clear_prevfield', function(e) {
 		e.preventDefault();
 		

@@ -325,13 +325,14 @@ max-width : 800px;
 	text-decoration : underline;
 	
 }
-.cb_addon_status{
+.cb_addon_status_local{
 
 	display:block;
 	width : 100%;
 	height : auto;	
 	text-align:center;
 	vertical-align:top;
+	font-size: 150%;
 	
 }
 .cb_addons_list{
