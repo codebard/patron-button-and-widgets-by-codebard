@@ -164,7 +164,7 @@ class cb_p6_plugin extends cb_p6_core
 				
 		if ( !$plugin_first_activated ) {
 			
-			update_option( 'cb_p7_first_activated', time() );
+			update_option( 'cb_p6_first_activated', time() );
 		
 		}
 	}
@@ -1510,8 +1510,7 @@ class cb_p6_plugin extends cb_p6_core
 		if( !$patron_content_manager_pitch_shown AND !$this->check_plugin_exists('patron-content-manager') AND $current_screen->id != 'plugins' AND ( ($this->check_days_after_last_non_system_notice( 7 ) AND $this->calculate_days_after_first_activation( 30 ) ) ) AND !$already_showed_non_system_notice ) {
 
 			?>
-				<div class="notice notice-success is-dismissible cb_p6_notice" id="cb_p7_patron_content_manager_pitch"><img class="addon_upsell" src="<?php echo PATREON_PLUGIN_ASSETS ?>/img/Patron-Plugin-Pro-128.png" style="float:left; margin-right: 20px;" alt="Patron Content Manager" />
-					<p><h2 style="margin-top: 0px; font-size: 150%; font-weight: bold;">Boost your pledges and patrons at Patreon with Patron Pro!</h2><div style="font-size: 125% !important">Get Patron Pro third party addon for Patreon WordPress to increase your patrons and pledges! Enjoy powerful features like partial post locking, sneak peeks, advanced locking methods, login lock, vip users and more.<br /><br /><a href="https://codebard.com/patron-content-manager?utm_source=<?php urlencode( site_url() ) ?>&utm_medium=cb_p6&utm_campaign=&utm_content=cb_p6_addon_upsell_notice_patron_content_manager&utm_term=" target="_blank">Check out all features here</a></div></p>
+				<div class="notice notice-success is-dismissible cb_p6_notice" id="cb_p6_patron_content_manager_pitch"><p><div style="display: flex; flex-wrap: wrap; flex-direction: row;"><a href="<?php echo $this->internal['plugin_url']."images/Easily-manage-gated-posts.jpg"?>" target="_blank"><img class="addon_upsell" src="<?php echo $this->internal['plugin_url']."images/Easily-manage-gated-posts.jpg"?>" style="width:200px; height:106px;margin: 10px; border: 1px solid #000000; margin-right: 20px;" alt="Patron Content Manager" /></a><div style="max-width: 700px; width: 100%;"><div style="max-width:500px; width: auto; float:left; display:inline-box"><h2 style="margin-top: 0px; font-size: 150%; font-weight: bold;">Easily manage your patron only content with Patron Content Manager</h2></div><div style="width:100%; font-size: 125% !important;clear:both; ">Get new <a href="https://codebard.com/patron-content-manager?utm_source=<?php urlencode( site_url() ) ?>&utm_medium=cb_p6&utm_campaign=&utm_content=cb_p6_addon_upsell_notice_patron_content_manager&utm_term=" target="_blank">Patron Content Manager</a> plugin for Patreon and easily re-gate content, gate old content, use detailed locking options, use content locking wizard to manage your patron only content & increase your patrons and pledges.<br /><br /><a href="https://codebard.com/patron-content-manager?utm_source=<?php urlencode( site_url() ) ?>&utm_medium=cb_p6&utm_campaign=&utm_content=cb_p6_addon_upsell_notice_patron_content_manager&utm_term=" target="_blank">Check out all features here</a></div></div></div></p>
 				</div>
 			<?php	
 			
@@ -1539,7 +1538,7 @@ class cb_p6_plugin extends cb_p6_core
 		
 		// Mapping what comes from REQUEST to a given value avoids potential security problems and allows custom actions depending on notice
 
-		if ( $_REQUEST['notice_id'] == 'cb_p7_patron_content_manager_pitch' ) {
+		if ( $_REQUEST['notice_id'] == 'cb_p6_patron_content_manager_pitch' ) {
 			
 			update_option( 'patron_content_manager_pitch_shown', true);
 			
