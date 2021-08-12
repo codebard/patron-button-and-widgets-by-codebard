@@ -22,7 +22,8 @@ class cb_p6_plugin extends cb_p6_core
 		{
 			add_action('init', array(&$this, 'frontend_init'),99);
 		}
-
+		
+		add_action( 'init', array( &$this, 'check_plugin_activation_date_for_existing_installs' ) );
 		add_action('admin_init',array(&$this,'check_redirect_to_setup_wizard'),99);			
 		
 	}
@@ -42,6 +43,7 @@ class cb_p6_plugin extends cb_p6_core
 		add_action( 'admin_enqueue_scripts',  array(&$this, 'load_pointers' ) );
 		add_filter( $this->internal['prefix'].'admin_pointers-dashboard', array( &$this, 'widgets_pointer' ) );
 		add_action( 'cb_p6_action_before_do_admin_page_tabs', array( &$this, 'pro_pitch' ) );
+		add_action( 'wp_ajax_cb_p6_dismiss_admin_notice', array( $this, 'dismiss_admin_notice' ), 10, 1 );
 
 		/* Old Widget notice  - can be used to show new notices.
 	   if(!isset($this->opt['widget_update_notice_shown']) AND !$this->opt['setup_is_being_done']) {
@@ -54,7 +56,9 @@ class cb_p6_plugin extends cb_p6_core
 		if( isset( $this->opt['setup_is_being_done'] ) AND $this->opt['setup_is_being_done'] )
 		{
 			add_action($this->internal['prefix'].'action_before_do_settings_pages',array(&$this,'do_setup_wizard'),99,1);
-		}	
+		}
+		
+		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 		
 	}
 	public function frontend_init_p()
@@ -88,7 +92,8 @@ class cb_p6_plugin extends cb_p6_core
 		add_action( 'edit_user_profile', array(&$this, 'add_custom_user_field') );
 
 		add_action( 'personal_options_update', array(&$this, 'save_custom_user_field') );
-		add_action( 'edit_user_profile_update', array(&$this, 'save_custom_user_field') );			
+		add_action( 'edit_user_profile_update', array(&$this, 'save_custom_user_field') );
+		
 		
 		
 	}
@@ -152,10 +157,16 @@ class cb_p6_plugin extends cb_p6_core
 		$this->opt=$current_options;
 		
 	}
-	public function activate_p()
+ 	public function activate_p()
 	{
-
+		// Not setting the default return to 0 like the one in init check here because we dont want to overwrite the value 0 for installs existing at the date this code was implemented
+		$plugin_first_activated   = get_option( 'cb_p6_first_activated', false );
+				
+		if ( !$plugin_first_activated ) {
+			
+			update_option( 'cb_p6_first_activated', time() );
 		
+		}
 	}
 
 	public function check_redirect_to_setup_wizard_p()
@@ -1414,8 +1425,146 @@ class cb_p6_plugin extends cb_p6_core
 		);
 		return $p;
 	}
-}
+	
+	public static function check_plugin_activation_date_for_existing_installs_p() {
+	
+		// Checks if plugin first activation date is saved for existing installs. Its here for backwards compatibility for existing installs before this version (2.1.1), and in case this meta info is lost in the db for any reason
+		
+		$plugin_first_activated = get_option( 'cb_p6_first_activated', 'NONE' );
 
+		if ( $plugin_first_activated == 'NONE' ) {
+			// If no date was set, set it to 0. This will mark existing installs
+			update_option( 'cb_p6_first_activated', 0 );
+		}
+		
+	}
+	
+	
+	public function check_days_after_last_non_system_notice_p( $days ) {
+		// Calculates if $days many days passed after last non system notice was showed. Used in deciding if and when to show admin wide notices
+		
+		$last_non_system_notice_shown_date = get_option( 'cb_p6_last_non_system_notice_shown_date', 0 );
+		
+		// Calculate if $days days passed since last notice was shown
+		if ( ( time() - $last_non_system_notice_shown_date ) > ( $days * 24 * 3600 ) ) {
+			// More than $days days. Set flag
+			return true;
+		}
+
+		return false;
+		
+	}
+	
+	
+	public function check_days_after_last_system_notice_p( $days ) {
+		// Calculates if $days many days passed after last non system notice was showed. Used in deciding if and when to show admin wide notices
+		
+		$last_non_system_notice_shown_date = get_option( 'cb_p6_last_system_notice_shown_date', 0 );
+		
+		// Calculate if $days days passed since last notice was shown
+		if ( ( time() - $last_non_system_notice_shown_date ) > ( $days * 24 * 3600 ) ) {
+			// More than $days days. Set flag
+			return true;
+		}
+
+		return false;
+		
+	}
+
+	public function calculate_days_after_first_activation_p( $days ) {
+		
+		// Used to calculate days passed after first plugin activation. 
+		
+		$plugin_first_activated   = get_option( 'cb_p6_first_activated', 0 );
+				
+		// Calculate if $days days passed since last notice was shown		
+		if ( ( time() - $plugin_first_activated ) > ( $days * 24 * 3600 ) ) {
+			// More than $days days. Set flag
+			return true;
+		}
+
+		return false;
+			
+	}
+	
+	public function admin_notices_p() {
+		
+
+		if ( isset( $_REQUEST['page'] ) AND $_REQUEST['page'] == 'patreon_wordpress_setup_wizard' ) {
+			return;
+		}
+		
+		if ( $this->opt['setup_is_being_done'] ) {
+			return;
+		}
+
+		// Wp org wants non-error / non-functionality related notices to be shown infrequently and one per admin-wide page load, and be dismissable permanently. 		
+
+		$patron_content_manager_pitch_shown = get_option( 'patron_content_manager_pitch_shown', false );
+
+		$already_showed_non_system_notice = false;
+		$current_screen = get_current_screen();
+		
+		// The addon upsell must be admin wide, permanently dismissable, and must not appear in plugin manager page in admin
+		
+		if( !$patron_content_manager_pitch_shown AND !$this->check_plugin_exists('patron-content-manager') AND $current_screen->id != 'plugins' AND ( ($this->check_days_after_last_non_system_notice( 7 ) AND $this->calculate_days_after_first_activation( 30 ) ) ) AND !$already_showed_non_system_notice ) {
+
+			?>
+				<div class="notice notice-success is-dismissible cb_p6_notice" id="cb_p6_patron_content_manager_pitch"><p><div style="display: flex; flex-wrap: wrap; flex-direction: row;"><a href="<?php echo $this->internal['plugin_url']."images/Easily-manage-gated-posts.jpg"?>" target="_blank"><img class="addon_upsell" src="<?php echo $this->internal['plugin_url']."images/Easily-manage-gated-posts.jpg"?>" style="width:200px; height:106px;margin: 10px; border: 1px solid #000000; margin-right: 20px;" alt="Patron Content Manager" /></a><div style="max-width: 700px; width: 100%;"><div style="max-width:500px; width: auto; float:left; display:inline-box"><h2 style="margin-top: 0px; font-size: 150%; font-weight: bold;">Easily manage your patron only content with Patron Content Manager</h2></div><div style="width:100%; font-size: 125% !important;clear:both; ">Get new <a href="https://codebard.com/patron-content-manager?utm_source=<?php urlencode( site_url() ) ?>&utm_medium=cb_p6&utm_campaign=&utm_content=cb_p6_addon_upsell_notice_patron_content_manager&utm_term=" target="_blank">Patron Content Manager</a> plugin for Patreon and easily re-gate content, gate old content, use detailed locking options, use content locking wizard to manage your patron only content & increase your patrons and pledges.<br /><br /><a href="https://codebard.com/patron-content-manager?utm_source=<?php urlencode( site_url() ) ?>&utm_medium=cb_p6&utm_campaign=&utm_content=cb_p6_addon_upsell_notice_patron_content_manager&utm_term=" target="_blank">Check out all features here</a></div></div></div></p>
+				</div>
+			<?php	
+			
+			$already_showed_non_system_notice = true;
+			
+		}
+		
+	}
+
+	public function check_plugin_exists_p( $plugin_dir ) {
+
+		// Simple function to check if a plugin is installed (may be active, or not active) in the WP instalation
+		
+		// Plugin dir is the wp's plugin dir together with the plugin's dir
+
+		if ( file_exists( WP_PLUGIN_DIR . '/' . $plugin_dir ) ) {
+			return true;
+		}
+	}	
+	public function dismiss_admin_notice_p() {
+		
+		if( !( is_admin() && current_user_can( 'manage_options' ) ) ) {
+			return;
+		}
+		
+		// Mapping what comes from REQUEST to a given value avoids potential security problems and allows custom actions depending on notice
+
+		if ( $_REQUEST['notice_id'] == 'cb_p6_patron_content_manager_pitch' ) {
+			
+			update_option( 'patron_content_manager_pitch_shown', true);
+			
+			// Set the last notice shown date
+			$this->set_last_non_system_notice_shown_date();
+		}
+		
+		
+	}
+	
+	public function set_last_non_system_notice_shown_date_p() {
+		
+		// Sets the last non system notice shown date to now whenever called. Used for decicing when to show admin wide notices that are not related to functionality. 
+		
+		update_option( 'cb_p6_last_non_system_notice_shown_date', time() );
+			
+	}
+	public function set_last_system_notice_shown_date_p() {
+		
+		// Sets the last non system notice shown date to now whenever called. Used for decicing when to show admin wide notices that are not related to functionality. 
+		
+		update_option( 'cb_p6_system_notice_shown_date', time() );
+			
+	}
+	
+}
 
 $cb_p6 = cb_p6_plugin::get_instance();
 
