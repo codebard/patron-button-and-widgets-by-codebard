@@ -7,7 +7,7 @@ Tags: plugins, patreon, widgets, crowdfunding, crowdfund, crowd fund, crowd fund
 License: GPL
 Requires at least: 4.0
 Tested up to: 5.8
-Stable Tag: 2.1.0
+Stable Tag: 2.1.1
 
 Patreon Button and Plugin allows you to add Patreon Buttons to your content and sidebars, along with offering other Patreon functions. Upgradable to Patron Plugin Pro with patron-only posts and powerful features.
 
@@ -25,7 +25,7 @@ In addition, all authors will be able to add their own Patreon username in their
 
 More features are planned as they become available in Patreon API.
 
-You can upgrade to Patron Plugin Pro and enable powerful content-locking options to serve Patron only content from your own website! Patron Plugin Pro will also allow you to put your patrons directly to patron pipeline instead of your profile. Check it out below:
+You can upgrade to Patron Plugin Pro, add the Patron Content Manager addon and enable powerful content-locking options to serve Patron only content from your own website! Patron Plugin Pro will also allow you to put your patrons directly to patron pipeline instead of your profile. Check it out below:
 
 https://codebard.com/patron-plugin-pro
 
@@ -58,6 +58,12 @@ To be updated
 4. Quick Start easy settings page
 
 == Changelog ==
+
+= 2.1.1 =
+
+* Added a notice system. Adjusted notices to show 30 days after last notice is shown. Made notices appear in sequential order. Separated system notices and non system notices. Notices are permanently dismissable.
+* Made plugin save time of activation when activated
+* Added notice for new Patreon plugin
 
 = 2.1.0 =
 
