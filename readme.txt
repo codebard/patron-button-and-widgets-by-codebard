@@ -1,4 +1,4 @@
-===  Patreon Button, Widgets and Plugin by CodeBard ===
+===  Patron Button, Widgets and Plugin by CodeBard ===
 Author URI: http://codebard.com
 Plugin URI: https://wordpress.org/plugins/patron-button-and-widgets-by-codebard/
 Contributors: CodeBard
@@ -7,9 +7,9 @@ Tags: plugins, patreon, widgets, crowdfunding, crowdfund, crowd fund, crowd fund
 License: GPL
 Requires at least: 4.0
 Tested up to: 5.8
-Stable Tag: 2.1.2
+Stable Tag: 2.1.3
 
-Patreon Button and Plugin allows you to add Patreon Buttons to your content and sidebars, along with offering other Patreon functions. Upgradable to Patron Plugin Pro with patron-only posts and powerful features.
+Patron Button and Plugin allows you to add Patreon Buttons to your content and sidebars, along with offering other Patreon functions. Upgradable to Patron Plugin Pro with patron-only posts and powerful features.
 
 == Description ==
 
@@ -57,7 +57,119 @@ To be updated
 3. Patron Button Widget for Author
 4. Quick Start easy settings page
 
+== Upgrade Notice ==
+
+= 2.1.3 =
+
+* Changed plugin name per WP org repo rules
+
+= 2.1.2 =
+
+* Added checks to prevent the same notice being shown twice at the same page load
+
+= 2.1.1 =
+
+* Added a notice system. Adjusted notices to show 30 days after last notice is shown. Made notices appear in sequential order. Separated system notices and non system notices. Notices are permanently dismissable.
+* Made plugin save time of activation when activated
+* Added notice for new Patreon plugin
+
+= 2.1.0 =
+
+* Updated update_usermeta to update_user_meta to address warnings
+
+= 2.0.9 =
+
+* Fixed widget and post button urls giving 404 if a non vanity Patreon url when user id was used.
+* Better decision logic in constructing urls
+
+= 2.0.8 =
+
+* Added Goals widget. Shows financial goals from Patreon.
+* Added one click auto installer for the needed Patreon WordPress free plugin to use goals widget
+* Added admin pointers
+* Added admin pointer for goal widget
+
+= 2.0.7 =
+
+* Changed post button appearing logic to show for all content except pages. It should show for all posts and custom posts as long as they are singular.
+
+= 2.0.6 =
+
+* Removed PHP 7 compatible widget notice
+* Updated tested up to
+
+= 2.0.5 =
+
+* Minor fix for unused plugins_api injectinfo function - removed
+
+= 2.0.4 =
+
+* Widget language loading causing some WP-CLI command line functions to fail fixed
+* Important issue that prevented languages from being saved and custom languages from being used fixed
+
+= 2.0.3 =
+
+* Widgets now PHP 7.x+ compatible with proper constructors
+* Notice to update the widgets added
+
+= 2.0.2 =
+
+* Major bugfix non-English (en-US) language sites and Out of Memory errors
+* New Modal based wizards
+
+= 2.0.1 =
+
+* Major bugfix with the patron urls containing utm_source not working - a must
+
+= 2.0.0 =
+
+* Totally new plugin engine 
+
+= 1.0.6 =
+
+* New Patreon Button 
+* Option for using new or old Patreon button
+* Custom button uploader
+* Custom button width option
+* Minor Css fixes
+* Admin side jquery and media uploader queueing
+
+= 1.0.5 =
+
+* Unnecessary info update code removed to prevent foreach errors
+
+= 1.0.4 =
+
+* Fix to prevent output buffering from capturing whitespace
+
+= 1.0.3 =
+
+* Option to hide Site Widget in Single Posts
+* Reinforced checking for singular post type for appending the button
+* Changes to settings page tab code to prevent PHP Warnings regarding strings
+
+= 1.0.2 =
+
+* Installation Wizard to help users fill in their Patreon URLS during first install or if they didnt save it before
+* Patreon URL verifications in Install Wizard
+* Allow both URL and account name (Personal Url slug to be used from the database for constructing button urls
+* Routine to check versions and update variables in db if necessary during updates
+* Option to open Patreon Profiles in new window when users click on buttons
+* Minor fixes to settings tabs
+
+= 1.0.1 =
+
+* Unnecessary update and api codes removed
+
+= 1.0.0 =
+
+* Initial release!
+
 == Changelog ==
+
+= 2.1.3 =
+
+* Changed plugin name per WP org repo rules
 
 = 2.1.2 =
 

@@ -11,7 +11,7 @@ $this->internal = array_replace_recursive(
 		'plugin_id' => 'patron-button-and-widgets-by-codebard',
 		'prefix' => 'cb_p6_',
 		'version' => '2.1.2',
-		'plugin_name' => 'Patreon Button, Widgets and Plugin by CodeBard',
+		'plugin_name' => 'Patron Button, Widgets and Plugin by CodeBard',
 		
 		'callable_from_request' => array(
 			
