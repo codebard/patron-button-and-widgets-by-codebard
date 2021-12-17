@@ -1,4 +1,4 @@
-===  Patron Button, Widgets and Plugin by CodeBard ===
+===  CodeBard's Patron Button and Widgets for Patreon ===
 Author URI: http://codebard.com
 Plugin URI: https://wordpress.org/plugins/patron-button-and-widgets-by-codebard/
 Contributors: CodeBard
@@ -7,7 +7,7 @@ Tags: plugins, patreon, widgets, crowdfunding, crowdfund, crowd fund, crowd fund
 License: GPL
 Requires at least: 4.0
 Tested up to: 5.8
-Stable Tag: 2.1.3
+Stable Tag: 2.1.4
 
 Patron Button and Plugin allows you to add Patreon Buttons to your content and sidebars, along with offering other Patreon functions. Upgradable to Patron Plugin Pro with patron-only posts and powerful features.
 
@@ -58,6 +58,10 @@ To be updated
 4. Quick Start easy settings page
 
 == Upgrade Notice ==
+
+= 2.1.4 =
+
+* Changed plugin name to "CodeBard's Patron Button and Widgets for Patreon" per WP org rules
 
 = 2.1.3 =
 
@@ -166,6 +170,10 @@ To be updated
 * Initial release!
 
 == Changelog ==
+
+= 2.1.4 =
+
+* Changed plugin name to "CodeBard's Patron Button and Widgets for Patreon" per WP org rules
 
 = 2.1.3 =
 
