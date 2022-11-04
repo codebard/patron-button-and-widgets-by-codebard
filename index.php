@@ -78,7 +78,7 @@ class cb_p6_core {
         return static::$instance;
     }
 	private function __clone()	{    }
-    private function __wakeup()	{    }
+    public function __wakeup()	{    }
 	public function __call($action,$vars)
 	{
 		
