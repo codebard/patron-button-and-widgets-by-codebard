@@ -6,14 +6,14 @@ Donate link: http://codebard.com/donate
 Tags: plugins, patreon, widgets, crowdfunding, crowdfund, crowd fund, crowd funding, sponsor, donate, donations, donation, charity, fundraising, charities, sponsorship, sponsorships, campaign, campaigns, giving, peer to peer, peer to peer fundraising, fundraiser, peer to peer fundraiser, non profit, non profits, income, money, subscription, social, rewards, kickstart
 License: GPL
 Requires at least: 4.0
-Tested up to: 5.8
-Stable Tag: 2.1.5
+Tested up to: 6.1
+Stable Tag: 2.1.6
 
 Patron Button and Plugin allows you to add Patreon Buttons to your content and sidebars, along with offering other Patreon functions. Upgradable to Patron Plugin Pro with patron-only posts and powerful features.
 
 == Description ==
 
-This free plugin will allow you to add a Patreon Button under the content to let your users to become your patrons on Patreon easily. It also will provide two customizable Widgets which you can use in your sidebar.
+This free plugin allows you to add a Patreon Button under the content to have your users to become your patrons on Patreon easily. It also provides two customizable Widgets that you can use in your sidebar.
 
 The buttons and widgets blend in with your theme seamlessly. You can use the new or old Patreon button or you can use your own button image.
 
@@ -58,6 +58,10 @@ To be updated
 4. Quick Start easy settings page
 
 == Upgrade Notice ==
+
+= 2.1.6 =
+
+* Fixed a PHP warning
 
 = 2.1.5 =
 
@@ -174,6 +178,10 @@ To be updated
 * Initial release!
 
 == Changelog ==
+
+= 2.1.6 =
+
+* Fixed a PHP warning
 
 = 2.1.5 =
 
