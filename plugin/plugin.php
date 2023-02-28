@@ -1096,7 +1096,7 @@ class cb_p6_plugin extends cb_p6_core
 		
 		}
 		
-		return '<a rel="nofollow"'.$new_window.' href="'.$url.'"><img style="margin-top: '.$this->opt['sidebar_widgets']['button_margin'].';margin-bottom: '.$this->opt['sidebar_widgets']['button_margin'].';max-width:'.$max_width.'px;width:100%;height:auto;" src="'.$button.'"></a>';
+		return '<a rel="nofollow"'.$new_window.' href="'.$url.'" aria-label="Click to become a patron at Patreon!"><img style="margin-top: '.$this->opt['sidebar_widgets']['button_margin'].';margin-bottom: '.$this->opt['sidebar_widgets']['button_margin'].';max-width:'.$max_width.'px;width:100%;height:auto;" src="'.$button.'" alt="Become a patron at Patreon!"></a>';
 		
 		
 	}
@@ -1113,7 +1113,7 @@ class cb_p6_plugin extends cb_p6_core
 		
 		}
 		
-		return '<a rel="nofollow"'.$new_window.' href="'.$url.'"><img style="margin-top: '.$this->opt['sidebar_widgets']['button_margin'].';margin-bottom: '.$this->opt['sidebar_widgets']['button_margin'].';max-width:'.$max_width.'px;width:100%;height:auto;" src="'.$button.'"></a>';
+		return '<a rel="nofollow"'.$new_window.' href="'.$url.'" aria-label="Click to become a patron at Patreon!"><img style="margin-top: '.$this->opt['sidebar_widgets']['button_margin'].';margin-bottom: '.$this->opt['sidebar_widgets']['button_margin'].';max-width:'.$max_width.'px;width:100%;height:auto;" src="'.$button.'" alt="Become a patron at Patreon!"></a>';
 		
 		
 	}
