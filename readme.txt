@@ -7,7 +7,7 @@ Tags: plugins, patreon, widgets, crowdfunding, crowdfund, crowd fund, crowd fund
 License: GPL
 Requires at least: 4.0
 Tested up to: 6.1
-Stable Tag: 2.1.6
+Stable Tag: 2.1.7
 
 Patron Button and Plugin allows you to add Patreon Buttons to your content and sidebars, along with offering other Patreon functions. Upgradable to Patron Plugin Pro with patron-only posts and powerful features.
 
@@ -58,6 +58,10 @@ To be updated
 4. Quick Start easy settings page
 
 == Upgrade Notice ==
+
+= 2.1.7 =
+
+* FAdded alt tags and aria labels for screen readers to call to action button under posts and sitebar widgets for accessibility.
 
 = 2.1.6 =
 
@@ -178,6 +182,10 @@ To be updated
 * Initial release!
 
 == Changelog ==
+
+= 2.1.7 =
+
+* Added alt tags and aria labels for screen readers to call to action button under posts and sitebar widgets for accessibility.
 
 = 2.1.6 =
 
