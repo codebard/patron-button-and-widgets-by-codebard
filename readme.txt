@@ -61,7 +61,7 @@ To be updated
 
 = 2.1.7 =
 
-* FAdded alt tags and aria labels for screen readers to call to action button under posts and sitebar widgets for accessibility.
+* Added alt tags and aria labels for screen readers to call to action button under posts and sitebar widgets and forms for accessibility.
 
 = 2.1.6 =
 
@@ -185,7 +185,7 @@ To be updated
 
 = 2.1.7 =
 
-* Added alt tags and aria labels for screen readers to call to action button under posts and sitebar widgets for accessibility.
+* Added alt tags and aria labels for screen readers to call to action button under posts and sitebar widgets and forms for accessibility
 
 = 2.1.6 =
 

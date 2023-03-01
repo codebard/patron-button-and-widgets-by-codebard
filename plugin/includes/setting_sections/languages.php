@@ -30,7 +30,7 @@ echo $this->do_admin_language_selector();
 echo '<input type="hidden" name="'.$this->internal['prefix'].'action" value="choose_language">';
 echo '<input type="hidden" name="cb_plugin" value="'.$this->internal['id'].'">';
 echo '<input type="hidden" name="'.$this->internal['prefix'].'current_language" value="'.$this->opt['lang'].'">';
-echo '<input type="submit" value="'.$this->lang['set_language_button_label'].'" class="'.$this->internal['prefix'].'admin_button">';
+echo '<input type="submit" value="'.$this->lang['set_language_button_label'].'" class="'.$this->internal['prefix'].'admin_button"  aria-label="Set language">';
 
 echo '</form>';
 
@@ -40,7 +40,7 @@ echo '<form action="admin.php?page=settings_cb_p6&'.$this->internal['prefix'].'t
 
 echo '<input type="hidden" name="'.$this->internal['prefix'].'action" value="reset_languages">';
 echo '<input type="hidden" name="cb_plugin" value="'.$this->internal['id'].'">';
-echo '<input type="submit" value="'.$this->lang['reset_languages_button_label'].'" class="'.$this->internal['prefix'].'admin_button">';
+echo '<input type="submit" value="'.$this->lang['reset_languages_button_label'].'" class="'.$this->internal['prefix'].'admin_button"  aria-label="Reset language">';
 echo '</form>';
 
 if(wp_script_is('jquery')) {
@@ -71,7 +71,7 @@ echo '<input type="hidden" name="'.$this->internal['prefix'].'action" value="sav
 echo '<input type="hidden" name="cb_plugin" value="'.$this->internal['id'].'">';
 echo '<input type="hidden" name="'.$this->internal['prefix'].'lang" value="'.$this->opt['lang'].'">';
 echo '<br>';
-echo '<input type="submit" value="'.$this->lang['set_language_button_label'].'" class="'.$this->internal['prefix'].'admin_button">';
+echo '<input type="submit" value="'.$this->lang['set_language_button_label'].'" class="'.$this->internal['prefix'].'admin_button"  aria-label="Set language">';
 
 echo '</form>';
 
