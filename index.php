@@ -1139,7 +1139,7 @@ PRIMARY KEY  (".$key."_id)
 		$upgrader_object = $v1;
 		$options = $v2;
 		
-		if($upgrader_object->result['destination_name']!=$this->internal['id'])
+		if( isset($upgrader_object->result['destination_name']) AND $upgrader_object->result['destination_name']!=$this->internal['id'])
 		{
 			return;			
 		}
