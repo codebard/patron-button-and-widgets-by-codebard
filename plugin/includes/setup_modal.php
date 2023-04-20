@@ -30,6 +30,8 @@
 			$_REQUEST['site_account']=$this->opt['quickstart']['site_account'];
 			
 		}
+		
+		$_REQUEST['site_account'] = sanitize_text_field($_REQUEST['site_account']);
 	?>
 	
 	<form method="post" action="<?php echo $this->internal['admin_url'].'admin.php?page=settings_'.$this->internal['id']; ?>">
