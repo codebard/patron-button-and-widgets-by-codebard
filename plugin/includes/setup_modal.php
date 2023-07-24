@@ -31,7 +31,14 @@
 			
 		}
 		
-		$_REQUEST['site_account'] = sanitize_text_field($_REQUEST['site_account']);
+		// Quotes, tags are not allowable or usable in site account names or urls
+		$_REQUEST['site_account'] = str_replace('"', "", $_REQUEST['site_account']);
+		$_REQUEST['site_account'] = str_replace("'", "", $_REQUEST['site_account']);
+		$_REQUEST['site_account'] = str_replace("<", "", $_REQUEST['site_account']);
+		$_REQUEST['site_account'] = str_replace(">", "", $_REQUEST['site_account']);
+		// Extra sanitization
+		$_REQUEST['site_account'] = esc_attr(sanitize_text_field($_REQUEST['site_account']));
+		
 	?>
 	
 	<form method="post" action="<?php echo $this->internal['admin_url'].'admin.php?page=settings_'.$this->internal['id']; ?>">
