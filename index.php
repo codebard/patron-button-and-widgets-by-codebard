@@ -472,8 +472,6 @@ class cb_p6_core {
 	public function activate_c()
 	{
 		
-		$this->require_admin_page();
-		
 		if(!current_user_can('activate_plugins'))
 		{
 			return false;			
@@ -530,7 +528,11 @@ class cb_p6_core {
 	}
 	public function create_tables_c()
 	{
-		$this->require_admin_page();
+
+		if(!current_user_can('activate_plugins'))
+		{
+			return false;			
+		}
 
 		global $wpdb;
 		global $wp_roles;
@@ -663,8 +665,6 @@ PRIMARY KEY  (".$key."_id)
 	public function deactivate_c($v1)
 	{
 
-		$this->require_admin_page();
-
 		if(!current_user_can('activate_plugins'))
 		{
 			return false;			
@@ -676,7 +676,10 @@ PRIMARY KEY  (".$key."_id)
 	public function do_admin_page_tabs_c()
 	{
 
-		$this->require_admin_page();
+		if(!current_user_can('manage_options'))
+		{
+			return false;			
+		}
 		
 		unset($tab);
 	
@@ -1049,7 +1052,11 @@ PRIMARY KEY  (".$key."_id)
 	}
 	public function reset_info_c()
 	{
-		$this->require_admin_page();
+
+		if(!current_user_can('manage_options'))
+		{
+			return false;			
+		}
 		
 		delete_option($this->internal['prefix'].'info');	
 		
@@ -1062,7 +1069,11 @@ PRIMARY KEY  (".$key."_id)
 	}
 	public function reset_options_c()
 	{
-		$this->require_admin_page();
+
+		if(!current_user_can('manage_options'))
+		{
+			return false;			
+		}
 		
 		delete_option($this->internal['prefix'].'options');
 		
@@ -1076,7 +1087,10 @@ PRIMARY KEY  (".$key."_id)
 	public function save_settings_c($v1)
 	{
 	
-		$this->require_admin_page();
+		if(!current_user_can('manage_options'))
+		{
+			return false;			
+		}
 		
 		$new_options=$v1['opt'];
 		
@@ -1100,7 +1114,10 @@ PRIMARY KEY  (".$key."_id)
 	public function save_settings_during_setup_c($v1)
 	{
 
-		$this->require_admin_page();
+		if(!current_user_can('activate_plugins'))
+		{
+			return false;			
+		}
 
 		$new_options=$v1['opt'];
 
@@ -1143,12 +1160,6 @@ PRIMARY KEY  (".$key."_id)
 		{
 			return;			
 		}
-
-		
-		$this->require_admin_page();
-		
-		
-	
 
 	}
 	public function get_single_c($v1,$v2)
