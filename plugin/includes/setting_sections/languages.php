@@ -17,10 +17,6 @@ else
 
 
 
-
-
-
-
 echo '<h2>'.$this->lang['admin_title_choose_reset_language'].'</h2>';
 
 echo '<form action="admin.php?page=settings_cb_p6&'.$this->internal['prefix'].'tab=languages" name="" method="post" class="'.$this->internal['prefix'].'inline_block_form">';
@@ -30,6 +26,7 @@ echo $this->do_admin_language_selector();
 echo '<input type="hidden" name="'.$this->internal['prefix'].'action" value="choose_language">';
 echo '<input type="hidden" name="cb_plugin" value="'.$this->internal['id'].'">';
 echo '<input type="hidden" name="'.$this->internal['prefix'].'current_language" value="'.$this->opt['lang'].'">';
+echo '<input type="hidden" name="cb_plugins_nonce_set_language" value="' . wp_create_nonce( 'cb_plugins_nonce_set_language' ) . '">';
 echo '<input type="submit" value="'.$this->lang['set_language_button_label'].'" class="'.$this->internal['prefix'].'admin_button"  aria-label="Set language">';
 
 echo '</form>';
@@ -70,6 +67,7 @@ foreach($this->lang as $key => $value)
 echo '<input type="hidden" name="'.$this->internal['prefix'].'action" value="save_language">';
 echo '<input type="hidden" name="cb_plugin" value="'.$this->internal['id'].'">';
 echo '<input type="hidden" name="'.$this->internal['prefix'].'lang" value="'.$this->opt['lang'].'">';
+echo '<input type="hidden" name="cb_plugins_nonce_save_language_settings" value="' . wp_create_nonce( 'cb_plugins_nonce_save_language_settings' ) . '">';
 echo '<br>';
 echo '<input type="submit" value="'.$this->lang['set_language_button_label'].'" class="'.$this->internal['prefix'].'admin_button"  aria-label="Set language">';
 

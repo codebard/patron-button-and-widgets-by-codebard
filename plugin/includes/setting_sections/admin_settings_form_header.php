@@ -1,1 +1,1 @@
-<form method="post" action="{***referer***}" enctype="multipart/form-data">
+<form method="post" action="{***form_action_url***}" enctype="multipart/form-data">
