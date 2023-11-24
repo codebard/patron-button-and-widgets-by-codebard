@@ -3,14 +3,12 @@
 	Plugin Name: CodeBard's Patron Button and Widgets for Patreon
 	Plugin URI: https://wordpress.org/plugins/patron-button-and-widgets-by-codebard/
 	Description: Patreon Patron Buttons, Widgets and Patreon Functions
-	Version: 2.1.9
+	Version: 2.2.0
 	Author: CodeBard
 	Author URI: http://codebard.com
 	Text Domain: cb_p6
 	Domain Path: /lang
 */
-
-
 
 
 class cb_p6_core {
@@ -520,6 +518,8 @@ class cb_p6_core {
 		
 		add_filter( 'pre_set_site_transient_update_plugins', array(&$this, 'check_for_update' ) );
 	
+		add_filter( 'plugins_api', array( &$this, 'injectInfo' ), 90, 3 );
+
 		if($this->internal['requested_action']!='')
 		{
 			$this->{$this->internal['requested_action']}($_REQUEST);
@@ -709,8 +709,7 @@ PRIMARY KEY  (".$key."_id)
 
 		echo '<h2 class="nav-tab-wrapper">';
 
-		foreach( $tabs as $key => $value )
-		{
+		foreach( $tabs as $key => $value ) {
 			
 			$class = ( $key == $top_tab ) ? ' nav-tab-active' : '';
 			
@@ -720,34 +719,35 @@ PRIMARY KEY  (".$key."_id)
 
 		echo '</h2>';
 		
-		// Now do sub-tabs for the active tab:
-		
-		$keys = array_keys($tabs[$top_tab]);
-		
-		// Fetch last key
-		
-		$last = array_pop($keys);
-		
-		if(count($tabs[$top_tab])>0)
-		{
-			foreach( $tabs[$top_tab] as $key => $value )
-			{
-					
-				echo '<a href="?page=settings_'.$this->internal['id'].'&'.$this->internal['prefix'].'tab='.$top_tab.'-'.$key.'">'.$this->lang['admin_tab_'.$top_tab.'_'.$key].'</a>';
-				
-				if($key!=$last)
-				{
-					echo ' | ';				
-				}
+		// Now do sub-tabs for the active tab if sub keys exist:
+		if ( isset( $tabs[$top_tab] ) AND is_array( $tabs[$top_tab] ) ) {
 
-			}	
+			$keys = array_keys($tabs[$top_tab]);
+			
+			// Fetch last key
+			
+			$last = array_pop($keys);
+			
+			if(count($tabs[$top_tab])>0)
+			{
+				foreach( $tabs[$top_tab] as $key => $value )
+				{
+						
+					echo '<a href="?page=settings_'.$this->internal['id'].'&'.$this->internal['prefix'].'tab='.$top_tab.'-'.$key.'">'.$this->lang['admin_tab_'.$top_tab.'_'.$key].'</a>';
+					
+					if($key!=$last)
+					{
+						echo ' | ';				
+					}
+
+				}	
+			}
 		}
-		
 		// Level 3 for the active subtab if level 2 is selected and we have level 3
 		
 		
-		if(count($tab_hierarchy)>1)
-		{
+		if(count($tab_hierarchy)>1) {
+
 			$second_level = $tab_hierarchy[1];
 			
 			
@@ -774,9 +774,12 @@ PRIMARY KEY  (".$key."_id)
 	public function do_setting_section_c($v1)
 	{
 		$tab=$v1;
+		
+		if ( !isset($tab) OR $tab == '' ) {
+			$tab = 'dashboard';
+		}
 	
 		$this->internal['current_tab']=$tab;
-			
 
 		if(file_exists($this->internal['plugin_path'].'plugin/includes/setting_sections/'.$tab.'.php'))
 		{
@@ -799,51 +802,46 @@ PRIMARY KEY  (".$key."_id)
 		{
 			return;
 		}
-	
-		if(isset($_REQUEST[$this->internal['prefix'].'tab']))
+
+		if(isset($_REQUEST[$this->internal['prefix'] . 'tab']))
 		{
-			$tab=$_REQUEST[$this->internal['prefix'].'tab'];
+			$tab = sanitize_text_field($_REQUEST[$this->internal['prefix'].'tab']);
 		}
-		
-		if($tab=='' OR !$tab)
+		else
 		{
-			$tab='dashboard';
-		
+			$tab='';
 		}
-		$referrer = '';
-		if (isset( $_SERVER['HTTP_REFERER'] ) ) {
-			$referrer = $_SERVER['HTTP_REFERER'];
-		}
-		
-		$template_vars=array('tab'=>$tab,'referer'=>$referrer);
+
+		$form_action_url = admin_url( 'admin.php?page=settings_' . $this->internal['id'] . '&' . $this->internal['prefix'] . 'tab=' . $tab );
+
+		$template_vars = array('tab' => $tab, 'form_action_url' => $form_action_url, 'form_nonce' => wp_create_nonce('cb_plugins_nonce_save_settings') );
 
 		// We don't want admin settings page headers and footers to be filtered by anyone. Therefore we don't use load_template here
 		
 		$admin_settings_page_header = file_get_contents($this->internal['plugin_path'].'plugin/includes/setting_sections/admin_settings_page_header.php');
 	
-		$admin_settings_page_header = $this->process_vars_to_template($this->internal, $admin_settings_page_header, array('id','prefix','plugin_url','admin_page_url','plugin_name'));
+		$admin_settings_page_header = $this->process_vars_to_template( $this->internal, $admin_settings_page_header, array( 'id', 'prefix', 'plugin_url', 'admin_page_url', 'plugin_name' ) );
 		
-		$admin_settings_page_header = $this->process_vars_to_template($template_vars, $admin_settings_page_header);
+		$admin_settings_page_header = $this->process_vars_to_template( $template_vars, $admin_settings_page_header );
 		
-		$admin_settings_page_header = $this->process_lang($admin_settings_page_header);	
+		$admin_settings_page_header = $this->process_lang( $admin_settings_page_header );	
 		
 		// We don't want admin settings page headers and footers to be filtered by anyone. Therefore we don't use load_template here
 		
 		$admin_settings_page_footer = file_get_contents($this->internal['plugin_path'].'plugin/includes/setting_sections/admin_settings_page_footer.php');
-		
-		$admin_settings_page_footer = $this->process_vars_to_template($this->internal, $admin_settings_page_footer, array('id','prefix','plugin_url','admin_page_url','plugin_name'));
-		
-		$admin_settings_page_footer = $this->process_vars_to_template($template_vars, $admin_settings_page_footer);
-		
-		$admin_settings_page_footer = $this->process_lang($admin_settings_page_footer);	
 
-		echo $admin_settings_page_header;
-		
+		$admin_settings_page_footer = $this->process_vars_to_template( $this->internal, $admin_settings_page_footer, array( 'id', 'prefix', 'plugin_url', 'admin_page_url', 'plugin_name' ) );
+
+		$admin_settings_page_footer = $this->process_vars_to_template( $template_vars, $admin_settings_page_footer );
+
+		$admin_settings_page_footer = $this->process_lang( $admin_settings_page_footer );
+
+
+		echo $admin_settings_page_header;		
+
 		echo $this->do_admin_page_tabs();
-		
-				
 		$this->do_setting_section($tab);
-		
+
 		echo $admin_settings_page_footer;
 		
 	}
@@ -853,18 +851,20 @@ PRIMARY KEY  (".$key."_id)
 		$admin_settings_form_header = file_get_contents($this->internal['plugin_path'].'plugin/includes/setting_sections/admin_settings_form_header.php');
 				
 		$admin_settings_form_header = $this->process_vars_to_template($this->internal, $admin_settings_form_header, array('id','prefix','plugin_url','admin_page_url','plugin_name'));
-		
-		if(isset($_REQUEST['tab']))
+
+		if(isset($_REQUEST[$this->internal['prefix'] . 'tab']))
 		{
-			$tab=$_REQUEST['tab'];
+			$tab = sanitize_text_field( $_REQUEST[$this->internal['prefix'] . 'tab'] );
 			
 		}
 		else
 		{
 			$tab='';
 		}
-	
-		$template_vars=array('tab'=>$tab,'referer'=> isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : "");		
+
+		$form_action_url = admin_url( 'admin.php?page=settings_' . $this->internal['id'] . '&' . $this->internal['prefix'] . 'tab=' . $tab );
+
+		$template_vars=array( 'tab' => $tab, 'form_action_url' => $form_action_url );
 
 		$admin_settings_form_header = $this->process_vars_to_template($template_vars, $admin_settings_form_header);
 		
@@ -890,13 +890,14 @@ PRIMARY KEY  (".$key."_id)
 		{
 			$tab='';
 		}
-				
-		
-		$template_vars=array('tab'=>$tab,'referer'=>$_SERVER['HTTP_REFERER']);		
+
+		$form_action_url = admin_url( 'admin.php?page=settings_' . $this->internal['id'] . '&' . $this->internal['prefix'] . 'tab=' . $tab );
+
+		$template_vars=array( 'tab' => $tab, 'form_action_url' => $form_action_url, 'form_nonce' => wp_create_nonce('cb_plugins_nonce_save_settings') );	
 
 		$admin_settings_form_footer = $this->process_vars_to_template($template_vars, $admin_settings_form_footer);
 		
-		$admin_settings_form_footer = $this->process_lang($admin_settings_form_footer);	
+		$admin_settings_form_footer = $this->process_lang( $admin_settings_form_footer );	
 		
 		return $admin_settings_form_footer;
 				
@@ -1091,6 +1092,12 @@ PRIMARY KEY  (".$key."_id)
 		{
 			return false;			
 		}
+
+		if(!isset($_REQUEST['cb_plugins_nonce_save_settings']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_save_settings'] ), 'cb_plugins_nonce_save_settings' ))
+		{
+			echo 'Form security field expired - go to the earlier page, refresh the page and retry';
+			wp_die();			
+		}
 		
 		$new_options=$v1['opt'];
 		
@@ -1106,7 +1113,7 @@ PRIMARY KEY  (".$key."_id)
 
 		// Load options from db
 		$this->opt=$this->load_options();
-		
+
 		wp_redirect( $_SERVER['HTTP_REFERER'] );
 		exit();		
 		
@@ -1156,7 +1163,7 @@ PRIMARY KEY  (".$key."_id)
 		$upgrader_object = $v1;
 		$options = $v2;
 		
-		if( isset($upgrader_object->result['destination_name']) AND $upgrader_object->result['destination_name']!=$this->internal['id'])
+		if( isset($upgrader_object->result['destination_name']) AND $upgrader_object->result['destination_name']!=$this->internal['id'] )
 		{
 			return;			
 		}
@@ -1399,7 +1406,6 @@ PRIMARY KEY  (".$key."_id)
 		$vars=$v1;
 		$str=$v2;
 		$keys=$v3;
-	
 
 		// If keys is set, then use only those array keys and their values
 		if(is_array($keys) AND count($keys)>0)
@@ -1880,7 +1886,12 @@ PRIMARY KEY  (".$key."_id)
 		
 		$side.='_notices';
 		
-		if(!isset($this->internal['content'][$side][$type]))
+		if(!isset($this->internal['content'][$side]) OR is_string( $this->internal['content'][$side] ) )
+		{
+			// Init array if its not 
+			$this->internal['content'][$side]=array();			
+		}
+		if(!isset($this->internal['content'][$side][$type]) OR is_string( $this->internal['content'][$side][$type] ) )
 		{
 			// Init array if its not 
 			$this->internal['content'][$side][$type]=array();			
@@ -2152,6 +2163,12 @@ PRIMARY KEY  (".$key."_id)
 			return false;
 		}	
 		
+		if(!isset($_REQUEST['cb_plugins_nonce_save_language_settings']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_save_language_settings'] ), 'cb_plugins_nonce_save_language_settings' ))
+		{
+			echo 'Form security field expired - go to the earlier page, refresh the page and retry';
+			wp_die();			
+		}
+		
 		$request=$v1;
 		
 		// We will save this modified version of the language as a different language in db for convenience
@@ -2241,6 +2258,12 @@ PRIMARY KEY  (".$key."_id)
 			return false;
 		}		
 	
+		if(!isset($_REQUEST['cb_plugins_nonce_set_language']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_set_language'] ), 'cb_plugins_nonce_set_language' ))
+		{
+			echo 'Form security field expired - go to the earlier page, refresh the page and retry';
+			wp_die();			
+		}
+		
 		$this->opt['lang']=$language;
 		
 		

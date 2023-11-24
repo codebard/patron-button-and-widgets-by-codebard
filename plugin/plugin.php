@@ -488,8 +488,9 @@ class cb_p6_plugin extends cb_p6_core
 
 	public function save_custom_user_field_p($v1)
 	{
+		// WP user save form has nonce - not needed here
 		$user_id=$v1;
-
+		
 		if ( !current_user_can( 'edit_user', $user_id ) ) $return = FALSE;
 
 		update_user_meta( $user_id, $this->internal['prefix'].'patreon_user', $_POST[$this->internal['prefix'].'patreon_user'] );

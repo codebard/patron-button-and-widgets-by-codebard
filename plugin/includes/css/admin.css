@@ -1,13 +1,12 @@
 #cb_p6_admin_settings_form_footer{
 	
-	clear:both;
-	display:block;
+	clear:both !important;
+	display:block !important;
 	margin-top:20px;
 	margin-bottom:20px;
 	
 	
 }
-
 
 .cb_p6_admin_separator
 {
