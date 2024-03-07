@@ -52,9 +52,9 @@ class cb_p6_core {
 		require_once($this->internal['plugin_path'].'plugin/includes/default_internal_vars.php');
 		require_once($this->internal['plugin_path'].'plugin/includes/hardcoded_vars.php');
 		
-		if(isset($_REQUEST[$this->internal['prefix'].'action']))
+		if(isset($_REQUEST[$this->internal['prefix'].'action'] ))
 		{
-			$this->internal['requested_action'] = $_REQUEST[$this->internal['prefix'].'action'];
+			$this->internal['requested_action'] = filter_var( $_REQUEST[$this->internal['prefix'].'action'], FILTER_SANITIZE_STRING);
 		}
 		else
 		{
@@ -685,7 +685,7 @@ PRIMARY KEY  (".$key."_id)
 	
 		if(isset($_REQUEST[$this->internal['prefix'].'tab']))
 		{
-			$tab=$_REQUEST[$this->internal['prefix'].'tab'];
+			$tab = filter_var( $_REQUEST[$this->internal['prefix'].'tab'], FILTER_SANITIZE_STRING ) ;
 		}
 
 		if(!isset($tab))
@@ -805,7 +805,7 @@ PRIMARY KEY  (".$key."_id)
 
 		if(isset($_REQUEST[$this->internal['prefix'] . 'tab']))
 		{
-			$tab = sanitize_text_field($_REQUEST[$this->internal['prefix'].'tab']);
+			$tab = filter_var( $_REQUEST[$this->internal['prefix'].'tab'], FILTER_SANITIZE_STRING );
 		}
 		else
 		{
@@ -854,7 +854,7 @@ PRIMARY KEY  (".$key."_id)
 
 		if(isset($_REQUEST[$this->internal['prefix'] . 'tab']))
 		{
-			$tab = sanitize_text_field( $_REQUEST[$this->internal['prefix'] . 'tab'] );
+			$tab = filter_var( $_REQUEST[$this->internal['prefix'] . 'tab'], FILTER_SANITIZE_STRING );
 			
 		}
 		else
@@ -883,7 +883,7 @@ PRIMARY KEY  (".$key."_id)
 		
 		if(isset($_REQUEST['tab']))
 		{
-			$tab=$_REQUEST['tab'];
+			$tab = filter_var( $_REQUEST['tab'], FILTER_SANITIZE_STRING );
 			
 		}
 		else

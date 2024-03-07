@@ -208,7 +208,7 @@ class cb_p6_plugin extends cb_p6_core
 	{
 		$current_screen=get_current_screen();
 
-		if($current_screen->base=='toplevel_page_settings_'.$this->internal['id'] OR ( isset( $_REQUEST['page']) AND $_REQUEST['page']== 'cb_p6_install_pw' ) )
+		if($current_screen->base=='toplevel_page_settings_'.$this->internal['id'] OR ( isset( $_REQUEST['page']) AND $_REQUEST['page'] == 'cb_p6_install_pw' ) )
 		{
 			wp_enqueue_style( $this->internal['id'].'-css-admin', $this->internal['plugin_url'].'plugin/includes/css/admin.css' );
 			
@@ -1341,10 +1341,10 @@ class cb_p6_plugin extends cb_p6_core
 			$content = $this->lang['admin_message_default_content'];
 			
 			if ( isset( $_REQUEST['cb_p6_admin_message_title'] ) ) {
-				$heading = $this->lang[ $_REQUEST['cb_p6_admin_message_title'] ];
+				$heading = $this->lang[ filter_var( $_REQUEST['cb_p6_admin_message_title'], FILTER_SANITIZE_STRING) ];
 			}
 			if ( isset( $_REQUEST['cb_p6_admin_message_content'] ) ) {
-				$content = $this->lang[ $_REQUEST['cb_p6_admin_message_content'] ];
+				$content = $this->lang[ filter_var( $_REQUEST['cb_p6_admin_message_content'], FILTER_SANITIZE_STRING) ];
 			}
 			
 			echo '<div id="cb_p6_admin_message_page"><h1 style="margin-top: 0px;">' . $heading . '</h1><div id="cb_p6_admin_message_content">' . $content . '</div></div>';
