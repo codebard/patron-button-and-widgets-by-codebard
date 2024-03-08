@@ -3,13 +3,13 @@ Author URI: http://codebard.com
 Plugin URI: https://wordpress.org/plugins/patron-button-and-widgets-by-codebard/
 Contributors: CodeBard
 Donate link: http://codebard.com/donate
-Tags: plugins, patreon, widgets, crowdfunding, crowdfund, crowd fund, crowd funding, sponsor, donate, donations, donation, charity, fundraising, charities, sponsorship, sponsorships, campaign, campaigns, giving, peer to peer, peer to peer fundraising, fundraiser, peer to peer fundraiser, non profit, non profits, income, money, subscription, social, rewards, kickstart
+Tags: patreon, widgets, crowdfunding, donations, social
 License: GPL
 Requires at least: 4.0
 Tested up to: 6.4.3
 Stable Tag: 2.2.1
 
-Patron Button and Plugin allows you to add Patreon Buttons to your content and sidebars, along with offering other Patreon functions. Upgradable to Patron Plugin Pro with patron-only posts and powerful features.
+Add Patreon buttons to your content and sidebars. Upgrade to Patron Plugin Pro for patron-only posts and powerful features.
 
 == Description ==
 
