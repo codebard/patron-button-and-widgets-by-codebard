@@ -36,6 +36,8 @@ class cb_p6_plugin extends cb_p6_core
 		
 	}
 	public function admin_init_p() {
+
+		add_action( 'admin_enqueue_scripts', array(&$this, 'enqueue_admin_scripts'));
 		
 		// Updates are important - Add update nag if update exist
 		add_filter( 'pre_set_site_transient_update_plugins', array(&$this, 'check_for_update' ),99 );
@@ -1495,7 +1497,7 @@ class cb_p6_plugin extends cb_p6_core
 			return;
 		}
 		
-		if ( $this->opt['setup_is_being_done'] ) {
+		if ( isset( $this->opt['setup_is_being_done'] ) AND $this->opt['setup_is_being_done'] ) {
 			return;
 		}
 
