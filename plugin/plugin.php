@@ -31,8 +31,8 @@ class cb_p6_plugin extends cb_p6_core
 	{
 		
 		add_menu_page( $this->lang['admin_menu_label'], $this->lang['admin_menu_label'], 'administrator', 'settings_'.$this->internal['id'], array(&$this,'do_settings_pages'), $this->internal['plugin_url'].'images/admin_menu_icon.png', 86 );
-		add_submenu_page( null, 'Patreon Button, Widgets and Plugin Admin Message', 'Admin message', 'manage_options', $this->internal['id'] . 'admin_message', array( &$this, 'admin_message_page' ) );
-		add_submenu_page( null, 'Installing Patreon WordPress', 'Installing Patreon WordPress', 'manage_options', $this->internal['id'] . '_install_pw', array( &$this, 'install_pw' ) );
+		add_submenu_page( '', 'Patreon Button, Widgets and Plugin Admin Message', 'Admin message', 'manage_options', $this->internal['id'] . 'admin_message', array( &$this, 'admin_message_page' ) );
+		add_submenu_page( '', 'Installing Patreon WordPress', 'Installing Patreon WordPress', 'manage_options', $this->internal['id'] . '_install_pw', array( &$this, 'install_pw' ) );
 		
 	}
 	public function admin_init_p() {
