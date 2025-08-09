@@ -32,6 +32,18 @@ class cb_p6_core {
 		// Holds plugin info. Overridden by options from db by merging db options into this	
 	
 	);
+	
+	public $hardcoded =array(
+	
+		// Holds hardcoded vars
+	
+	);
+	
+	public $lang =array(
+	
+		// Holds lang vars
+	
+	);
 
 	private function __construct() 
 	{

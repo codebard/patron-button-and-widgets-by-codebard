@@ -335,6 +335,9 @@ class cb_p6_sidebar_goals_site_widget extends WP_Widget {
 		
 		global $cb_p6;
         extract( $args );
+		if (!isset($instance['title']) ) {
+			$instance['title'] = '';
+		}
         $title 		= apply_filters('widget_title', $instance['title']);
 		  $message 	= $instance['message'];
         ?>

@@ -65,6 +65,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 = 2.2.4 =
 
 * Removed unused updater code
+* Addressed some PHP warnings
 
 = 2.2.3 =
 
@@ -223,6 +224,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 = 2.2.4 =
 
 * Removed unused updater code
+* Addressed some PHP warnings
 
 = 2.2.3 =
 
