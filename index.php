@@ -3,7 +3,7 @@
 	Plugin Name: CodeBard's Patron Button and Widgets for Patreon
 	Plugin URI: https://wordpress.org/plugins/patron-button-and-widgets-by-codebard/
 	Description: Patreon Patron Buttons, Widgets and Patreon Functions
-	Version: 2.2.3
+	Version: 2.2.4
 	Author: CodeBard
 	Author URI: https://codebard.com
 	Text Domain: cb_p6
@@ -515,11 +515,7 @@ class cb_p6_core {
 		add_action( 'admin_notices', array(&$this,'admin_notices'));
 		
 		add_action( 'wp_ajax_'.$this->internal['prefix'].'dismiss_admin_notice', array( &$this, 'dismiss_admin_notice' ),10,1 );
-		
-		add_filter( 'pre_set_site_transient_update_plugins', array(&$this, 'check_for_update' ) );
-	
-		add_filter( 'plugins_api', array( &$this, 'injectInfo' ), 90, 3 );
-
+			
 		if($this->internal['requested_action']!='')
 		{
 			$this->{$this->internal['requested_action']}($_REQUEST);

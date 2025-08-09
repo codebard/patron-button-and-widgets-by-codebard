@@ -10,7 +10,7 @@ $this->internal = array_replace_recursive(
 		'id' => 'cb_p6',
 		'plugin_id' => 'patron-button-and-widgets-by-codebard',
 		'prefix' => 'cb_p6_',
-		'version' => '2.2.3',
+		'version' => '2.2.4',
 		'plugin_name' => 'CodeBard\'s Patron Button and Widgets for Patreon',
 		
 		'callable_from_request' => array(
