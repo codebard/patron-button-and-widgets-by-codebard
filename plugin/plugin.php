@@ -39,9 +39,6 @@ class cb_p6_plugin extends cb_p6_core
 
 		add_action( 'admin_enqueue_scripts', array(&$this, 'enqueue_admin_scripts'));
 		
-		// Updates are important - Add update nag if update exist
-		add_filter( 'pre_set_site_transient_update_plugins', array(&$this, 'check_for_update' ),99 );
-		add_filter( 'pre_set_site_transient_update_plugins', array(&$this, 'check_for_update' ),99 );
 		add_action( 'admin_enqueue_scripts',  array(&$this, 'load_pointers' ) );
 		add_filter( $this->internal['prefix'].'admin_pointers-dashboard', array( &$this, 'widgets_pointer' ) );
 		add_action( 'cb_p6_action_before_do_admin_page_tabs', array( &$this, 'pro_pitch' ) );
