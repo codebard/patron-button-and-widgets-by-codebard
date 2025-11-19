@@ -3,7 +3,7 @@
 	Plugin Name: CodeBard's Patron Button and Widgets for Patreon
 	Plugin URI: https://wordpress.org/plugins/patron-button-and-widgets-by-codebard/
 	Description: Patreon Patron Buttons, Widgets and Patreon Functions
-	Version: 2.2.4
+	Version: 2.2.5
 	Author: CodeBard
 	Author URI: https://codebard.com
 	Text Domain: cb_p6
@@ -66,7 +66,7 @@ class cb_p6_core {
 		
 		if(isset($_REQUEST[$this->internal['prefix'].'action'] ))
 		{
-			$this->internal['requested_action'] = filter_var( $_REQUEST[$this->internal['prefix'].'action'], FILTER_SANITIZE_STRING);
+			$this->internal['requested_action'] = preg_replace('/[^\w-]/', '', $_REQUEST[$this->internal['prefix'].'action']);
 		}
 		else
 		{
@@ -693,7 +693,7 @@ PRIMARY KEY  (".$key."_id)
 	
 		if(isset($_REQUEST[$this->internal['prefix'].'tab']))
 		{
-			$tab = filter_var( $_REQUEST[$this->internal['prefix'].'tab'], FILTER_SANITIZE_STRING ) ;
+			$tab = preg_replace('/[^\w-]/', '',  $_REQUEST[$this->internal['prefix'].'tab']) ;
 		}
 
 		if(!isset($tab))
@@ -813,7 +813,7 @@ PRIMARY KEY  (".$key."_id)
 
 		if(isset($_REQUEST[$this->internal['prefix'] . 'tab']))
 		{
-			$tab = filter_var( $_REQUEST[$this->internal['prefix'].'tab'], FILTER_SANITIZE_STRING );
+			$tab = preg_replace('/[^\w-]/', '',  $_REQUEST[$this->internal['prefix'].'tab']);
 		}
 		else
 		{
@@ -862,7 +862,7 @@ PRIMARY KEY  (".$key."_id)
 
 		if(isset($_REQUEST[$this->internal['prefix'] . 'tab']))
 		{
-			$tab = filter_var( $_REQUEST[$this->internal['prefix'] . 'tab'], FILTER_SANITIZE_STRING );
+			$tab = preg_replace('/[^\w-]/', '',  $_REQUEST[$this->internal['prefix'] . 'tab'] );
 			
 		}
 		else
@@ -891,7 +891,7 @@ PRIMARY KEY  (".$key."_id)
 		
 		if(isset($_REQUEST['tab']))
 		{
-			$tab = filter_var( $_REQUEST['tab'], FILTER_SANITIZE_STRING );
+			$tab = preg_replace('/[^\w-]/', '', $_REQUEST['tab'] );
 			
 		}
 		else

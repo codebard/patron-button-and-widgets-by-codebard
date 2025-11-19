@@ -6,8 +6,8 @@ Donate link: http://codebard.com/donate
 Tags: patreon, widgets, crowdfunding, donations, social
 License: GPL
 Requires at least: 4.0
-Tested up to: 6.8.2
-Stable Tag: 2.2.4
+Tested up to: 6.8.3
+Stable Tag: 2.2.5
 
 Add Patreon buttons to your content and sidebars. Upgrade to Patron Plugin Pro for patron-only posts and powerful features.
 
@@ -61,6 +61,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 
 == Upgrade Notice ==
+
+= 2.2.5 =
+
+* Addressed some PHP warnings
 
 = 2.2.4 =
 
@@ -220,6 +224,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Initial release!
 
 == Changelog ==
+
+= 2.2.5 =
+
+* Addressed some PHP warnings
 
 = 2.2.4 =
 
