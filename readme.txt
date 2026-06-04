@@ -7,7 +7,7 @@ Tags: patreon, widgets, crowdfunding, donations, social
 License: GPL
 Requires at least: 4.0
 Tested up to: 6.8.3
-Stable Tag: 2.2.5
+Stable Tag: 2.2.6
 
 Add Patreon buttons to your content and sidebars. Upgrade to Patron Plugin Pro for patron-only posts and powerful features.
 
@@ -61,6 +61,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 
 == Upgrade Notice ==
+
+= 2.2.6 =
+
+* Made admin menu label more informative
 
 = 2.2.5 =
 
@@ -224,6 +228,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Initial release!
 
 == Changelog ==
+
+= 2.2.6 =
+
+* Made admin menu label more informative
 
 = 2.2.5 =
 
