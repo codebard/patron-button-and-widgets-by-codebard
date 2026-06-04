@@ -99,7 +99,7 @@ $this->internal = array_replace_recursive(
 		
 			'patron_plugin_pro' => array(
 			
-				'title' => 'Patron Plugin Pro',
+				'title' => 'Member Plugin Pro',
 				'icon' => 'patron_plugin_pro.png',		
 				'link' => 'https://codebard.com/patron-plugin-pro',		
 				'slug' => 'patron-plugin-pro/index.php',		

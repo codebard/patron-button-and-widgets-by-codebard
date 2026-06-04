@@ -4,7 +4,7 @@
 	if($this->check_addon_exists('patron_plugin_pro')=='notinstalled')
 	{
 ?>
-	<div class="cb_p6_h2">Patron Plugin Pro</div>
+	<div class="cb_p6_h2">Member Plugin Pro</div>
 	<div class="cb_p6_admin_info">Increase your Patrons and Monthly income by using all features of Patreon!
 	
 	<a href="https://codebard.com/patron-plugin-pro" target="_blank" aria-label="Buy & Download Here">Buy & Download Here</a>
