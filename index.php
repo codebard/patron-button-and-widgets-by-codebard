@@ -782,7 +782,7 @@ PRIMARY KEY  (".$key."_id)
 	public function do_setting_section_c($v1)
 	{
 		$tab=$v1;
-		
+
 		if ( !isset($tab) OR $tab == '' ) {
 			$tab = 'dashboard';
 		}
@@ -1540,7 +1540,10 @@ PRIMARY KEY  (".$key."_id)
 		
 		if(!current_user_can('manage_options'))
 		{
-			$this->queue_notice($this->lang['error_operation_failed_no_permission'],'error','error_operation_failed_no_permission','admin');
+			$error_msg = isset($this->lang['error_operation_failed_no_permission']) 
+				? $this->lang['error_operation_failed_no_permission'] 
+				: 'Sorry. You don\'t have the necessary permission to perform this operation';
+			$this->queue_notice($error_msg,'error','error_operation_failed_no_permission','admin');
 			return false;
 		}			
 		// Resets languages from language files
@@ -1671,6 +1674,11 @@ PRIMARY KEY  (".$key."_id)
 			$this->reset_languages();
 			$language_values = get_option($this->internal['prefix'].'lang_'.$lang);
 			
+			// Guard: if still not an array after reset attempt, default to empty array
+			if(!is_array($language_values))
+			{
+				$language_values = array();
+			}
 		}
 		
 		// Get the language from language file:
