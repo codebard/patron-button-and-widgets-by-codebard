@@ -9,9 +9,9 @@ $lang = array(
 	'not_enough_permissions_page_content' => 'You don\'t have authorization for this particular page or action. Please contact administration if you think you are seeing this message in error.',
 	'agent_desk_page_title' => 'Support Agent Desk',
 	'agent_desk_page_content' => 'Welcome.<br><br>Please click \'Assigned Tickets\' to view tickets assigned to you.',
-	'plugin_name' => 'Patreon Button & Plugin',
-	'admin_menu_label' => 'Patreon Button & Plugin',
-	'admin_menu_label_2' => 'Patreon Button & Plugin',
+	'plugin_name' => 'Patron Button & Plugin',
+	'admin_menu_label' => 'Patron Button & Plugin',
+	'admin_menu_label_2' => 'Patron Button & Plugin',
 	'help_desk_page_content' => 'Welcome to our Help Desk!
 <br><br>
 You may view your existing tickets via \'View Tickets\' or open a new ticket via \'Open Ticket\' in the support menu.',
