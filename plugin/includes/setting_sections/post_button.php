@@ -89,7 +89,7 @@ echo $this->do_admin_settings_form_header($tab);
 			
 			<h3>Button In Post Appearance Order</h3>
 			In case the Buttons under Posts are not appearing in the order you would like them, change this number to a lower or higher number to move them up or down in order of appearance. For example, if the button is appearing under your Social Share buttons at the end of your post and you want to move it higher, lower the number.<br><br>
-			<input type="text" name="opt[<?php echo $tab; ?>][append_to_content_order]" value="<?php echo $this->opt[$tab]['append_to_content_order']; ?>"  aria-label="Set numeric value for button order of appearance">
+			<input type="text" name="opt[<?php echo $tab; ?>][append_to_content_order]" value="<?php echo esc_attr($this->opt[$tab]['append_to_content_order']); ?>"  aria-label="Set numeric value for button order of appearance">
 			
 			<h3>Show a message over Buttons in Posts</h3>	
 			If you set "Yes" a message will be shown above buttons inside posts. The message can be customized below.<br><br>
@@ -106,23 +106,23 @@ echo $this->do_admin_settings_form_header($tab);
 			
 			<h3>Top and Bottom Margin for Patreon Button and Text inside post</h3>
 			This decides how much distance from top and down will entire Patreon addition to your posts will have.<br><br>
-			<input type="text" name="opt[<?php echo $tab; ?>][insert_margin]" value="<?php echo $this->opt[$tab]['insert_margin']; ?>"  aria-label="Insert numeric margin value">			
+			<input type="text" name="opt[<?php echo $tab; ?>][insert_margin]" value="<?php echo esc_attr($this->opt[$tab]['insert_margin']); ?>"  aria-label="Insert numeric margin value">
 			
 			<h3>Message above Buttons in Posts</h3>
 			If the above is set to yes, this is the message that will appear above buttons inside posts. {authorname} is a placeholder you can use in the message. It will automatically be replaced by Author's display name.<br><br>
-			<input type="text" style="width : 500px;" name="opt[<?php echo $tab; ?>][message_over_post_button]" value="<?php echo $this->opt[$tab]['message_over_post_button']; ?>"  aria-label="Type the message to be shown above the post buttons">
+			<input type="text" style="width : 500px;" name="opt[<?php echo $tab; ?>][message_over_post_button]" value="<?php echo esc_attr($this->opt[$tab]['message_over_post_button']); ?>"  aria-label="Type the message to be shown above the post buttons">
 					
 			<h3>Message above Buttons Font Size</h3>
 			You can adjust the size of the message above buttons with the below value. px, %, pt accepted.<br><br>
-			<input type="text" name="opt[<?php echo $tab; ?>][message_over_post_button_font_size]" value="<?php echo $this->opt[$tab]['message_over_post_button_font_size']; ?>"  aria-label="The font size for the message above the buttons">
+			<input type="text" name="opt[<?php echo $tab; ?>][message_over_post_button_font_size]" value="<?php echo esc_attr($this->opt[$tab]['message_over_post_button_font_size']); ?>"  aria-label="The font size for the message above the buttons">
 			
 			<h3>Message above Button Top and Bottom Margin</h3>
 			This allows you to change the margin above and under the text message above the button to change distance of text from button below.<br><br>
-			<input type="text" name="opt[<?php echo $tab; ?>][message_over_post_button_margin]" value="<?php echo $this->opt[$tab]['message_over_post_button_margin']; ?>"  aria-label="Top and bottom margin for message above the post buttons. Numeric value.">
+			<input type="text" name="opt[<?php echo $tab; ?>][message_over_post_button_margin]" value="<?php echo esc_attr($this->opt[$tab]['message_over_post_button_margin']); ?>"  aria-label="Top and bottom margin for message above the post buttons. Numeric value.">
 			
 			<h3>Button Top and Bottom Margin</h3>
 			You can change the margin of the Button independently from the above margin, in case you need it.<br><br>
-			<input type="text" name="opt[<?php echo $tab; ?>][button_margin]" value="<?php echo $this->opt[$tab]['button_margin']; ?>"  aria-label="The numeric value for top and bottom margin for buttons">
+			<input type="text" name="opt[<?php echo $tab; ?>][button_margin]" value="<?php echo esc_attr($this->opt[$tab]['button_margin']); ?>"  aria-label="The numeric value for top and bottom margin for buttons">
 
 			
 

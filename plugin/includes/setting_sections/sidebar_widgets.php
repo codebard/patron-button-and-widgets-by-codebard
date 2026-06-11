@@ -58,16 +58,16 @@ echo $this->do_admin_settings_form_header($tab);
 
 		<h3>Widget Message Font Size</h3>
 			You can adjust the size of the message over button in Widget with the below value. px, %, pt accepted.<br><br>
-			<input type="text" name="opt[<?php echo $tab; ?>][message_font_size]" value="<?php echo $this->opt[$tab]['message_font_size']; ?>"   aria-label="The font size for the messages in widgets">
+			<input type="text" name="opt[<?php echo $tab; ?>][message_font_size]" value="<?php echo esc_attr($this->opt[$tab]['message_font_size']); ?>"   aria-label="The font size for the messages in widgets">
 			
 			
 			<h3>Message over Button Top and Bottom Margin</h3>
 			This allows you to change the margin above and under the text message over the button to change distance of text from button below.<br><br>
-			<input type="text" name="opt[<?php echo $tab; ?>][message_over_post_button_margin]" value="<?php echo $this->opt[$tab]['message_over_post_button_margin']; ?>"  aria-label="The numeric margin for the messages above the widgets.">
+			<input type="text" name="opt[<?php echo $tab; ?>][message_over_post_button_margin]" value="<?php echo esc_attr($this->opt[$tab]['message_over_post_button_margin']); ?>"  aria-label="The numeric margin for the messages above the widgets.">
 			
 			<h3>Button Top and Bottom Margin</h3>
 			You can change the margin of the Button independently from the above margin, in case you need it.<br><br>
-			<input type="text" name="opt[<?php echo $tab; ?>][button_margin]" value="<?php echo $this->opt[$tab]['button_margin']; ?>"  aria-label="The top and bottom margin for the buttons. Numeric.">
+			<input type="text" name="opt[<?php echo $tab; ?>][button_margin]" value="<?php echo esc_attr($this->opt[$tab]['button_margin']); ?>"  aria-label="The top and bottom margin for the buttons. Numeric.">
 			
 			<h3>Hide Site widget on Single Post pages</h3>
 			If you turn this on, plugin will hide the Site button on Single post pages. If you also added author widget, then only author widget will be shown. This is useful to prevent two widgets unnecessarily appearing at the same time in a singular post page.<br><br>	
