@@ -18,6 +18,7 @@ jQuery(document).ready(function($) {
 				action: 'cb_p6_dismiss_admin_notice',
 				notice_id: jQuery(this).parent().attr("id"),
 				notice_type: jQuery(this).parent().attr("notice_type"),
+				cb_p6_nonce_dismiss_notice: cbp6Admin.ajax_nonce,
 			}
 		});
 
@@ -88,6 +89,7 @@ jQuery(document).ready(function($) {
 			data: {
 				action: 'cb_p6_dismiss_admin_notice',
 				notice_id: jQuery( this ).parent().attr( "id" ),
+				cb_p6_nonce_dismiss_notice: cbp6Admin.ajax_nonce,
 			}
 		});
 	});	

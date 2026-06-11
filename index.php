@@ -1825,6 +1825,15 @@ PRIMARY KEY  (".$key."_id)
 		{
 			return false;
 		}
+		
+		// Verify nonce for AJAX requests
+		if(!isset($direct) OR !is_array($direct))
+		{
+			if(!isset($_REQUEST['cb_p6_nonce_dismiss_notice']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_p6_nonce_dismiss_notice'] ), 'cb_p6_nonce_dismiss_notice' ))
+			{
+				return false;
+			}
+		}
 		//wp_send_json($this->opt['content']);
 		
 		if(isset($direct) AND is_array($direct))

@@ -1,5 +1,15 @@
 <?php
 
+// Verify nonce
+if(!isset($_REQUEST['cb_plugins_nonce_setup_wizard']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_setup_wizard'] ), 'cb_plugins_nonce_setup_wizard' ))
+{
+	$this->error[]=$this->lang['error_operation_failed_no_permission'];
+	$this->opt['setup_is_being_done']=true;
+	$this->update_opt();
+	require($this->internal['plugin_path'].'plugin/includes/setup_modal.php');
+	return;
+}
+
 if(isset($_REQUEST['site_account']) AND ($_REQUEST['site_account']=='' OR $_REQUEST['site_account']=='Delete this and enter your Site or your personal (admin) Patreon account here'))
 {
 	// Error!!!

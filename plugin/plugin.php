@@ -224,8 +224,11 @@ class cb_p6_plugin extends cb_p6_core
 	
 		// This will enqueue the Media Uploader script
 		wp_enqueue_media();	
-		wp_enqueue_script( $this->internal['id'].'-js-admin', $this->internal['plugin_url'].'plugin/includes/scripts/admin.js' );	
+		wp_enqueue_script( $this->internal['id'].'-js-admin', $this->internal['plugin_url'].'plugin/includes/scripts/admin.js' );
 		
+		wp_localize_script( $this->internal['id'].'-js-admin', 'cbp6Admin', array(
+			'ajax_nonce' => wp_create_nonce( 'cb_p6_nonce_dismiss_notice' ),
+		) );
 		
 	}	
 	public function route_request_p()
