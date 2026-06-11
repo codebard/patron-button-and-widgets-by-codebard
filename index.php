@@ -1081,11 +1081,14 @@ PRIMARY KEY  (".$key."_id)
 	public function reset_options_c()
 	{
 
-		if(!isset($_REQUEST['cb_plugins_nonce_reset_options']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_reset_options'] ), 'cb_plugins_nonce_reset_options' ))
+		if($this->internal['requested_action']=='reset_options')
 		{
-			echo 'Form security field expired - go to the earlier page, refresh the page and retry';
-			wp_die();			
-		}		
+			if(!isset($_REQUEST['cb_plugins_nonce_reset_options']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_reset_options'] ), 'cb_plugins_nonce_reset_options' ))
+			{
+				echo 'Form security field expired - go to the earlier page, refresh the page and retry';
+				wp_die();			
+			}
+		}
 
 		if(!current_user_can('manage_options'))
 		{
@@ -1109,10 +1112,13 @@ PRIMARY KEY  (".$key."_id)
 			return false;			
 		}
 
-		if(!isset($_REQUEST['cb_plugins_nonce_save_settings']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_save_settings'] ), 'cb_plugins_nonce_save_settings' ))
+		if($this->internal['requested_action']=='save_settings')
 		{
-			echo 'Form security field expired - go to the earlier page, refresh the page and retry';
-			wp_die();			
+			if(!isset($_REQUEST['cb_plugins_nonce_save_settings']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_save_settings'] ), 'cb_plugins_nonce_save_settings' ))
+			{
+				echo 'Form security field expired - go to the earlier page, refresh the page and retry';
+				wp_die();			
+			}
 		}
 		
 		$new_options=$v1['opt'];
@@ -1541,8 +1547,13 @@ PRIMARY KEY  (".$key."_id)
 		}
 		
 		// Update language option in db
-				
-		$this->opt['lang']=get_bloginfo('language');
+		
+		if(!is_array($this->opt))
+		{
+			$this->opt = array();
+		}
+		
+		$this->opt['lang'] = 'en-US';
 		
 		update_option($this->internal['prefix'].'options' ,$this->opt);
 	
@@ -1550,10 +1561,13 @@ PRIMARY KEY  (".$key."_id)
 	public function reset_languages_c()
 	{
 		
-		if(!isset($_REQUEST['cb_p6_nonce_reset_languages']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_p6_nonce_reset_languages'] ), 'cb_p6_nonce_reset_languages' ))
+		if($this->internal['requested_action']=='reset_languages')
 		{
-			echo 'Form security field expired - go to the earlier page, refresh the page and retry';
-			wp_die();			
+			if(!isset($_REQUEST['cb_p6_nonce_reset_languages']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_p6_nonce_reset_languages'] ), 'cb_p6_nonce_reset_languages' ))
+			{
+				echo 'Form security field expired - go to the earlier page, refresh the page and retry';
+				wp_die();			
+			}
 		}
 
 		if(!current_user_can('manage_options'))
@@ -1642,7 +1656,7 @@ PRIMARY KEY  (".$key."_id)
 		
 		// Update language option in db
 				
-		$this->opt['lang']=get_bloginfo('language');
+		$this->opt['lang'] = 'en-US';
 		
 		update_option($this->internal['prefix'].'options' ,$this->opt);
 	
@@ -2198,10 +2212,13 @@ PRIMARY KEY  (".$key."_id)
 			return false;
 		}	
 		
-		if(!isset($_REQUEST['cb_plugins_nonce_save_language_settings']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_save_language_settings'] ), 'cb_plugins_nonce_save_language_settings' ))
+		if($this->internal['requested_action']=='save_language')
 		{
-			echo 'Form security field expired - go to the earlier page, refresh the page and retry';
-			wp_die();			
+			if(!isset($_REQUEST['cb_plugins_nonce_save_language_settings']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_save_language_settings'] ), 'cb_plugins_nonce_save_language_settings' ))
+			{
+				echo 'Form security field expired - go to the earlier page, refresh the page and retry';
+				wp_die();			
+			}
 		}
 		
 		$request=$v1;
@@ -2293,10 +2310,13 @@ PRIMARY KEY  (".$key."_id)
 			return false;
 		}		
 	
-		if(!isset($_REQUEST['cb_plugins_nonce_set_language']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_set_language'] ), 'cb_plugins_nonce_set_language' ))
+		if($this->internal['requested_action']=='choose_language')
 		{
-			echo 'Form security field expired - go to the earlier page, refresh the page and retry';
-			wp_die();			
+			if(!isset($_REQUEST['cb_plugins_nonce_set_language']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_set_language'] ), 'cb_plugins_nonce_set_language' ))
+			{
+				echo 'Form security field expired - go to the earlier page, refresh the page and retry';
+				wp_die();			
+			}
 		}
 		
 		$this->opt['lang']=$language;
