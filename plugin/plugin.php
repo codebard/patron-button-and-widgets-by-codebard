@@ -174,8 +174,9 @@ class cb_p6_plugin extends cb_p6_core
 		{
 			return;
 		}
+		$setup_stage = isset($_REQUEST['setup_stage']) ? sanitize_text_field($_REQUEST['setup_stage']) : '';
 		// If setup was not done, redirect to wizard
-		if($this->opt['quickstart']['site_account']=='Delete this and enter your Site or your personal (admin) Patreon account here' AND !isset($_REQUEST['setup_stage']))
+		if($this->opt['quickstart']['site_account']=='Delete this and enter your Site or your personal (admin) Patreon account here' AND $setup_stage == '')
 		{
 
 			$this->opt['setup_is_being_done']=true;
@@ -186,7 +187,7 @@ class cb_p6_plugin extends cb_p6_core
 		}
 
 		// If setup was not done, redirect to wizard
-		if(!$this->opt['pro_pitch_done'] AND !isset($_REQUEST['setup_stage']))
+		if(!$this->opt['pro_pitch_done'] AND $setup_stage == '')
 		{
 		
 			$this->opt['setup_is_being_done']=true;
@@ -333,10 +334,11 @@ class cb_p6_plugin extends cb_p6_core
 			$this->internal['setup_is_being_done']=true;
 			
 			// No setup was done in this install. do setup
-			if(isset($_POST['setup_stage']) AND $_POST['setup_stage']=='1')
-			{
-				
-				require($this->internal['plugin_path'].'plugin/includes/setup_2.php');
+		$setup_stage_post = isset($_POST['setup_stage']) ? sanitize_text_field($_POST['setup_stage']) : '';
+		if($setup_stage_post == '1')
+		{
+			
+			require($this->internal['plugin_path'].'plugin/includes/setup_2.php');
 		
 			}	
 			return;
@@ -508,7 +510,7 @@ class cb_p6_plugin extends cb_p6_core
 		
 		$get_url=get_permalink();	
 		$append = '';
-		$append.='<div class="'.$this->internal['prefix'].'patreon_site_widget" style="text-align:'.$this->opt['sidebar_widgets']['insert_text_align'].' !important;">';
+		$append.='<div class="'.$this->internal['prefix'].'patreon_site_widget" style="text-align:'.esc_attr($this->opt['sidebar_widgets']['insert_text_align']).' !important;">';
 		
 
 		if($this->opt['quickstart']['redirect_url']=='')
@@ -625,7 +627,7 @@ class cb_p6_plugin extends cb_p6_core
 			
 
 		// form array of items set to 1
-		$append='<div class="'.$this->internal['prefix'].'patreon_button" style="text-align:'.$this->opt['post_button']['insert_text_align'].' !important;margin-top:'.$this->opt['post_button']['insert_margin'].';margin-bottom:'.$this->opt['post_button']['insert_margin'].';">';
+		$append='<div class="'.$this->internal['prefix'].'patreon_button" style="text-align:'.esc_attr($this->opt['post_button']['insert_text_align']).' !important;margin-top:'.esc_attr($this->opt['post_button']['insert_margin']).';margin-bottom:'.esc_attr($this->opt['post_button']['insert_margin']).';">';
 			
 
 			
@@ -642,7 +644,7 @@ class cb_p6_plugin extends cb_p6_core
 			$insert_message=str_replace('{authorname}',$author_name,$this->opt['post_button']['message_over_post_button']);
 				
 				
-			$append.='<div class="'.$this->internal['prefix'].'message_over_post_button" style="font-size:'.$this->opt['post_button']['message_over_post_button_font_size'].';margin-top:'.$this->opt['post_button']['message_over_post_button_margin'].';margin-bottom:'.$this->opt['post_button']['message_over_post_button_margin'].';">'.$insert_message.'</div>';
+			$append.='<div class="'.$this->internal['prefix'].'message_over_post_button" style="font-size:'.esc_attr($this->opt['post_button']['message_over_post_button_font_size']).';margin-top:'.esc_attr($this->opt['post_button']['message_over_post_button_margin']).';margin-bottom:'.esc_attr($this->opt['post_button']['message_over_post_button_margin']).';">'.wp_kses_post($insert_message).'</div>';
 				
 			
 		}
@@ -749,7 +751,7 @@ class cb_p6_plugin extends cb_p6_core
 		
 		$get_url=get_permalink();
 		$append='';
-		$append.='<div class="'.$this->internal['prefix'].'patreon_author_widget" style="text-align:'.$this->opt['sidebar_widgets']['insert_text_align'].' !important;">';
+		$append.='<div class="'.$this->internal['prefix'].'patreon_author_widget" style="text-align:'.esc_attr($this->opt['sidebar_widgets']['insert_text_align']).' !important;">';
 		
 
 		$author_id=get_the_author_meta('ID');
@@ -952,11 +954,11 @@ class cb_p6_plugin extends cb_p6_core
 					continue;
 				}
 				
-				$append .= $goals['included'][$key]['attributes']['title'];
+			$append .= esc_html( $goals['included'][$key]['attributes']['title'] );
 				$append .= '<br />';
-				$append .= '<div style="font-size:125%;font-weight: bold;">' . $goals['included'][$key]['attributes']['completed_percentage'] .  $this->lang['goal_percent_complete'] . '</div>';
+				$append .= '<div style="font-size:125%;font-weight: bold;">' . esc_html( $goals['included'][$key]['attributes']['completed_percentage'] ) .  $this->lang['goal_percent_complete'] . '</div>';
 				$append .= '<br />';
-				$append .= $goals['included'][$key]['attributes']['description'];
+				$append .= wp_kses_post( $goals['included'][$key]['attributes']['description'] );
 				$append .= '<br />';
 				$append .= '<br />';
 				
@@ -1098,7 +1100,7 @@ class cb_p6_plugin extends cb_p6_core
 		
 		}
 		
-		return '<a rel="nofollow"'.$new_window.' href="'.$url.'" aria-label="Click to become a patron at Patreon!"><img style="margin-top: '.$this->opt['sidebar_widgets']['button_margin'].';margin-bottom: '.$this->opt['sidebar_widgets']['button_margin'].';max-width:'.$max_width.'px;width:100%;height:auto;" src="'.$button.'" alt="Become a patron at Patreon!"></a>';
+		return '<a rel="nofollow"'.$new_window.' href="'.esc_url($url).'" aria-label="Click to become a patron at Patreon!"><img style="margin-top: '.esc_attr($this->opt['sidebar_widgets']['button_margin']).';margin-bottom: '.esc_attr($this->opt['sidebar_widgets']['button_margin']).';max-width:'.esc_attr($max_width).'px;width:100%;height:auto;" src="'.esc_url($button).'" alt="Become a patron at Patreon!"></a>';
 		
 		
 	}
@@ -1115,7 +1117,7 @@ class cb_p6_plugin extends cb_p6_core
 		
 		}
 		
-		return '<a rel="nofollow"'.$new_window.' href="'.$url.'" aria-label="Click to become a patron at Patreon!"><img style="margin-top: '.$this->opt['sidebar_widgets']['button_margin'].';margin-bottom: '.$this->opt['sidebar_widgets']['button_margin'].';max-width:'.$max_width.'px;width:100%;height:auto;" src="'.$button.'" alt="Become a patron at Patreon!"></a>';
+		return '<a rel="nofollow"'.$new_window.' href="'.esc_url($url).'" aria-label="Click to become a patron at Patreon!"><img style="margin-top: '.esc_attr($this->opt['sidebar_widgets']['button_margin']).';margin-bottom: '.esc_attr($this->opt['sidebar_widgets']['button_margin']).';max-width:'.esc_attr($max_width).'px;width:100%;height:auto;" src="'.esc_url($button).'" alt="Become a patron at Patreon!"></a>';
 		
 		
 	}
@@ -1237,13 +1239,15 @@ class cb_p6_plugin extends cb_p6_core
 			$content = $this->lang['admin_message_default_content'];
 			
 			if ( isset( $_REQUEST['cb_p6_admin_message_title'] ) ) {
-				$heading = $this->lang[ filter_var( $_REQUEST['cb_p6_admin_message_title'], FILTER_SANITIZE_STRING) ];
+				$heading_key = sanitize_text_field( $_REQUEST['cb_p6_admin_message_title'] );
+				$heading = isset( $this->lang[ $heading_key ] ) ? $this->lang[ $heading_key ] : $heading;
 			}
 			if ( isset( $_REQUEST['cb_p6_admin_message_content'] ) ) {
-				$content = $this->lang[ filter_var( $_REQUEST['cb_p6_admin_message_content'], FILTER_SANITIZE_STRING) ];
+				$content_key = sanitize_text_field( $_REQUEST['cb_p6_admin_message_content'] );
+				$content = isset( $this->lang[ $content_key ] ) ? $this->lang[ $content_key ] : $content;
 			}
 			
-			echo '<div id="cb_p6_admin_message_page"><h1 style="margin-top: 0px;">' . $heading . '</h1><div id="cb_p6_admin_message_content">' . $content . '</div></div>';
+			echo '<div id="cb_p6_admin_message_page"><h1 style="margin-top: 0px;">' . wp_kses_post( $heading ) . '</h1><div id="cb_p6_admin_message_content">' . wp_kses_post( $content ) . '</div></div>';
 		
 			echo '</div>';
 		
@@ -1387,7 +1391,8 @@ class cb_p6_plugin extends cb_p6_core
 	public function admin_notices_p() {
 		
 
-		if ( isset( $_REQUEST['page'] ) AND $_REQUEST['page'] == 'patreon_wordpress_setup_wizard' ) {
+		$current_page = isset( $_REQUEST['page'] ) ? sanitize_text_field( $_REQUEST['page'] ) : '';
+		if ( $current_page == 'patreon_wordpress_setup_wizard' ) {
 			return;
 		}
 		
@@ -1436,7 +1441,8 @@ class cb_p6_plugin extends cb_p6_core
 		
 		// Mapping what comes from REQUEST to a given value avoids potential security problems and allows custom actions depending on notice
 
-		if ( $_REQUEST['notice_id'] == 'cb_p6_patron_content_manager_pitch' ) {
+		$notice_id = isset( $_REQUEST['notice_id'] ) ? sanitize_text_field( $_REQUEST['notice_id'] ) : '';
+		if ( $notice_id == 'cb_p6_patron_content_manager_pitch' ) {
 			
 			update_option( 'patron_content_manager_pitch_shown', true);
 			

@@ -8,7 +8,7 @@ if(!isset($this->opt['lang']))
 
 if(isset($_REQUEST[$this->internal['prefix'].'current_language']))
 {
-	$current_language=$_REQUEST[$this->internal['prefix'].'current_language'];
+	$current_language=isset($_REQUEST[$this->internal['prefix'].'current_language']) ? sanitize_text_field($_REQUEST[$this->internal['prefix'].'current_language']) : false;
 }
 else
 {

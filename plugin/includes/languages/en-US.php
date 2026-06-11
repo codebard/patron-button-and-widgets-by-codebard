@@ -266,7 +266,7 @@ You may view your existing tickets via \'View Tickets\' or open a new ticket via
 	'pw_install_message_9' => 'Could not install the new plugin.',
 	'pw_install_message_10' => '<br>It seems you need to connect your site to Patreon - please <a href="' . admin_url( 'admin.php?page=patreon_wordpress_setup_wizard&setup_stage=0' )  . '">click here</a> to start the wizard.',
 	'pw_install_message_13' => '<br>For Patreon goals widget to work, you need to connect your site to Patreon - please <a href="' . admin_url( 'admin.php?page=patreon_wordpress_setup_wizard&setup_stage=0' )  . '">click here</a> to start the wizard.',
-	'pw_install_message_14' => '<br>For Patreon goals widget to work, you must have the free Patreon WordPress plugin installed and active - please <a href="' . admin_url( 'admin.php?page=cb_p6_install_pw' )  . '">click here</a> to start the wizard.',
+	'pw_install_message_14' => '<br>The Patreon goals widget requires Member Plugin Pro installed and active - <a href="https://codebard.com/patron-plugin-pro">get it here</a>!',
 	'pw_install_message_11' => '<br>Great! Now you can use your widget! Click <a href="' . admin_url( 'widgets.php' )  . '">here</a> to go to Widgets page.',
 	'pw_install_message_12' => 'Only you as admin can see the above message',
 	'goal_percent_complete' => '% complete',

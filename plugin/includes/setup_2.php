@@ -23,7 +23,7 @@ if(isset($_REQUEST['site_account']) AND ($_REQUEST['site_account']=='' OR $_REQU
 else
 {
 
-	$this->opt['quickstart']['site_account']=$_REQUEST['site_account'];
+	$this->opt['quickstart']['site_account']=sanitize_text_field($_REQUEST['site_account']);
 		
 	$this->opt['queue_modal']=false;
 	$this->opt['setup_done'] = true;

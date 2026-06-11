@@ -1,6 +1,6 @@
 <?php
 
-$tab=$_REQUEST[$this->internal['prefix'].'tab'];
+$tab=isset($_REQUEST[$this->internal['prefix'].'tab']) ? sanitize_text_field($_REQUEST[$this->internal['prefix'].'tab']) : 'post_button';
 
 
 echo $this->do_admin_settings_form_header($tab);

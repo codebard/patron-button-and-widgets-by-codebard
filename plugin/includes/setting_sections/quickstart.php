@@ -1,6 +1,6 @@
 <?php
 
-$tab=$_REQUEST[$this->internal['prefix'].'tab'];
+$tab=isset($_REQUEST[$this->internal['prefix'].'tab']) ? sanitize_text_field($_REQUEST[$this->internal['prefix'].'tab']) : 'quickstart';
 
 
 echo $this->do_admin_settings_form_header($tab);
@@ -8,7 +8,7 @@ echo $this->do_admin_settings_form_header($tab);
 		if(isset($_REQUEST[$this->internal['prefix'].'tab']))
 		{
 			
-			$tab=$_REQUEST[$this->internal['prefix'].'tab'];
+			$tab=sanitize_text_field($_REQUEST[$this->internal['prefix'].'tab']);
 		}
 		
 		$open_new_window_checked_yes = '';
@@ -73,7 +73,7 @@ echo $this->do_admin_settings_form_header($tab);
 ?>
 			<h3>Site's Patreon user</h3>
 			If you chose not to use Patreon accounts of Authors, or an Author does not have any Patreon username saved in his/her author profile page, this Patreon username will be used for Buttons for users to support in any single post. This affects both the <b>Buttons under Posts</b>, and the <b>Author Patreon sidebar widget</b>.<br><br>
-			<input type="text" style="width : 500px" name="opt[<?php echo $tab; ?>][site_account]" value="<?php echo $this->opt[$tab]['site_account']; ?>"  aria-label="The Patreon account to use for the entire site">
+			<input type="text" style="width : 500px" name="opt[<?php echo $tab; ?>][site_account]" value="<?php echo esc_attr($this->opt[$tab]['site_account']); ?>"  aria-label="The Patreon account to use for the entire site">
 			
 			
 			<h3>Open pages in new window?</h3>
@@ -104,21 +104,21 @@ echo $this->do_admin_settings_form_header($tab);
 			You can use a custom image for your button! Just click on below field to be taken to your WordPress media library to select your button or upload a new button and select that one. After selecting your button, save options and your new custom button will be made active.
 			
 			<br><br>			
-			 <input class="cb_p6_file_upload" type="text" id="opt[<?php echo $tab; ?>]_custom_button" size="36" name="opt[<?php echo $tab; ?>][custom_button]" value="<?php echo $this->opt[$tab]['custom_button']; ?>"   aria-label="Upload the image to use as a custom button" /> <a href="" class="cb_p6_clear_prevfield"   aria-label="Clear">Clear</a>
+			 <input class="cb_p6_file_upload" type="text" id="opt[<?php echo $tab; ?>]_custom_button" size="36" name="opt[<?php echo $tab; ?>][custom_button]" value="<?php echo esc_attr($this->opt[$tab]['custom_button']); ?>"   aria-label="Upload the image to use as a custom button" /> <a href="" class="cb_p6_clear_prevfield"   aria-label="Clear">Clear</a>
 		<br><br>
 		Current custom button :
 		<br>
 		<?php
 			if($this->opt[$tab]['custom_button']!='')
 			{
-				echo '<a rel="nofollow"'.@$new_window.' href="'.@$url.'"><img style="margin-top: '.$this->opt['sidebar_widgets']['button_margin'].';margin-bottom: '.$this->opt['sidebar_widgets']['button_margin'].';max-width:50px;width:100%;height:auto;" src="'.$this->opt[$tab]['custom_button'].'"></a>';				
+				echo '<a rel="nofollow"'.@$new_window.' href="'.@$url.'"><img style="margin-top: '.esc_attr($this->opt['sidebar_widgets']['button_margin']).';margin-bottom: '.esc_attr($this->opt['sidebar_widgets']['button_margin']).';max-width:50px;width:100%;height:auto;" src="'.esc_url($this->opt[$tab]['custom_button']).'"></a>';				
 				
 			}
 		?>
 			<h3>Width for your custom button</h3>
 			You can set the width for your custom button if you want to have it display larger or smaller. Height will be adjusted automatically. If you leave this empty, default width of 200px will be used - something close to official Patreon button. Experiment with this value if you think your custom button is larger/smaller than you wish. 
 			<br><br>
-			<input type="text" style="width : 50px" name="opt[<?php echo $tab; ?>][custom_button_width]" value="<?php echo $this->opt[$tab]['custom_button_width']; ?>"  aria-label="The numeric value for the width of your custom button image">
+			<input type="text" style="width : 50px" name="opt[<?php echo $tab; ?>][custom_button_width]" value="<?php echo esc_attr($this->opt[$tab]['custom_button_width']); ?>"  aria-label="The numeric value for the width of your custom button image">
 		
 		<br><br>
 		
