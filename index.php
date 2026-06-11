@@ -1081,6 +1081,12 @@ PRIMARY KEY  (".$key."_id)
 	public function reset_options_c()
 	{
 
+		if(!isset($_REQUEST['cb_plugins_nonce_reset_options']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_reset_options'] ), 'cb_plugins_nonce_reset_options' ))
+		{
+			echo 'Form security field expired - go to the earlier page, refresh the page and retry';
+			wp_die();			
+		}		
+
 		if(!current_user_can('manage_options'))
 		{
 			return false;			
@@ -1373,27 +1379,31 @@ PRIMARY KEY  (".$key."_id)
 		
 		if(!$template)
 		{
-			if($this->opt['template']!='')
+			if($this->opt['template'] != '')
 			{
 				$template=$this->opt['template'];			
 			}
 			else
 			{
-				$template='default';	
-				
+				$template='default';
 			}
 		
-			
 		}
 		
 		if(!$template_path)
 		{
-			$template_path = $this->internal['template_path'];			
-			
+			$template_path = $this->internal['template_path'];
 		}
-		
-	
-		return file_get_contents( plugin_dir_path('plugin/templates/'.$template.'/'.$template_file.'.tpl' ) );
+
+		if (!$template_file OR empty($template_file) ) {
+			return '';
+		}
+
+		if ( file_exists( $template_path.'/'.$template.'/'.$template_file.'.tpl' ) ) {
+			return file_get_contents($template_path.'/'.$template.'/'.$template_file.'.tpl');
+		}
+
+		return '';
 		
 	}
 	public function process_lang_c($v1)
@@ -1750,13 +1760,14 @@ PRIMARY KEY  (".$key."_id)
 				
 				}
 			}
-			$notice_templates[$side][$key] = $this->load_template($template_type.'_notices_'.$key);
 			
-			$notice_templates[$side][$key] = $this->process_vars_to_template($this->internal, $notice_templates[$side][$key],array('prefix','id'));
-			
-			
+			// Only load the template if there are actually notices to display for this type
 			if(isset($this->internal['content'][$side.'_notices'][$key]) AND count($this->internal['content'][$side.'_notices'][$key])>0 AND is_array($this->internal['content'][$side.'_notices'][$key]))
 			{
+				$notice_templates[$side][$key] = $this->load_template($template_type.'_notices_'.$key);
+				
+				$notice_templates[$side][$key] = $this->process_vars_to_template($this->internal, $notice_templates[$side][$key],array('prefix','id'));
+				
 				$message='';
 				foreach($this->internal['content'][$side.'_notices'][$key] as $key_2 => $value_2)
 				{
