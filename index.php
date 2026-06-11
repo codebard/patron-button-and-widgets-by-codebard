@@ -1,5 +1,4 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 /*
 	Plugin Name: CodeBard's Patron Button and Widgets for Patreon
 	Plugin URI: https://wordpress.org/plugins/patron-button-and-widgets-by-codebard/
@@ -13,6 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 	License URI: https://www.gnu.org/licenses/gpl-2.0.html	
 */
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class cb_p6_core {
 
@@ -1216,7 +1216,8 @@ PRIMARY KEY  (".$key."_id)
 		{
 			foreach($tables as $key => $value)
 			{
-				$results[$key] = $wpdb->get_results( "SELECT * FROM ".$wpdb->prefix.$this->internal['id']."_".$key." WHERE ".$key."_id = '".$id."'", ARRAY_A );
+				$safe_key = preg_replace( '/[^a-zA-Z0-9_]/', '', $key );
+			$results[$key] = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . $this->internal['id'] . "_" . $safe_key . " WHERE " . $safe_key . "_id = %d", $id ), ARRAY_A );
 			}
 			
 			return $results;
@@ -1226,7 +1227,8 @@ PRIMARY KEY  (".$key."_id)
 			reset($tables);
 			$key=key($tables);
 			
-			$results = $wpdb->get_results( "SELECT * FROM ".$wpdb->prefix.$this->internal['id']."_".$key." WHERE ".$key."_id = '".$id."'", ARRAY_A );
+			$safe_key = preg_replace( '/[^a-zA-Z0-9_]/', '', $key );
+			$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . $this->internal['id'] . "_" . $safe_key . " WHERE " . $safe_key . "_id = %d", $id ), ARRAY_A );
 
 			
 			return $results[0];				
@@ -1252,7 +1254,8 @@ PRIMARY KEY  (".$key."_id)
 		}
 			
 		
-		$result =  $wpdb->get_results( "SELECT * FROM ".$wpdb->prefix.$this->internal['id']."_".$type." WHERE ".$type."_post = '".$post_id."' ".$order_by_clause." ".$limit_clause, ARRAY_A );
+		$safe_type = preg_replace( '/[^a-zA-Z0-9_]/', '', $type );
+		$result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . $this->internal['id'] . "_" . $safe_type . " WHERE " . $safe_type . "_post = %d " . $order_by_clause . " " . $limit_clause, $post_id ), ARRAY_A );
 	
 		
 		if($wpdb->last_error!='')
@@ -1506,7 +1509,7 @@ PRIMARY KEY  (".$key."_id)
 		$slug=$v2;
 	
 		
-		return  $wpdb->get_var("SELECT * FROM ".$wpdb->posts." WHERE post_name = '".$slug."' AND post_type = '".$type."'");
+		return $wpdb->get_var( $wpdb->prepare( "SELECT * FROM " . $wpdb->posts . " WHERE post_name = %s AND post_type = %s", $slug, $type ) );
 	}
 	public function setup_languages_c()
 	{
@@ -2208,7 +2211,7 @@ PRIMARY KEY  (".$key."_id)
 		global $wpdb;
 		// Read all existing languages in db 
 		
-		$languages=$wpdb->get_results("SELECT * FROM ".$wpdb->prefix . "options WHERE option_name LIKE '".$this->internal['prefix']."lang%'",ARRAY_A);
+		$languages=$wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "options WHERE option_name LIKE %s", $this->internal['prefix'] . 'lang%' ), ARRAY_A );
 		
 		foreach($languages as $key => $value)
 		{

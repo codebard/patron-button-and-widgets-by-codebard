@@ -62,6 +62,15 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Upgrade Notice ==
 
+= 2.2.7 =
+
+* Added early exit to prevent direct file access to boost security
+* All outputs escaped to boost security
+* All input sanitized to boost security
+* Nonces and capability checks added
+* Various security fixes
+* Some template system fixes
+
 = 2.2.6 =
 
 * Made admin menu label more informative
@@ -228,6 +237,15 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Initial release!
 
 == Changelog ==
+
+= 2.2.7 =
+
+* Added early exit to prevent direct file access to boost security
+* All outputs escaped to boost security
+* All input sanitized to boost security
+* Nonces and capability checks added
+* Various security fixes
+* Some template system fixes
 
 = 2.2.6 =
 
