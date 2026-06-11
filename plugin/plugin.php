@@ -494,7 +494,7 @@ class cb_p6_plugin extends cb_p6_core
 		
 		if ( !current_user_can( 'edit_user', $user_id ) ) $return = FALSE;
 
-		update_user_meta( $user_id, $this->internal['prefix'].'patreon_user', $_POST[$this->internal['prefix'].'patreon_user'] );
+		update_user_meta( $user_id, $this->internal['prefix'].'patreon_user', sanitize_text_field($_POST[$this->internal['prefix'].'patreon_user']) );
 		
 	}
 

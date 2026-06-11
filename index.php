@@ -68,7 +68,7 @@ class cb_p6_core {
 		
 		if(isset($_REQUEST[$this->internal['prefix'].'action'] ))
 		{
-			$this->internal['requested_action'] = preg_replace('/[^\w-]/', '', $_REQUEST[$this->internal['prefix'].'action']);
+			$this->internal['requested_action'] = preg_replace('/[^a-z_]/', '', strtolower(sanitize_text_field($_REQUEST[$this->internal['prefix'].'action'])));
 		}
 		else
 		{
@@ -893,7 +893,7 @@ PRIMARY KEY  (".$key."_id)
 		
 		if(isset($_REQUEST['tab']))
 		{
-			$tab = preg_replace('/[^\w-]/', '', $_REQUEST['tab'] );
+			$tab = preg_replace('/[^\w-]/', '', sanitize_text_field($_REQUEST['tab']) );
 			
 		}
 		else
@@ -1146,6 +1146,15 @@ PRIMARY KEY  (".$key."_id)
 		if(!current_user_can('activate_plugins'))
 		{
 			return false;			
+		}
+
+		if($this->internal['requested_action']=='save_settings_during_setup')
+		{
+			if(!isset($_REQUEST['cb_plugins_nonce_setup_wizard']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_setup_wizard'] ), 'cb_plugins_nonce_setup_wizard' ))
+			{
+				echo 'Form security field expired - go to the earlier page, refresh the page and retry';
+				wp_die();			
+			}
 		}
 
 		$new_options=$v1['opt'];
