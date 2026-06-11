@@ -1400,7 +1400,7 @@ PRIMARY KEY  (".$key."_id)
 		}
 
 		if ( file_exists( $template_path.'/'.$template.'/'.$template_file.'.tpl' ) ) {
-			return file_get_contents($template_path.'/'.$template.'/'.$template_file.'.tpl');
+			return file_get_contents( $template_path.'/'.$template.'/'.$template_file.'.tpl' );
 		}
 
 		return '';
@@ -1550,6 +1550,12 @@ PRIMARY KEY  (".$key."_id)
 	public function reset_languages_c()
 	{
 		
+		if(!isset($_REQUEST['cb_p6_nonce_reset_languages']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_p6_nonce_reset_languages'] ), 'cb_p6_nonce_reset_languages' ))
+		{
+			echo 'Form security field expired - go to the earlier page, refresh the page and retry';
+			wp_die();			
+		}
+
 		if(!current_user_can('manage_options'))
 		{
 			$error_msg = isset($this->lang['error_operation_failed_no_permission']) 

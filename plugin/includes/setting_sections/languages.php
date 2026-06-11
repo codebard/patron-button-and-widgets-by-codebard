@@ -37,6 +37,7 @@ echo '<form action="admin.php?page=settings_cb_p6&'.$this->internal['prefix'].'t
 
 echo '<input type="hidden" name="'.$this->internal['prefix'].'action" value="reset_languages">';
 echo '<input type="hidden" name="cb_plugin" value="'.$this->internal['id'].'">';
+echo '<input type="hidden" name="cb_p6_nonce_reset_languages" value="' . wp_create_nonce( 'cb_p6_nonce_reset_languages' ) . '">';
 echo '<input type="submit" value="'.$this->lang['reset_languages_button_label'].'" class="'.$this->internal['prefix'].'admin_button"  aria-label="Reset language">';
 echo '</form>';
 
