@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // Verify nonce
 if(!isset($_REQUEST['cb_plugins_nonce_setup_wizard']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_setup_wizard'] ), 'cb_plugins_nonce_setup_wizard' ))

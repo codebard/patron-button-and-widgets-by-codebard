@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 /*
 	Plugin Name: CodeBard's Patron Button and Widgets for Patreon
 	Plugin URI: https://wordpress.org/plugins/patron-button-and-widgets-by-codebard/

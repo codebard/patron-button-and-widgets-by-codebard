@@ -1,3 +1,6 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+?>
 		<form method="post" action="<?php echo get_admin_url(); ?>admin.php?page=settings_<?php echo $this->internal['id']; ?>">
 			<input type="submit" value="  <?php echo $this->lang['reset_options']; ?>  " style="float:left;"   aria-label="Reset options">
 			<input type="hidden" name="<?php echo $this->internal['id']; ?>_action" value="reset_options">

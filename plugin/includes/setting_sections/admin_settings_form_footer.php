@@ -1,3 +1,6 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+?>
 <div id="{***prefix***}admin_settings_form_footer">
 
 <button type="submit" class="cb_p6_admin_button"  aria-label="Save">{%%%save%%%}</button>

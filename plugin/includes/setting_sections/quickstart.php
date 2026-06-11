@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 $tab=isset($_REQUEST[$this->internal['prefix'].'tab']) ? sanitize_text_field($_REQUEST[$this->internal['prefix'].'tab']) : 'quickstart';
 

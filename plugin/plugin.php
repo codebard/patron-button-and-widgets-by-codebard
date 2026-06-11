@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 
 class cb_p6_plugin extends cb_p6_core
@@ -473,11 +474,11 @@ class cb_p6_plugin extends cb_p6_core
 					
 					<table class="form-table">
 						<tr><th>
-							<label for="address"><?php _e('Your Patreon User', 'patron-button-and-widgets-by-codebard'); ?>
+						<label for="address"><?php esc_html_e('Your Patreon User', 'patron-button-and-widgets-by-codebard'); ?>
 							</label></th>
 							<td>
 								<input type="text" name="<?php echo $this->internal['id'];?>_patreon_user" id="<?php echo $this->internal['id'];?>_patreon_user" value="<?php echo esc_attr( get_the_author_meta( $this->internal['prefix'].'patreon_user', $user->ID ) ); ?>" class="regular-text" /><br />
-									<span class="description"><?php _e('Please enter your Patreon user.', 'patron-button-and-widgets-by-codebard'); ?></span>
+								<span class="description"><?php esc_html_e('Please enter your Patreon user.', 'patron-button-and-widgets-by-codebard'); ?></span>
 							</td>
 						</tr>
 					</table>
