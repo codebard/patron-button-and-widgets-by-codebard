@@ -6,8 +6,8 @@ Donate link: http://codebard.com/donate
 Tags: patreon, widgets, crowdfunding, donations, social
 License: GPL
 Requires at least: 4.0
-Tested up to: 6.8.3
-Stable Tag: 2.2.6
+Tested up to: 7.0
+Stable Tag: 2.2.7
 
 Add Patreon buttons to your content and sidebars. Upgrade to Patron Plugin Pro for patron-only posts and powerful features.
 

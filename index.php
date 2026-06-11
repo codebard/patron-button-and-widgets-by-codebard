@@ -3,11 +3,13 @@
 	Plugin Name: CodeBard's Patron Button and Widgets for Patreon
 	Plugin URI: https://wordpress.org/plugins/patron-button-and-widgets-by-codebard/
 	Description: Patreon Patron Buttons, Widgets and Patreon Functions
-	Version: 2.2.6
+	Version: 2.2.7
 	Author: CodeBard
 	Author URI: https://codebard.com
 	Text Domain: cb_p6
 	Domain Path: /lang
+	License: GPLv2 or later
+	License URI: https://www.gnu.org/licenses/gpl-2.0.html	
 */
 
 
@@ -1054,7 +1056,7 @@ PRIMARY KEY  (".$key."_id)
 		if(!(is_admin() AND current_user_can( 'manage_options' )))
 		{
 			if ( !( defined( 'WP_CLI' ) AND WP_CLI ) ) {
-				wp_die(__('Need admin privileges for this page',$this->internal['id'])); 
+				wp_die(__('Need admin privileges for this page', 'patron-button-and-widgets-by-codebard' ) ); 
 			}
 		}
 
@@ -1386,12 +1388,12 @@ PRIMARY KEY  (".$key."_id)
 		
 		if(!$template_path)
 		{
-			$template_path=$this->internal['template_path'];			
+			$template_path = $this->internal['template_path'];			
 			
 		}
 		
 	
-		return file_get_contents($template_path.'/'.$template.'/'.$template_file.'.tpl');
+		return file_get_contents( plugin_dir_path('plugin/templates/'.$template.'/'.$template_file.'.tpl' ) );
 		
 	}
 	public function process_lang_c($v1)

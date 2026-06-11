@@ -14,7 +14,7 @@
 
 		// Create dud object for loading options and internal vars:
 		
-		class cb_dud_object {
+		class cb_p6_dud_object {
 			
 			public $internal = array(
 	
