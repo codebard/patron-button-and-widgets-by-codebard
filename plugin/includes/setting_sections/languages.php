@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if(!isset($this->opt['lang']))
 {
@@ -8,7 +9,7 @@ if(!isset($this->opt['lang']))
 
 if(isset($_REQUEST[$this->internal['prefix'].'current_language']))
 {
-	$current_language=$_REQUEST[$this->internal['prefix'].'current_language'];
+	$current_language=isset($_REQUEST[$this->internal['prefix'].'current_language']) ? sanitize_text_field($_REQUEST[$this->internal['prefix'].'current_language']) : false;
 }
 else
 {
@@ -37,6 +38,7 @@ echo '<form action="admin.php?page=settings_cb_p6&'.$this->internal['prefix'].'t
 
 echo '<input type="hidden" name="'.$this->internal['prefix'].'action" value="reset_languages">';
 echo '<input type="hidden" name="cb_plugin" value="'.$this->internal['id'].'">';
+echo '<input type="hidden" name="cb_p6_nonce_reset_languages" value="' . wp_create_nonce( 'cb_p6_nonce_reset_languages' ) . '">';
 echo '<input type="submit" value="'.$this->lang['reset_languages_button_label'].'" class="'.$this->internal['prefix'].'admin_button"  aria-label="Reset language">';
 echo '</form>';
 

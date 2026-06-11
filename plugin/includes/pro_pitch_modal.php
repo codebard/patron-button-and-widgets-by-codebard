@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 
 ?>
@@ -8,9 +9,9 @@
 	<div style="font-size:175%;font-weight:bold;margin-top:30px;display:inline-table;width:100%;line-height: 1;">Patreon Button & Plugin by <a href="http://codebard.com" target="_blank"><img src="<?php echo $this->internal['plugin_url']; ?>images/codebard_very_small.png"></a> has been upgraded! And we got news for you:</div>
 
 	
-	<div style="font-size:200%;font-weight:bold;margin-top:30px;margin-bottom:15px;display:inline-table;width:100%;line-height: 1;">Now you can upgrade to Patron Plugin Pro to get most out of your Patreon and increase your pledges!</div>
+	<div style="font-size:200%;font-weight:bold;margin-top:30px;margin-bottom:15px;display:inline-table;width:100%;line-height: 1;">Now you can upgrade to Member Plugin Pro to get most out of your Patreon and increase your pledges!</div>
 	<div style="font-size:150%;font-weight:bold;margin-top:0px;margin-bottom:15px;display:inline-table;width:100%;line-height: 1;">
-	Our new plugin, Patron Plugin Pro integrates your WordPress and Patreon tightly and allows you to make Patron-only posts. Post Patron-only content to your own website and get pledges from your users! Have your users login with Patreon. Have your "Be a Patron" buttons send users directly to Patron Pipeline and increase your conversions! Put up customizable "Patron only" notifications for any protected content to get more Patrons!
+	Our new plugin, Member Plugin Pro integrates your WordPress and Patreon tightly and allows you to make Patron-only posts. Post Patron-only content to your own website and get pledges from your users! Have your users login with Patreon. Have your "Be a Patron" buttons send users directly to Patron Pipeline and increase your conversions! Put up customizable "Patron only" notifications for any protected content to get more Patrons!
 	</div>
 	<div style="font-size:150%;font-weight:bold;margin-top:0px;margin-bottom:15px;display:inline-table;width:100%;line-height: 1;">
 		<ul>

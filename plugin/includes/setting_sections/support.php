@@ -1,3 +1,6 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+?>
 <hr width="100%">
 
 <div class="cb_p6_h2"><?php echo $this->lang['admin_page_support_title']; ?></div>

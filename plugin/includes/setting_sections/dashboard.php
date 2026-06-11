@@ -1,4 +1,5 @@
 <?php 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 	// $this->check_woocommerce_exists();
 
 
@@ -28,7 +29,7 @@
 	
 		<div class="cb_p6_setup_wizard_col_33" style="text-align : center; max-width : 600px;">
 		
-			<?php echo $this->lang['setup_wizard_follow_us_on_twitter'];?><br><br><a href="https://twitter.com/codebardcom" class="twitter-follow-button" data-show-count="false"  aria-label="Follow at Twitter"><?php echo $this->lang['setup_wizard_twitter_follow_label_prefix'];?> @CodeBard</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+			<?php echo $this->lang['setup_wizard_follow_us_on_twitter'];?><br><br><a href="https://twitter.com/codebardcom" class="twitter-follow-button" data-show-count="false"  aria-label="Follow at Twitter"><?php echo $this->lang['setup_wizard_twitter_follow_label_prefix'];?> @CodeBard</a>
 			
 		</div>
 	

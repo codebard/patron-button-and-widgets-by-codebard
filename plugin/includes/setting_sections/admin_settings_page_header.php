@@ -1,3 +1,6 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+?>
 <div class="{***prefix***}settings">
 
 	<div style="display:table;vertical-align:middle;">

@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class cb_p6_dud_language_object {
 	
@@ -180,7 +181,7 @@ class cb_p6_sidebar_user_widget extends WP_Widget {
         $message	= esc_attr($instance['message']);
         ?>
          <p>
-          <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label> 
+          <label for="<?php echo $this->get_field_id('title'); ?>"><?php esc_html_e('Title:', 'patron-button-and-widgets-by-codebard'); ?></label> 
           <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
         </p>
 		<p>
@@ -281,7 +282,7 @@ class cb_p6_sidebar_site_widget extends WP_Widget {
         $message	= esc_attr($instance['message']);
         ?>
          <p>
-          <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label> 
+          <label for="<?php echo $this->get_field_id('title'); ?>"><?php esc_html_e('Title:', 'patron-button-and-widgets-by-codebard'); ?></label> 
           <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
         </p>
 		<p>
@@ -417,8 +418,8 @@ class cb_p6_sidebar_goals_site_widget extends WP_Widget {
 					Goals widget shows your financial goals. Updates itself daily.
 					</p>
 					<p>
-					  <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label> 
-					  <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
+				  <label for="<?php echo $this->get_field_id('title'); ?>"><?php esc_html_e('Title:', 'patron-button-and-widgets-by-codebard'); ?></label> 
+				  <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
 					</p>
 					<p>
 					  <label for="<?php echo $this->get_field_id('message'); ?>">Message over goal (optional)</label> 

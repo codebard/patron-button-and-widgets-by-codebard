@@ -3,13 +3,16 @@
 	Plugin Name: CodeBard's Patron Button and Widgets for Patreon
 	Plugin URI: https://wordpress.org/plugins/patron-button-and-widgets-by-codebard/
 	Description: Patreon Patron Buttons, Widgets and Patreon Functions
-	Version: 2.2.6
+	Version: 2.2.7
 	Author: CodeBard
 	Author URI: https://codebard.com
 	Text Domain: cb_p6
 	Domain Path: /lang
+	License: GPLv2 or later
+	License URI: https://www.gnu.org/licenses/gpl-2.0.html	
 */
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class cb_p6_core {
 
@@ -66,7 +69,7 @@ class cb_p6_core {
 		
 		if(isset($_REQUEST[$this->internal['prefix'].'action'] ))
 		{
-			$this->internal['requested_action'] = preg_replace('/[^\w-]/', '', $_REQUEST[$this->internal['prefix'].'action']);
+			$this->internal['requested_action'] = preg_replace('/[^a-z_]/', '', strtolower(sanitize_text_field($_REQUEST[$this->internal['prefix'].'action'])));
 		}
 		else
 		{
@@ -891,7 +894,7 @@ PRIMARY KEY  (".$key."_id)
 		
 		if(isset($_REQUEST['tab']))
 		{
-			$tab = preg_replace('/[^\w-]/', '', $_REQUEST['tab'] );
+			$tab = preg_replace('/[^\w-]/', '', sanitize_text_field($_REQUEST['tab']) );
 			
 		}
 		else
@@ -1054,7 +1057,7 @@ PRIMARY KEY  (".$key."_id)
 		if(!(is_admin() AND current_user_can( 'manage_options' )))
 		{
 			if ( !( defined( 'WP_CLI' ) AND WP_CLI ) ) {
-				wp_die(__('Need admin privileges for this page',$this->internal['id'])); 
+				wp_die(__('Need admin privileges for this page', 'patron-button-and-widgets-by-codebard' ) ); 
 			}
 		}
 
@@ -1079,6 +1082,15 @@ PRIMARY KEY  (".$key."_id)
 	public function reset_options_c()
 	{
 
+		if($this->internal['requested_action']=='reset_options')
+		{
+			if(!isset($_REQUEST['cb_plugins_nonce_reset_options']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_reset_options'] ), 'cb_plugins_nonce_reset_options' ))
+			{
+				echo 'Form security field expired - go to the earlier page, refresh the page and retry';
+				wp_die();			
+			}
+		}
+
 		if(!current_user_can('manage_options'))
 		{
 			return false;			
@@ -1101,10 +1113,13 @@ PRIMARY KEY  (".$key."_id)
 			return false;			
 		}
 
-		if(!isset($_REQUEST['cb_plugins_nonce_save_settings']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_save_settings'] ), 'cb_plugins_nonce_save_settings' ))
+		if($this->internal['requested_action']=='save_settings')
 		{
-			echo 'Form security field expired - go to the earlier page, refresh the page and retry';
-			wp_die();			
+			if(!isset($_REQUEST['cb_plugins_nonce_save_settings']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_save_settings'] ), 'cb_plugins_nonce_save_settings' ))
+			{
+				echo 'Form security field expired - go to the earlier page, refresh the page and retry';
+				wp_die();			
+			}
 		}
 		
 		$new_options=$v1['opt'];
@@ -1132,6 +1147,15 @@ PRIMARY KEY  (".$key."_id)
 		if(!current_user_can('activate_plugins'))
 		{
 			return false;			
+		}
+
+		if($this->internal['requested_action']=='save_settings_during_setup')
+		{
+			if(!isset($_REQUEST['cb_plugins_nonce_setup_wizard']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_setup_wizard'] ), 'cb_plugins_nonce_setup_wizard' ))
+			{
+				echo 'Form security field expired - go to the earlier page, refresh the page and retry';
+				wp_die();			
+			}
 		}
 
 		$new_options=$v1['opt'];
@@ -1192,7 +1216,8 @@ PRIMARY KEY  (".$key."_id)
 		{
 			foreach($tables as $key => $value)
 			{
-				$results[$key] = $wpdb->get_results( "SELECT * FROM ".$wpdb->prefix.$this->internal['id']."_".$key." WHERE ".$key."_id = '".$id."'", ARRAY_A );
+				$safe_key = preg_replace( '/[^a-zA-Z0-9_]/', '', $key );
+			$results[$key] = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . $this->internal['id'] . "_" . $safe_key . " WHERE " . $safe_key . "_id = %d", $id ), ARRAY_A );
 			}
 			
 			return $results;
@@ -1202,7 +1227,8 @@ PRIMARY KEY  (".$key."_id)
 			reset($tables);
 			$key=key($tables);
 			
-			$results = $wpdb->get_results( "SELECT * FROM ".$wpdb->prefix.$this->internal['id']."_".$key." WHERE ".$key."_id = '".$id."'", ARRAY_A );
+			$safe_key = preg_replace( '/[^a-zA-Z0-9_]/', '', $key );
+			$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . $this->internal['id'] . "_" . $safe_key . " WHERE " . $safe_key . "_id = %d", $id ), ARRAY_A );
 
 			
 			return $results[0];				
@@ -1228,7 +1254,8 @@ PRIMARY KEY  (".$key."_id)
 		}
 			
 		
-		$result =  $wpdb->get_results( "SELECT * FROM ".$wpdb->prefix.$this->internal['id']."_".$type." WHERE ".$type."_post = '".$post_id."' ".$order_by_clause." ".$limit_clause, ARRAY_A );
+		$safe_type = preg_replace( '/[^a-zA-Z0-9_]/', '', $type );
+		$result = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . $this->internal['id'] . "_" . $safe_type . " WHERE " . $safe_type . "_post = %d " . $order_by_clause . " " . $limit_clause, $post_id ), ARRAY_A );
 	
 		
 		if($wpdb->last_error!='')
@@ -1371,27 +1398,31 @@ PRIMARY KEY  (".$key."_id)
 		
 		if(!$template)
 		{
-			if($this->opt['template']!='')
+			if($this->opt['template'] != '')
 			{
 				$template=$this->opt['template'];			
 			}
 			else
 			{
-				$template='default';	
-				
+				$template='default';
 			}
 		
-			
 		}
 		
 		if(!$template_path)
 		{
-			$template_path=$this->internal['template_path'];			
-			
+			$template_path = $this->internal['template_path'];
 		}
-		
-	
-		return file_get_contents($template_path.'/'.$template.'/'.$template_file.'.tpl');
+
+		if (!$template_file OR empty($template_file) ) {
+			return '';
+		}
+
+		if ( file_exists( $template_path.'/'.$template.'/'.$template_file.'.tpl' ) ) {
+			return file_get_contents( $template_path.'/'.$template.'/'.$template_file.'.tpl' );
+		}
+
+		return '';
 		
 	}
 	public function process_lang_c($v1)
@@ -1478,7 +1509,7 @@ PRIMARY KEY  (".$key."_id)
 		$slug=$v2;
 	
 		
-		return  $wpdb->get_var("SELECT * FROM ".$wpdb->posts." WHERE post_name = '".$slug."' AND post_type = '".$type."'");
+		return $wpdb->get_var( $wpdb->prepare( "SELECT * FROM " . $wpdb->posts . " WHERE post_name = %s AND post_type = %s", $slug, $type ) );
 	}
 	public function setup_languages_c()
 	{
@@ -1529,8 +1560,13 @@ PRIMARY KEY  (".$key."_id)
 		}
 		
 		// Update language option in db
-				
-		$this->opt['lang']=get_bloginfo('language');
+		
+		if(!is_array($this->opt))
+		{
+			$this->opt = array();
+		}
+		
+		$this->opt['lang'] = 'en-US';
 		
 		update_option($this->internal['prefix'].'options' ,$this->opt);
 	
@@ -1538,6 +1574,15 @@ PRIMARY KEY  (".$key."_id)
 	public function reset_languages_c()
 	{
 		
+		if($this->internal['requested_action']=='reset_languages')
+		{
+			if(!isset($_REQUEST['cb_p6_nonce_reset_languages']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_p6_nonce_reset_languages'] ), 'cb_p6_nonce_reset_languages' ))
+			{
+				echo 'Form security field expired - go to the earlier page, refresh the page and retry';
+				wp_die();			
+			}
+		}
+
 		if(!current_user_can('manage_options'))
 		{
 			$error_msg = isset($this->lang['error_operation_failed_no_permission']) 
@@ -1624,7 +1669,7 @@ PRIMARY KEY  (".$key."_id)
 		
 		// Update language option in db
 				
-		$this->opt['lang']=get_bloginfo('language');
+		$this->opt['lang'] = 'en-US';
 		
 		update_option($this->internal['prefix'].'options' ,$this->opt);
 	
@@ -1748,13 +1793,14 @@ PRIMARY KEY  (".$key."_id)
 				
 				}
 			}
-			$notice_templates[$side][$key] = $this->load_template($template_type.'_notices_'.$key);
 			
-			$notice_templates[$side][$key] = $this->process_vars_to_template($this->internal, $notice_templates[$side][$key],array('prefix','id'));
-			
-			
+			// Only load the template if there are actually notices to display for this type
 			if(isset($this->internal['content'][$side.'_notices'][$key]) AND count($this->internal['content'][$side.'_notices'][$key])>0 AND is_array($this->internal['content'][$side.'_notices'][$key]))
 			{
+				$notice_templates[$side][$key] = $this->load_template($template_type.'_notices_'.$key);
+				
+				$notice_templates[$side][$key] = $this->process_vars_to_template($this->internal, $notice_templates[$side][$key],array('prefix','id'));
+				
 				$message='';
 				foreach($this->internal['content'][$side.'_notices'][$key] as $key_2 => $value_2)
 				{
@@ -1791,6 +1837,15 @@ PRIMARY KEY  (".$key."_id)
 		if(!current_user_can('manage_options'))
 		{
 			return false;
+		}
+		
+		// Verify nonce for AJAX requests
+		if(!isset($direct) OR !is_array($direct))
+		{
+			if(!isset($_REQUEST['cb_p6_nonce_dismiss_notice']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_p6_nonce_dismiss_notice'] ), 'cb_p6_nonce_dismiss_notice' ))
+			{
+				return false;
+			}
 		}
 		//wp_send_json($this->opt['content']);
 		
@@ -2156,7 +2211,7 @@ PRIMARY KEY  (".$key."_id)
 		global $wpdb;
 		// Read all existing languages in db 
 		
-		$languages=$wpdb->get_results("SELECT * FROM ".$wpdb->prefix . "options WHERE option_name LIKE '".$this->internal['prefix']."lang%'",ARRAY_A);
+		$languages=$wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "options WHERE option_name LIKE %s", $this->internal['prefix'] . 'lang%' ), ARRAY_A );
 		
 		foreach($languages as $key => $value)
 		{
@@ -2179,10 +2234,13 @@ PRIMARY KEY  (".$key."_id)
 			return false;
 		}	
 		
-		if(!isset($_REQUEST['cb_plugins_nonce_save_language_settings']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_save_language_settings'] ), 'cb_plugins_nonce_save_language_settings' ))
+		if($this->internal['requested_action']=='save_language')
 		{
-			echo 'Form security field expired - go to the earlier page, refresh the page and retry';
-			wp_die();			
+			if(!isset($_REQUEST['cb_plugins_nonce_save_language_settings']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_save_language_settings'] ), 'cb_plugins_nonce_save_language_settings' ))
+			{
+				echo 'Form security field expired - go to the earlier page, refresh the page and retry';
+				wp_die();			
+			}
 		}
 		
 		$request=$v1;
@@ -2274,10 +2332,13 @@ PRIMARY KEY  (".$key."_id)
 			return false;
 		}		
 	
-		if(!isset($_REQUEST['cb_plugins_nonce_set_language']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_set_language'] ), 'cb_plugins_nonce_set_language' ))
+		if($this->internal['requested_action']=='choose_language')
 		{
-			echo 'Form security field expired - go to the earlier page, refresh the page and retry';
-			wp_die();			
+			if(!isset($_REQUEST['cb_plugins_nonce_set_language']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_set_language'] ), 'cb_plugins_nonce_set_language' ))
+			{
+				echo 'Form security field expired - go to the earlier page, refresh the page and retry';
+				wp_die();			
+			}
 		}
 		
 		$this->opt['lang']=$language;

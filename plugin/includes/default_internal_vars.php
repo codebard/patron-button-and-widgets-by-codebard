@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 $this->internal = array_replace_recursive(
 	
@@ -10,7 +11,7 @@ $this->internal = array_replace_recursive(
 		'id' => 'cb_p6',
 		'plugin_id' => 'patron-button-and-widgets-by-codebard',
 		'prefix' => 'cb_p6_',
-		'version' => '2.2.6',
+		'version' => '2.2.7',
 		'plugin_name' => 'CodeBard\'s Patron Button and Widgets for Patreon',
 		
 		'callable_from_request' => array(
@@ -99,7 +100,7 @@ $this->internal = array_replace_recursive(
 		
 			'patron_plugin_pro' => array(
 			
-				'title' => 'Patron Plugin Pro',
+				'title' => 'Member Plugin Pro',
 				'icon' => 'patron_plugin_pro.png',		
 				'link' => 'https://codebard.com/patron-plugin-pro',		
 				'slug' => 'patron-plugin-pro/index.php',		

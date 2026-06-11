@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 
 ?>
@@ -49,6 +50,7 @@
 
 	<input type="hidden" name="<?php echo $this->internal['id'];?>_action" value="dud">
 	<input type="hidden" name="setup_stage" value="1">
+	<input type="hidden" name="cb_plugins_nonce_setup_wizard" value="<?php echo wp_create_nonce('cb_plugins_nonce_setup_wizard'); ?>">
 	</form>
 
 	<div style="font-size:125%;font-weight:bold;margin-top:30px;margin-bottom:15px;display:inline-table;width:100%;">If you don't know how to do that, <a href="https://codebard.com/patreon-button-and-plugin-how-to-find-your-profile-address-or-account-name" target="_blank">click here to read the guide</a> - its easy!</div>
