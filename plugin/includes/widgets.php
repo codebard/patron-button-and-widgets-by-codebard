@@ -374,93 +374,16 @@ class cb_p6_sidebar_goals_site_widget extends WP_Widget {
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'message'=>$this->cb_p6->lang['sidebar_author_widget_message'] ) );
         $title 		= esc_attr($instance['title']);
         $message	= esc_attr($instance['message']);
-				
-		if( class_exists( 'Patreon_Wordpress' ) ) {
-			
-				// Show a notice if setup was not done
-				$setup_done = get_option( 'patreon-setup-done', false );
-				
-				// Check if this site is a v2 site - temporary until we move to make all installations v2
-				$api_version = get_option( 'patreon-installation-api-version', false );
-				
-				// If setup needs doing or any access credential is kaput, prompt for setup.
-				
-				// Some convoluted logic. could be handled better
-				if( ( !$setup_done AND $api_version == '2' ) OR 
-				
-					(	!get_option( 'patreon-client-id', false ) 
-						AND !get_option( 'patreon-client-secret', false ) 
-						AND !get_option( 'patreon-creators-access-token' , false )
-						AND !get_option( 'patreon-creators-refresh-token' , false )
-					) OR 
-					
-					(	get_option( 'patreon-client-id', false ) == ''
-						OR get_option( 'patreon-client-secret', false ) == '' 
-						OR get_option( 'patreon-creators-access-token' , false ) == ''
-						OR get_option( 'patreon-creators-refresh-token' , false ) == ''
-					)
-					
-				) {
-					
-					if ( current_user_can( 'manage_options' ) ) {
-						?>
-						<p>
-						<?php
-						echo $this->cb_p6->lang['pw_install_message_10'];
-						?>
-						</p>
-						<?php
-					}
-				}
-				else {
-					?>
-					<p>
-					Goals widget shows your financial goals. Updates itself daily.
-					</p>
-					<p>
-				  <label for="<?php echo $this->get_field_id('title'); ?>"><?php esc_html_e('Title:', 'patron-button-and-widgets-by-codebard'); ?></label> 
-				  <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
-					</p>
-					<p>
-					  <label for="<?php echo $this->get_field_id('message'); ?>">Message over goal (optional)</label> 
-					  <input class="widefat" id="<?php echo $this->get_field_id('message'); ?>" name="<?php echo $this->get_field_name('message'); ?>" type="text" value="<?php echo $message ?>" />
-					</p>
-					<p>
-					Widget preview:
-					</p>
-					<p>
-					  <?php echo $this->cb_p6->site_goals_sidebar_widget(); ?>
-					</p>
-					<?php
-						if ( !is_plugin_active( 'patron-plugin-pro/index.php' ) ) {
-							
-					?>	
-						<hr>
-						<p>
-						<?php echo $this->cb_p6->lang['new_patreon_widget_message_in_widget_desc']; ?>
-						</p>
-						
-						<?php
-						
-					}
-					
-				}				
-
-		}
-		else {
-			
-			if ( current_user_can( 'manage_options' ) ) {
-			 ?>
-			 <p>
-			 <?php
-				echo $this->cb_p6->lang['goals_widget_require_pw'];
-			?>
-			</p>
-			
-			<?php
-			}
-		}
-		
+		?>
+		<p>
+		  <label for="<?php echo $this->get_field_id('title'); ?>"><?php esc_html_e('Title:', 'patron-button-and-widgets-by-codebard'); ?></label> 
+		  <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
+		</p>
+		<p>
+		  <label for="<?php echo $this->get_field_id('message'); ?>">Message over goal (optional)</label> 
+		  <input class="widefat" id="<?php echo $this->get_field_id('message'); ?>" name="<?php echo $this->get_field_name('message'); ?>" type="text" value="<?php echo $message ?>" />
+		</p>
+		<?php
     }
 	
 }

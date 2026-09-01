@@ -452,29 +452,8 @@ class cb_p6_core {
 	
 		$passed=$args['time']-$this->internal['start'];
 		
-		if(isset($this->internal['write_log']))
-		{
-			file_put_contents('log', $this->internal['id'].' - Action '.$args['action'].' '.$args['status'].' at '.$passed.' msec with vars v1 '.serialize($args['vars'][0]).
-			' v2 '.serialize($args['vars'][1]).
-			' v3 '.serialize($args['vars'][2]).
-			' v4 '.serialize($args['vars'][3]).
-			' v5 '.serialize($args['vars'][4]).
-			' v6 '.serialize($args['vars'][5]).
-			' v7 '.serialize($args['vars'][6]).
-			' v8 '.serialize($args['vars'][7]).
-			' v9 '.serialize($args['vars'][8]).
-			' v10 '.serialize($args['vars'][9])
-			.PHP_EOL
-			
-			 , FILE_APPEND);
-			
-			
-		}
-		else
-		{
-			$this->internal['log'][]=$this->internal['id'].' - Action '.$args['action'].' '.$args['status'].' at '.$passed.' msec';
-			
-		}
+		$this->internal['log'][]=$this->internal['id'].' - Action '.$args['action'].' '.$args['status'].' at '.$passed.' msec';
+		
     }
 	//|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 	//|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
