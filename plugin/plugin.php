@@ -110,7 +110,7 @@ class cb_p6_plugin extends cb_p6_core
 		global $post;
 
 		
-		return $title;
+		return esc_html( $title );
 	}
 	public function content_filters_p($wordpress_content)
 	{
@@ -705,7 +705,7 @@ class cb_p6_plugin extends cb_p6_core
 
 			if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
 				if ( current_user_can( 'manage_options' ) ) {
-					$append.= 'Patreon button not appearing because you have not saved your profile url in Button settings - click <a href="'. admin_url( 'admin.php?page=settings_cb_p6&cb_p6_tab=quickstart' ) .'">here</a> to save it. Only you as an admin can see this message.';
+					$append.= 'Patreon button not appearing because you have not saved your profile url in Button settings - click <a href="'. esc_url( admin_url( 'admin.php?page=settings_cb_p6&cb_p6_tab=quickstart' ) ) .'">here</a> to save it. Only you as an admin can see this message.';
 				}
 				else {
 					$append.= '';
@@ -721,7 +721,7 @@ class cb_p6_plugin extends cb_p6_core
 
 			if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
 				if ( current_user_can( 'manage_options' ) ) {
-					$append.= 'This author has to set his or her Patreon vanity profile name in his profile before widget can link to his profile. Additionally we can\'t show the site Patreon profile link in its place either because have not saved site profile url in Button settings - either one of them must be saved for the widget to show the link - click <a href="'. admin_url( 'admin.php?page=settings_cb_p6&cb_p6_tab=quickstart' ) .'">here</a> to save site profile name for site\'s Patreon. Only you as an admin can see this message.';
+					$append.= 'This author has to set his or her Patreon vanity profile name in his profile before widget can link to his profile. Additionally we can\'t show the site Patreon profile link in its place either because have not saved site profile url in Button settings - either one of them must be saved for the widget to show the link - click <a href="'. esc_url( admin_url( 'admin.php?page=settings_cb_p6&cb_p6_tab=quickstart' ) ) .'">here</a> to save site profile name for site\'s Patreon. Only you as an admin can see this message.';
 				}
 				else {
 					$append.= '';
