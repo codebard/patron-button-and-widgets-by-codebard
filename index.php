@@ -524,6 +524,12 @@ class cb_p6_core {
 			return false;			
 		}
 
+		if(!isset($_REQUEST['cb_plugins_nonce_create_tables']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_create_tables'] ), 'cb_plugins_nonce_create_tables' ))
+		{
+			echo 'Form security field expired - go to the earlier page, refresh the page and retry';
+			wp_die();			
+		}
+
 		global $wpdb;
 		global $wp_roles;
 		global $current_user;
@@ -1047,6 +1053,12 @@ PRIMARY KEY  (".$key."_id)
 		if(!current_user_can('manage_options'))
 		{
 			return false;			
+		}
+
+		if(!isset($_REQUEST['cb_plugins_nonce_reset_info']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_reset_info'] ), 'cb_plugins_nonce_reset_info' ))
+		{
+			echo 'Form security field expired - go to the earlier page, refresh the page and retry';
+			wp_die();			
 		}
 		
 		delete_option($this->internal['prefix'].'info');	

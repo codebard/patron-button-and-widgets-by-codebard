@@ -29,6 +29,14 @@ You can upgrade to Patron Plugin Pro, add the Patron Content Manager addon and e
 
 https://codebard.com/patron-plugin-pro
 
+== External services ==
+
+This plugin generates hyperlinks to Patreon to allow your visitors to become your patrons. This is the core purpose of the plugin.
+
+When you configure your Patreon username in the plugin settings, the plugin constructs standard HTML links pointing to your Patreon profile page (https://www.patreon.com/yourusername). These links are displayed under your post content and in sidebar widgets. No data is sent to Patreon by the plugin itself — the links are simply rendered as clickable URLs that your visitors can follow to visit your Patreon page.
+
+The plugin's admin dashboard also contains static links to the developer's website (codebard.com) for support documentation, addon information, and premium features. Clicking these links will take you to the developer's website. No data is transmitted to the developer's website by the plugin.
+
 ---------------------------
 
 After install, activate the plugin, and that’s it.
