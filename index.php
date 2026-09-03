@@ -3,7 +3,7 @@
 	Plugin Name: CodeBard's Patron Button and Widgets for Patreon
 	Plugin URI: https://wordpress.org/plugins/patron-button-and-widgets-by-codebard/
 	Description: Patreon Patron Buttons, Widgets and Patreon Functions
-	Version: 2.2.7
+	Version: 2.2.8
 	Author: CodeBard
 	Author URI: https://codebard.com
 	Text Domain: cb_p6
@@ -452,29 +452,8 @@ class cb_p6_core {
 	
 		$passed=$args['time']-$this->internal['start'];
 		
-		if(isset($this->internal['write_log']))
-		{
-			file_put_contents('log', $this->internal['id'].' - Action '.$args['action'].' '.$args['status'].' at '.$passed.' msec with vars v1 '.serialize($args['vars'][0]).
-			' v2 '.serialize($args['vars'][1]).
-			' v3 '.serialize($args['vars'][2]).
-			' v4 '.serialize($args['vars'][3]).
-			' v5 '.serialize($args['vars'][4]).
-			' v6 '.serialize($args['vars'][5]).
-			' v7 '.serialize($args['vars'][6]).
-			' v8 '.serialize($args['vars'][7]).
-			' v9 '.serialize($args['vars'][8]).
-			' v10 '.serialize($args['vars'][9])
-			.PHP_EOL
-			
-			 , FILE_APPEND);
-			
-			
-		}
-		else
-		{
-			$this->internal['log'][]=$this->internal['id'].' - Action '.$args['action'].' '.$args['status'].' at '.$passed.' msec';
-			
-		}
+		$this->internal['log'][]=$this->internal['id'].' - Action '.$args['action'].' '.$args['status'].' at '.$passed.' msec';
+		
     }
 	//|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 	//|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -543,6 +522,15 @@ class cb_p6_core {
 		if(!current_user_can('activate_plugins'))
 		{
 			return false;			
+		}
+
+		if($this->internal['requested_action']=='create_tables')
+		{
+			if(!isset($_REQUEST['cb_plugins_nonce_create_tables']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_create_tables'] ), 'cb_plugins_nonce_create_tables' ))
+			{
+				echo 'Form security field expired - go to the earlier page, refresh the page and retry';
+				wp_die();			
+			}
 		}
 
 		global $wpdb;
@@ -823,7 +811,16 @@ PRIMARY KEY  (".$key."_id)
 			$tab='';
 		}
 
-		$form_action_url = admin_url( 'admin.php?page=settings_' . $this->internal['id'] . '&' . $this->internal['prefix'] . 'tab=' . $tab );
+		// Verify nonce when present (form submissions). GET tab navigation uses sanitized value.
+		if(isset($_REQUEST['cb_plugins_nonce_save_settings']))
+		{
+			if(!wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_save_settings'] ), 'cb_plugins_nonce_save_settings' ))
+			{
+				$tab = '';
+			}
+		}
+
+		$form_action_url = esc_url( admin_url( 'admin.php?page=settings_' . $this->internal['id'] . '&' . $this->internal['prefix'] . 'tab=' . $tab ) );
 
 		$template_vars = array('tab' => $tab, 'form_action_url' => $form_action_url, 'form_nonce' => wp_create_nonce('cb_plugins_nonce_save_settings') );
 
@@ -848,12 +845,12 @@ PRIMARY KEY  (".$key."_id)
 		$admin_settings_page_footer = $this->process_lang( $admin_settings_page_footer );
 
 
-		echo $admin_settings_page_header;		
+		echo wp_kses_post($admin_settings_page_header);		
 
 		echo $this->do_admin_page_tabs();
 		$this->do_setting_section($tab);
 
-		echo $admin_settings_page_footer;
+		echo wp_kses_post($admin_settings_page_footer);
 		
 	}
 	public function do_admin_settings_form_header_c()
@@ -873,7 +870,7 @@ PRIMARY KEY  (".$key."_id)
 			$tab='';
 		}
 
-		$form_action_url = admin_url( 'admin.php?page=settings_' . $this->internal['id'] . '&' . $this->internal['prefix'] . 'tab=' . $tab );
+		$form_action_url = esc_url( admin_url( 'admin.php?page=settings_' . $this->internal['id'] . '&' . $this->internal['prefix'] . 'tab=' . $tab ) );
 
 		$template_vars=array( 'tab' => $tab, 'form_action_url' => $form_action_url );
 
@@ -902,7 +899,7 @@ PRIMARY KEY  (".$key."_id)
 			$tab='';
 		}
 
-		$form_action_url = admin_url( 'admin.php?page=settings_' . $this->internal['id'] . '&' . $this->internal['prefix'] . 'tab=' . $tab );
+		$form_action_url = esc_url( admin_url( 'admin.php?page=settings_' . $this->internal['id'] . '&' . $this->internal['prefix'] . 'tab=' . $tab ) );
 
 		$template_vars=array( 'tab' => $tab, 'form_action_url' => $form_action_url, 'form_nonce' => wp_create_nonce('cb_plugins_nonce_save_settings') );	
 
@@ -1068,6 +1065,12 @@ PRIMARY KEY  (".$key."_id)
 		if(!current_user_can('manage_options'))
 		{
 			return false;			
+		}
+
+		if(!isset($_REQUEST['cb_plugins_nonce_reset_info']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_reset_info'] ), 'cb_plugins_nonce_reset_info' ))
+		{
+			echo 'Form security field expired - go to the earlier page, refresh the page and retry';
+			wp_die();			
 		}
 		
 		delete_option($this->internal['prefix'].'info');	
@@ -1839,13 +1842,10 @@ PRIMARY KEY  (".$key."_id)
 			return false;
 		}
 		
-		// Verify nonce for AJAX requests
-		if(!isset($direct) OR !is_array($direct))
+		// Always verify nonce
+		if(!isset($_REQUEST['cb_p6_nonce_dismiss_notice']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_p6_nonce_dismiss_notice'] ), 'cb_p6_nonce_dismiss_notice' ))
 		{
-			if(!isset($_REQUEST['cb_p6_nonce_dismiss_notice']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_p6_nonce_dismiss_notice'] ), 'cb_p6_nonce_dismiss_notice' ))
-			{
-				return false;
-			}
+			return false;
 		}
 		//wp_send_json($this->opt['content']);
 		

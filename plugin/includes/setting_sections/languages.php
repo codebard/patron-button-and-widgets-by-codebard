@@ -7,13 +7,13 @@ if(!isset($this->opt['lang']))
 	
 }
 
+$current_language = false;
 if(isset($_REQUEST[$this->internal['prefix'].'current_language']))
 {
-	$current_language=isset($_REQUEST[$this->internal['prefix'].'current_language']) ? sanitize_text_field($_REQUEST[$this->internal['prefix'].'current_language']) : false;
-}
-else
-{
-	$current_language=false;
+	if(isset($_REQUEST['cb_plugins_nonce_set_language']) && wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_set_language'] ), 'cb_plugins_nonce_set_language' ))
+	{
+		$current_language = sanitize_text_field($_REQUEST[$this->internal['prefix'].'current_language']);
+	}
 }
 
 

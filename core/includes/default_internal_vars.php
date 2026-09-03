@@ -11,9 +11,6 @@ $this->internal = array_replace_recursive(
 		'callable_from_request' => array(
 			'save_settings' => 1,
 			'reset_options' => 1,
-			'reset_info' => 1,
-			'create_tables' => 1,
-			'insert_test_replies' => 1,
 			),
 		'ignore_at_call' => array(
 			'dud'=>1,

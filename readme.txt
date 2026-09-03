@@ -6,8 +6,8 @@ Donate link: http://codebard.com/donate
 Tags: patreon, widgets, crowdfunding, donations, social
 License: GPL
 Requires at least: 4.0
-Tested up to: 7.0
-Stable Tag: 2.2.7
+Tested up to: 7.1
+Stable Tag: 2.2.8
 
 Add Patreon buttons to your content and sidebars. Upgrade to Patron Plugin Pro for patron-only posts and powerful features.
 
@@ -28,6 +28,14 @@ More features are planned as they become available in Patreon API.
 You can upgrade to Patron Plugin Pro, add the Patron Content Manager addon and enable powerful content-locking options to serve Patron only content from your own website! Patron Plugin Pro will also allow you to put your patrons directly to patron pipeline instead of your profile. Check it out below:
 
 https://codebard.com/patron-plugin-pro
+
+== External services ==
+
+This plugin generates hyperlinks to Patreon to allow your visitors to become your patrons. This is the core purpose of the plugin.
+
+When you configure your Patreon username in the plugin settings, the plugin constructs standard HTML links pointing to your Patreon profile page (https://www.patreon.com/yourusername). These links are displayed under your post content and in sidebar widgets. No data is sent to Patreon by the plugin itself — the links are simply rendered as clickable URLs that your visitors can follow to visit your Patreon page.
+
+The plugin's admin dashboard also contains static links to the developer's website (codebard.com) for support documentation, addon information, and premium features. Clicking these links will take you to the developer's website. No data is transmitted to the developer's website by the plugin.
 
 ---------------------------
 
@@ -61,6 +69,14 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 
 == Upgrade Notice ==
+
+= 2.2.8 =
+
+* Removed deprecated Patreon goals API code
+* Added external services section
+* Code that wrote files to the filesystem removed
+* Variables in the HTML code that is outputted were escaped
+* Nonces added for dynamic dispatches
 
 = 2.2.7 =
 
@@ -237,6 +253,14 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Initial release!
 
 == Changelog ==
+
+= 2.2.8 =
+
+* Removed deprecated Patreon goals API code
+* Added external services section
+* Code that wrote files to the filesystem removed
+* Variables in the HTML code that is outputted were escaped
+* Nonces added for dynamic dispatches
 
 = 2.2.7 =
 
