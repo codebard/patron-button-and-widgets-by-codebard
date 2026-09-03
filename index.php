@@ -524,10 +524,13 @@ class cb_p6_core {
 			return false;			
 		}
 
-		if(!isset($_REQUEST['cb_plugins_nonce_create_tables']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_create_tables'] ), 'cb_plugins_nonce_create_tables' ))
+		if($this->internal['requested_action']=='create_tables')
 		{
-			echo 'Form security field expired - go to the earlier page, refresh the page and retry';
-			wp_die();			
+			if(!isset($_REQUEST['cb_plugins_nonce_create_tables']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_create_tables'] ), 'cb_plugins_nonce_create_tables' ))
+			{
+				echo 'Form security field expired - go to the earlier page, refresh the page and retry';
+				wp_die();			
+			}
 		}
 
 		global $wpdb;
@@ -806,6 +809,15 @@ PRIMARY KEY  (".$key."_id)
 		else
 		{
 			$tab='';
+		}
+
+		// Verify nonce when present (form submissions). GET tab navigation uses sanitized value.
+		if(isset($_REQUEST['cb_plugins_nonce_save_settings']))
+		{
+			if(!wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_save_settings'] ), 'cb_plugins_nonce_save_settings' ))
+			{
+				$tab = '';
+			}
 		}
 
 		$form_action_url = esc_url( admin_url( 'admin.php?page=settings_' . $this->internal['id'] . '&' . $this->internal['prefix'] . 'tab=' . $tab ) );
@@ -1830,13 +1842,10 @@ PRIMARY KEY  (".$key."_id)
 			return false;
 		}
 		
-		// Verify nonce for AJAX requests
-		if(!isset($direct) OR !is_array($direct))
+		// Always verify nonce
+		if(!isset($_REQUEST['cb_p6_nonce_dismiss_notice']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_p6_nonce_dismiss_notice'] ), 'cb_p6_nonce_dismiss_notice' ))
 		{
-			if(!isset($_REQUEST['cb_p6_nonce_dismiss_notice']) OR !wp_verify_nonce( sanitize_key( $_REQUEST['cb_p6_nonce_dismiss_notice'] ), 'cb_p6_nonce_dismiss_notice' ))
-			{
-				return false;
-			}
+			return false;
 		}
 		//wp_send_json($this->opt['content']);
 		
