@@ -147,21 +147,21 @@ class cb_p6_sidebar_user_widget extends WP_Widget {
         $title 		= apply_filters('widget_title', $instance['title']);
 		  $message 	= $instance['message'];
         ?>
-              <?php echo $before_widget; ?>
+              <?php echo wp_kses_post($before_widget); ?>
                   <?php if ( $title )
-                        echo $before_title . $title . $after_title; ?>
+                        echo wp_kses_post($before_title . $title . $after_title); ?>
 							
 								<?php 
 									
 								
 								?>
-									<div style="text-align: <?php echo $this->cb_p6->opt['sidebar_widgets']['insert_text_align']; ?> !important;font-size: <?php echo $this->cb_p6->opt['sidebar_widgets']['message_font_size']; ?>;margin-top: <?php echo $this->cb_p6->opt['sidebar_widgets']['message_over_post_button_margin']; ?>;margin-bottom: <?php echo $this->cb_p6->opt['sidebar_widgets']['message_over_post_button_margin']; ?>;"><?php echo $this->cb_p6->author_sidebar_widget_message($message); ?></div>
+									<div style="text-align: <?php echo esc_attr($this->cb_p6->opt['sidebar_widgets']['insert_text_align']); ?> !important;font-size: <?php echo esc_attr($this->cb_p6->opt['sidebar_widgets']['message_font_size']); ?>;margin-top: <?php echo esc_attr($this->cb_p6->opt['sidebar_widgets']['message_over_post_button_margin']); ?>;margin-bottom: <?php echo esc_attr($this->cb_p6->opt['sidebar_widgets']['message_over_post_button_margin']); ?>;"><?php echo wp_kses_post($this->cb_p6->author_sidebar_widget_message($message)); ?></div>
 								
-	<?php echo $this->cb_p6->author_sidebar_widget(); ?>
+	<?php echo wp_kses_post($this->cb_p6->author_sidebar_widget()); ?>
 							
      
 						
-              <?php echo $after_widget; ?>
+              <?php echo wp_kses_post($after_widget); ?>
         <?php
     }
  
@@ -181,15 +181,15 @@ class cb_p6_sidebar_user_widget extends WP_Widget {
         $message	= esc_attr($instance['message']);
         ?>
          <p>
-          <label for="<?php echo $this->get_field_id('title'); ?>"><?php esc_html_e('Title:', 'patron-button-and-widgets-by-codebard'); ?></label> 
-          <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
+          <label for="<?php echo esc_attr($this->get_field_id('title')); ?>"><?php esc_html_e('Title:', 'patron-button-and-widgets-by-codebard'); ?></label> 
+          <input class="widefat" id="<?php echo esc_attr($this->get_field_id('title')); ?>" name="<?php echo esc_attr($this->get_field_name('title')); ?>" type="text" value="<?php echo $title; ?>" />
         </p>
 		<p>
-          <label for="<?php echo $this->get_field_id('message'); ?>"><?php echo $this->cb_p6->lang['message_over_button'] ?></label> 
-          <input class="widefat" id="<?php echo $this->get_field_id('message'); ?>" name="<?php echo $this->get_field_name('message'); ?>" type="text" value="<?php echo $message ?>" />
+          <label for="<?php echo esc_attr($this->get_field_id('message')); ?>"><?php echo esc_html($this->cb_p6->lang['message_over_button']) ?></label> 
+          <input class="widefat" id="<?php echo esc_attr($this->get_field_id('message')); ?>" name="<?php echo esc_attr($this->get_field_name('message')); ?>" type="text" value="<?php echo $message ?>" />
         </p>
 		<p>
-          <?php echo $this->cb_p6->author_sidebar_widget(); ?>
+          <?php echo wp_kses_post($this->cb_p6->author_sidebar_widget()); ?>
         </p>		
 		
         <?php 
@@ -249,20 +249,20 @@ class cb_p6_sidebar_site_widget extends WP_Widget {
         $title 		= apply_filters('widget_title', $instance['title']);
         $message 	= $instance['message'];
         ?>
-              <?php echo $before_widget; ?>
+              <?php echo wp_kses_post($before_widget); ?>
                   <?php if ( $title )
-                        echo $before_title . $title . $after_title; ?>
+                        echo wp_kses_post($before_title . $title . $after_title); ?>
 						
 								<?php if($message!='')
 								{
 								?>
-								<div style="text-align: <?php echo $this->cb_p6->opt['sidebar_widgets']['insert_text_align']; ?> !important;font-size: <?php echo $this->cb_p6->opt['sidebar_widgets']['message_font_size']; ?>;margin-top: <?php echo $this->cb_p6->opt['sidebar_widgets']['message_over_post_button_margin']; ?>;margin-bottom: <?php echo $this->cb_p6->opt['sidebar_widgets']['message_over_post_button_margin']; ?>;"><?php echo $this->cb_p6->site_sidebar_widget_message($message); ?></div>
+								<div style="text-align: <?php echo esc_attr($this->cb_p6->opt['sidebar_widgets']['insert_text_align']); ?> !important;font-size: <?php echo esc_attr($this->cb_p6->opt['sidebar_widgets']['message_font_size']); ?>;margin-top: <?php echo esc_attr($this->cb_p6->opt['sidebar_widgets']['message_over_post_button_margin']); ?>;margin-bottom: <?php echo esc_attr($this->cb_p6->opt['sidebar_widgets']['message_over_post_button_margin']); ?>;"><?php echo wp_kses_post($this->cb_p6->site_sidebar_widget_message($message)); ?></div>
 								<?php } ?>
 							
-          <?php echo $this->cb_p6->site_sidebar_widget(); ?>
+          <?php echo wp_kses_post($this->cb_p6->site_sidebar_widget()); ?>
      
 						
-              <?php echo $after_widget; ?>
+              <?php echo wp_kses_post($after_widget); ?>
         <?php
     }
  
@@ -282,15 +282,15 @@ class cb_p6_sidebar_site_widget extends WP_Widget {
         $message	= esc_attr($instance['message']);
         ?>
          <p>
-          <label for="<?php echo $this->get_field_id('title'); ?>"><?php esc_html_e('Title:', 'patron-button-and-widgets-by-codebard'); ?></label> 
-          <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
+          <label for="<?php echo esc_attr($this->get_field_id('title')); ?>"><?php esc_html_e('Title:', 'patron-button-and-widgets-by-codebard'); ?></label> 
+          <input class="widefat" id="<?php echo esc_attr($this->get_field_id('title')); ?>" name="<?php echo esc_attr($this->get_field_name('title')); ?>" type="text" value="<?php echo $title; ?>" />
         </p>
 		<p>
-          <label for="<?php echo $this->get_field_id('message'); ?>"><?php echo $cb_p6->lang['message_over_button'] ?></label> 
-          <input class="widefat" id="<?php echo $this->get_field_id('message'); ?>" name="<?php echo $this->get_field_name('message'); ?>" type="text" value="<?php echo $message ?>" />
+          <label for="<?php echo esc_attr($this->get_field_id('message')); ?>"><?php echo esc_html($cb_p6->lang['message_over_button']) ?></label> 
+          <input class="widefat" id="<?php echo esc_attr($this->get_field_id('message')); ?>" name="<?php echo esc_attr($this->get_field_name('message')); ?>" type="text" value="<?php echo $message ?>" />
         </p>
 		<p>
-          <?php echo $this->cb_p6->site_sidebar_widget(); ?>
+          <?php echo wp_kses_post($this->cb_p6->site_sidebar_widget()); ?>
         </p>		
 		
         <?php 
@@ -342,21 +342,21 @@ class cb_p6_sidebar_goals_site_widget extends WP_Widget {
         $title 		= apply_filters('widget_title', $instance['title']);
 		  $message 	= $instance['message'];
         ?>
-              <?php echo $before_widget; ?>
+              <?php echo wp_kses_post($before_widget); ?>
                   <?php if ( $title )
-                        echo $before_title . $title . $after_title; ?>
+                        echo wp_kses_post($before_title . $title . $after_title); ?>
 							
 								<?php 
 									
 								
 								?>
-									<div style="text-align: <?php echo $this->cb_p6->opt['sidebar_widgets']['insert_text_align']; ?> !important;font-size: <?php echo $this->cb_p6->opt['sidebar_widgets']['message_font_size']; ?>;margin-top: <?php echo $this->cb_p6->opt['sidebar_widgets']['message_over_post_button_margin']; ?>;margin-bottom: <?php echo $this->cb_p6->opt['sidebar_widgets']['message_over_post_button_margin']; ?>;"><?php echo $this->cb_p6->site_goals_sidebar_widget_message($message); ?></div>
+									<div style="text-align: <?php echo esc_attr($this->cb_p6->opt['sidebar_widgets']['insert_text_align']); ?> !important;font-size: <?php echo esc_attr($this->cb_p6->opt['sidebar_widgets']['message_font_size']); ?>;margin-top: <?php echo esc_attr($this->cb_p6->opt['sidebar_widgets']['message_over_post_button_margin']); ?>;margin-bottom: <?php echo esc_attr($this->cb_p6->opt['sidebar_widgets']['message_over_post_button_margin']); ?>;"><?php echo wp_kses_post($this->cb_p6->site_goals_sidebar_widget_message($message)); ?></div>
 								
-	<?php echo $this->cb_p6->site_goals_sidebar_widget(); ?>
+	<?php echo wp_kses_post($this->cb_p6->site_goals_sidebar_widget()); ?>
 							
      
 						
-              <?php echo $after_widget; ?>
+              <?php echo wp_kses_post($after_widget); ?>
         <?php
     }
  
@@ -376,12 +376,12 @@ class cb_p6_sidebar_goals_site_widget extends WP_Widget {
         $message	= esc_attr($instance['message']);
 		?>
 		<p>
-		  <label for="<?php echo $this->get_field_id('title'); ?>"><?php esc_html_e('Title:', 'patron-button-and-widgets-by-codebard'); ?></label> 
-		  <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
+		  <label for="<?php echo esc_attr($this->get_field_id('title')); ?>"><?php esc_html_e('Title:', 'patron-button-and-widgets-by-codebard'); ?></label> 
+		  <input class="widefat" id="<?php echo esc_attr($this->get_field_id('title')); ?>" name="<?php echo esc_attr($this->get_field_name('title')); ?>" type="text" value="<?php echo $title; ?>" />
 		</p>
 		<p>
-		  <label for="<?php echo $this->get_field_id('message'); ?>">Message over goal (optional)</label> 
-		  <input class="widefat" id="<?php echo $this->get_field_id('message'); ?>" name="<?php echo $this->get_field_name('message'); ?>" type="text" value="<?php echo $message ?>" />
+		  <label for="<?php echo esc_attr($this->get_field_id('message')); ?>">Message over goal (optional)</label> 
+		  <input class="widefat" id="<?php echo esc_attr($this->get_field_id('message')); ?>" name="<?php echo esc_attr($this->get_field_name('message')); ?>" type="text" value="<?php echo $message ?>" />
 		</p>
 		<?php
     }

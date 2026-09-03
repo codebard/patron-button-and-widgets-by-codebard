@@ -808,7 +808,7 @@ PRIMARY KEY  (".$key."_id)
 			$tab='';
 		}
 
-		$form_action_url = admin_url( 'admin.php?page=settings_' . $this->internal['id'] . '&' . $this->internal['prefix'] . 'tab=' . $tab );
+		$form_action_url = esc_url( admin_url( 'admin.php?page=settings_' . $this->internal['id'] . '&' . $this->internal['prefix'] . 'tab=' . $tab ) );
 
 		$template_vars = array('tab' => $tab, 'form_action_url' => $form_action_url, 'form_nonce' => wp_create_nonce('cb_plugins_nonce_save_settings') );
 
@@ -833,12 +833,12 @@ PRIMARY KEY  (".$key."_id)
 		$admin_settings_page_footer = $this->process_lang( $admin_settings_page_footer );
 
 
-		echo $admin_settings_page_header;		
+		echo wp_kses_post($admin_settings_page_header);		
 
 		echo $this->do_admin_page_tabs();
 		$this->do_setting_section($tab);
 
-		echo $admin_settings_page_footer;
+		echo wp_kses_post($admin_settings_page_footer);
 		
 	}
 	public function do_admin_settings_form_header_c()
@@ -858,7 +858,7 @@ PRIMARY KEY  (".$key."_id)
 			$tab='';
 		}
 
-		$form_action_url = admin_url( 'admin.php?page=settings_' . $this->internal['id'] . '&' . $this->internal['prefix'] . 'tab=' . $tab );
+		$form_action_url = esc_url( admin_url( 'admin.php?page=settings_' . $this->internal['id'] . '&' . $this->internal['prefix'] . 'tab=' . $tab ) );
 
 		$template_vars=array( 'tab' => $tab, 'form_action_url' => $form_action_url );
 
@@ -887,7 +887,7 @@ PRIMARY KEY  (".$key."_id)
 			$tab='';
 		}
 
-		$form_action_url = admin_url( 'admin.php?page=settings_' . $this->internal['id'] . '&' . $this->internal['prefix'] . 'tab=' . $tab );
+		$form_action_url = esc_url( admin_url( 'admin.php?page=settings_' . $this->internal['id'] . '&' . $this->internal['prefix'] . 'tab=' . $tab ) );
 
 		$template_vars=array( 'tab' => $tab, 'form_action_url' => $form_action_url, 'form_nonce' => wp_create_nonce('cb_plugins_nonce_save_settings') );	
 
