@@ -4,7 +4,7 @@ Plugin URI: https://wordpress.org/plugins/patron-button-and-widgets-by-codebard/
 Contributors: CodeBard
 Donate link: http://codebard.com/donate
 Tags: patreon, widgets, crowdfunding, donations, social
-License: GPL
+License: GPLv2 or later
 Requires at least: 4.0
 Tested up to: 7.1
 Stable Tag: 2.2.8

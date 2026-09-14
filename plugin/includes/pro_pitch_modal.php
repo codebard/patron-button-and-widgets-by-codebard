@@ -4,9 +4,9 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 ?>
 
-<div class="<?php echo $this->internal['prefix'];?>settings" id="<?php echo $this->internal['prefix'];?>pro_pitch_modal" style="margin-top:0px;padding-top:0px;">
+<div class="<?php echo esc_attr($this->internal['prefix']);?>settings" id="<?php echo esc_attr($this->internal['prefix']);?>pro_pitch_modal" style="margin-top:0px;padding-top:0px;">
 
-	<div style="font-size:175%;font-weight:bold;margin-top:30px;display:inline-table;width:100%;line-height: 1;">Patreon Button & Plugin by <a href="http://codebard.com" target="_blank"><img src="<?php echo $this->internal['plugin_url']; ?>images/codebard_very_small.png"></a> has been upgraded! And we got news for you:</div>
+	<div style="font-size:175%;font-weight:bold;margin-top:30px;display:inline-table;width:100%;line-height: 1;">Patreon Button & Plugin by <a href="http://codebard.com" target="_blank"><img src="<?php echo esc_url($this->internal['plugin_url']); ?>images/codebard_very_small.png"></a> has been upgraded! And we got news for you:</div>
 
 	
 	<div style="font-size:200%;font-weight:bold;margin-top:30px;margin-bottom:15px;display:inline-table;width:100%;line-height: 1;">Now you can upgrade to Member Plugin Pro to get most out of your Patreon and increase your pledges!</div>
