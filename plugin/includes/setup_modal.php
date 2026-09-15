@@ -4,9 +4,9 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 ?>
 
-<div class="<?php echo $this->internal['prefix'];?>setup_modal" <?php if(!isset($_REQUEST['setup_stage'])){ ?> id="<?php echo $this->internal['prefix'];?>setup_modal" <?php } ?>>
+<div class="<?php echo esc_attr($this->internal['prefix']);?>setup_modal" <?php if(!isset($_REQUEST['setup_stage'])){ ?> id="<?php echo esc_attr($this->internal['prefix']);?>setup_modal" <?php } ?>>
 
-	<div style="font-size:175%;font-weight:bold;margin-top:30px;display:inline-table;width:100%;">Patreon Button & Plugin by <a href="https://codebard.com" target="_blank"><img src="<?php echo $this->internal['plugin_url']; ?>images/codebard_very_small.png"></a> is almost ready!</div>
+	<div style="font-size:175%;font-weight:bold;margin-top:30px;display:inline-table;width:100%;">Patreon Button & Plugin by <a href="https://codebard.com" target="_blank"><img src="<?php echo esc_url($this->internal['plugin_url']); ?>images/codebard_very_small.png"></a> is almost ready!</div>
 
 	
 	<div style="font-size:150%;font-weight:bold;margin-top:30px;margin-bottom:15px;display:inline-table;width:100%;">Just one thing - you must fill in your Patreon profile address or account name below:</div>
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 			foreach($this->error as $key => $value)
 			{
 				echo '<hr>';
-				echo '<span style="color : #ff0000;">'.$this->error[$key].'</span>';
+				echo '<span style="color : #ff0000;">'.wp_kses_post($this->error[$key]).'</span>';
 				echo '<hr>';
 			
 			
@@ -42,13 +42,13 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 		
 	?>
 	
-	<form method="post" action="<?php echo $this->internal['admin_url'].'admin.php?page=settings_'.$this->internal['id']; ?>">
+	<form method="post" action="<?php echo esc_url($this->internal['admin_url'].'admin.php?page=settings_'.$this->internal['id']); ?>">
 	
-		<input type="text" style="max-width : 700px;width:100%;font-size:150%;" name="site_account" id="site_account_setup" value="<?php echo $_REQUEST['site_account']; ?>"  onfocus="if(this.value == '<?php echo $_REQUEST['site_account'] ?>') {this.value=''}" onblur="if(this.value == ''){this.value ='<?php echo $_REQUEST['site_account'] ?>'}">
+		<input type="text" style="max-width : 700px;width:100%;font-size:150%;" name="site_account" id="site_account_setup" value="<?php echo esc_attr($_REQUEST['site_account']); ?>"  onfocus="if(this.value == '<?php echo esc_attr($_REQUEST['site_account']); ?>') {this.value=''}" onblur="if(this.value == ''){this.value ='<?php echo esc_attr($_REQUEST['site_account']); ?>'}">
 		<input type="submit" style="font-size:150%;" value="	Save!	">
 
 
-	<input type="hidden" name="<?php echo $this->internal['id'];?>_action" value="dud">
+	<input type="hidden" name="<?php echo esc_attr($this->internal['id']);?>_action" value="dud">
 	<input type="hidden" name="setup_stage" value="1">
 	<input type="hidden" name="cb_plugins_nonce_setup_wizard" value="<?php echo wp_create_nonce('cb_plugins_nonce_setup_wizard'); ?>">
 	</form>

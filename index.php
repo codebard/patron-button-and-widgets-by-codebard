@@ -3,7 +3,7 @@
 	Plugin Name: CodeBard's Patron Button and Widgets for Patreon
 	Plugin URI: https://wordpress.org/plugins/patron-button-and-widgets-by-codebard/
 	Description: Patreon Patron Buttons, Widgets and Patreon Functions
-	Version: 2.2.8
+	Version: 2.2.9
 	Author: CodeBard
 	Author URI: https://codebard.com
 	Text Domain: cb_p6
@@ -868,6 +868,15 @@ PRIMARY KEY  (".$key."_id)
 		else
 		{
 			$tab='';
+		}
+
+		// Verify nonce when present (form submissions). GET tab navigation uses sanitized value.
+		if(isset($_REQUEST['cb_plugins_nonce_save_settings']))
+		{
+			if(!wp_verify_nonce( sanitize_key( $_REQUEST['cb_plugins_nonce_save_settings'] ), 'cb_plugins_nonce_save_settings' ))
+			{
+				$tab = '';
+			}
 		}
 
 		$form_action_url = esc_url( admin_url( 'admin.php?page=settings_' . $this->internal['id'] . '&' . $this->internal['prefix'] . 'tab=' . $tab ) );
@@ -3049,8 +3058,12 @@ PRIMARY KEY  (".$key."_id)
 		
 		$item_id =$v1;
 		$data_type =$v2;
-		
-		
+
+		// Whitelist validate data_type against known tables
+		if(!array_key_exists($data_type, $this->internal['tables']))
+		{
+			return false;
+		}
 		
 		$sql="DELETE FROM ".$wpdb->prefix.$this->internal['id']."_".$data_type;
 
@@ -3224,7 +3237,13 @@ PRIMARY KEY  (".$key."_id)
 		if($meta_type=='')
 		{
 			$meta_type='longtext';
-		}		
+		}
+
+		// Whitelist validate meta_type against known meta tables
+		if(!array_key_exists($meta_type, $this->internal['meta_tables']))
+		{
+			return false;
+		}
 				
 		$sql="DELETE FROM ".$wpdb->prefix.$this->internal['id']."_".$meta_type;
 

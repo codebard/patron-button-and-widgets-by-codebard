@@ -4,10 +4,10 @@ Plugin URI: https://wordpress.org/plugins/patron-button-and-widgets-by-codebard/
 Contributors: CodeBard
 Donate link: http://codebard.com/donate
 Tags: patreon, widgets, crowdfunding, donations, social
-License: GPL
+License: GPLv2 or later
 Requires at least: 4.0
-Tested up to: 7.1
-Stable Tag: 2.2.8
+Tested up to: 7.2
+Stable Tag: 2.2.9
 
 Add Patreon buttons to your content and sidebars. Upgrade to Patron Plugin Pro for patron-only posts and powerful features.
 
@@ -69,6 +69,15 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 
 == Upgrade Notice ==
+
+= 2.2.9 =
+
+* License declaration corrected to GPLv2 or later
+* Nonce verification added for settings tab form submissions
+* SQL whitelist validation added to delete functions to prevent arbitrary table access
+* Outputs in language settings escaped
+* Outputs in setup modal escaped
+* Outputs in pro pitch modal escaped
 
 = 2.2.8 =
 
@@ -253,6 +262,15 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Initial release!
 
 == Changelog ==
+
+= 2.2.9 =
+
+* License declaration corrected to GPLv2 or later
+* Nonce verification added for settings tab form submissions
+* SQL whitelist validation added to delete functions to prevent arbitrary table access
+* Outputs in language settings escaped
+* Outputs in setup modal escaped
+* Outputs in pro pitch modal escaped
 
 = 2.2.8 =
 
