@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 	{
 
 	
-		$pro_manual='<button class="cb_p6_admin_button" onclick="window.open(\'https://codebard.com/patron-plugin-pro-manual\');" target="_blank" aria-label="Read Pro Manual">'.$this->lang['setup_read_pro_manual'].'</button>';
+		$pro_manual='<button class="cb_p6_admin_button" onclick="window.open(\'https://codebard.com/patron-plugin-pro-manual\');" target="_blank" aria-label="Read Pro Manual">'.wp_kses_post($this->lang['setup_read_pro_manual']).'</button>';
 
 	}
 	else
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 	?>
 	<div class="cb_p6_setup_wizard_one_col" style="text-align : center;font-size : 100%; max-width : 600px;padding-top: 30px;">
 	
-			<button class="cb_p6_admin_button" onclick="window.open('https://codebard.com/patreon-button-and-plugin-manual');" target="_blank" aria-label="Read Manual"><?php echo $this->lang['setup_read_manual'];?></button>
+			<button class="cb_p6_admin_button" onclick="window.open('https://codebard.com/patreon-button-and-plugin-manual');" target="_blank" aria-label="Read Manual"><?php echo esc_html($this->lang['setup_read_manual']);?></button>
 	
 			
 		<?php 	echo $pro_manual; 	?>
@@ -29,22 +29,22 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 	
 		<div class="cb_p6_setup_wizard_col_33" style="text-align : center; max-width : 600px;">
 		
-			<?php echo $this->lang['setup_wizard_follow_us_on_twitter'];?><br><br><a href="https://twitter.com/codebardcom" class="twitter-follow-button" data-show-count="false"  aria-label="Follow at Twitter"><?php echo $this->lang['setup_wizard_twitter_follow_label_prefix'];?> @CodeBard</a>
+			<?php echo esc_html($this->lang['setup_wizard_follow_us_on_twitter']);?><br><br><a href="https://twitter.com/codebardcom" class="twitter-follow-button" data-show-count="false"  aria-label="Follow at Twitter"><?php echo esc_html($this->lang['setup_wizard_twitter_follow_label_prefix']);?> @CodeBard</a>
 			
 		</div>
 	
 		<div class="cb_p6_setup_wizard_col_33" style="text-align : center;">
 		
-			<?php echo $this->lang['setup_wizard_join_list']; ?>
+			<?php echo esc_html($this->lang['setup_wizard_join_list']); ?>
 			<br><br>
 	
-			<button  aria-label="Join mailing list" class="cb_p6_admin_button" onclick="window.open('<?php echo $this->lang['newsletter_link'] ?>');" target="_blank"><?php echo $this->lang['setup_wizard_join_mailing_list_link_label'];?></button>
+			<button  aria-label="Join mailing list" class="cb_p6_admin_button" onclick="window.open('<?php echo esc_url($this->lang['newsletter_link']) ?>');" target="_blank"><?php echo esc_html($this->lang['setup_wizard_join_mailing_list_link_label']);?></button>
 		</div>
 		
 
 		<div class="cb_p6_setup_wizard_col_33" style="text-align : center;">
 		
-			<a href="<?php echo $this->lang['tell_your_friends_tweet']; ?>" target="_blank" aria-label="Tell your friends"><?php echo $this->lang['tell_your_friends']; ?></a>
+			<a href="<?php echo esc_url($this->lang['tell_your_friends_tweet']); ?>" target="_blank" aria-label="Tell your friends"><?php echo esc_html($this->lang['tell_your_friends']); ?></a>
 			<br><br>
 	
 		</div>

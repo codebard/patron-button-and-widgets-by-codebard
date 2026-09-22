@@ -330,6 +330,11 @@ class cb_p6_plugin extends cb_p6_core
 	public function do_setup_wizard_p($v1)
 	{
 
+		if(!current_user_can('manage_options'))
+		{
+			return false;		
+		}
+
 		if($this->opt['quickstart']['site_account']=='Delete this and enter your Site or your personal (admin) Patreon account here')
 		{
 			$this->internal['setup_is_being_done']=true;
@@ -357,7 +362,7 @@ class cb_p6_plugin extends cb_p6_core
 		{	
 
 			echo '<div class="cb_p6_pro_pitch">';
-			echo $this->lang['cb_p6_a1_addon_available_header'];	
+			echo wp_kses_post($this->lang['cb_p6_a1_addon_available_header']);	
 			echo '</div>';
 		}
 		
@@ -384,7 +389,7 @@ class cb_p6_plugin extends cb_p6_core
 		// This function displays a particular addon
 	
 		echo '<div class="cb_addon_listing">';	
-		echo '<div class="cb_addon_icon"><a href="'.$this->internal['addons'][$addon_key]['link'].'" target="_blank"><img src="'.$this->internal['plugin_url'].'images/'.$addon['icon'].'" /></a></div>';echo '<div class="cb_addon_title"><a href="'.$this->internal['addons'][$addon_key]['link'].'" target="_blank">'.$this->lang['addon_'.$addon_key.'_title'].'</a></div>';		
+		echo '<div class="cb_addon_icon"><a href="'.$this->internal['addons'][$addon_key]['link'].'" target="_blank"><img src="'.$this->internal['plugin_url'].'images/'.$addon['icon'].'" /></a></div>';echo '<div class="cb_addon_title"><a href="'.$this->internal['addons'][$addon_key]['link'].'" target="_blank">'.wp_kses_post($this->lang['addon_'.$addon_key.'_title']).'</a></div>';		
 		echo '<div class="cb_addon_status">'.$this->check_addon_status($addon_key).'</div>';
 		echo '</div>';			
 		

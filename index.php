@@ -3,7 +3,7 @@
 	Plugin Name: CodeBard's Patron Button and Widgets for Patreon
 	Plugin URI: https://wordpress.org/plugins/patron-button-and-widgets-by-codebard/
 	Description: Patreon Patron Buttons, Widgets and Patreon Functions
-	Version: 2.2.9
+	Version: 2.3.0
 	Author: CodeBard
 	Author URI: https://codebard.com
 	Text Domain: cb_p6
@@ -361,7 +361,7 @@ class cb_p6_core {
 				}
 			}
 			
-			echo $output;
+			echo wp_kses_post($output);
 		}
 		
 		// Set internal nobuffer to false before return in case it was given			
@@ -712,7 +712,7 @@ PRIMARY KEY  (".$key."_id)
 			
 			$class = ( $key == $top_tab ) ? ' nav-tab-active' : '';
 			
-			echo '<a class="nav-tab'.$class.'" href="?page=settings_'.$this->internal['id'].'&'.$this->internal['prefix'].'tab='.$key.'">'.$this->lang['admin_tab_'.$key].'</a>';
+			echo '<a class="nav-tab'.$class.'" href="?page=settings_'.$this->internal['id'].'&'.$this->internal['prefix'].'tab='.$key.'">'.wp_kses_post($this->lang['admin_tab_'.$key]).'</a>';
 
 		}
 
@@ -732,7 +732,7 @@ PRIMARY KEY  (".$key."_id)
 				foreach( $tabs[$top_tab] as $key => $value )
 				{
 						
-					echo '<a href="?page=settings_'.$this->internal['id'].'&'.$this->internal['prefix'].'tab='.$top_tab.'-'.$key.'">'.$this->lang['admin_tab_'.$top_tab.'_'.$key].'</a>';
+					echo '<a href="?page=settings_'.$this->internal['id'].'&'.$this->internal['prefix'].'tab='.$top_tab.'-'.$key.'">'.wp_kses_post($this->lang['admin_tab_'.$top_tab.'_'.$key]).'</a>';
 					
 					if($key!=$last)
 					{
@@ -757,7 +757,7 @@ PRIMARY KEY  (".$key."_id)
 			
 			foreach( $tabs[$top_tab][$second_level] as $key => $value )
 			{
-				echo '<a href="?page=settings_'.$this->internal['id'].'&'.$this->internal['prefix'].'tab='.$top_tab.'-'.$second_level.'-'.$key.'">'.$this->lang['admin_tab_'.$top_tab.'_'.$second_level.'_'.$key].'</a>';
+				echo '<a href="?page=settings_'.$this->internal['id'].'&'.$this->internal['prefix'].'tab='.$top_tab.'-'.$second_level.'-'.$key.'">'.wp_kses_post($this->lang['admin_tab_'.$top_tab.'_'.$second_level.'_'.$key]).'</a>';
 				
 				if($key!=$last)
 				{
@@ -1134,7 +1134,7 @@ PRIMARY KEY  (".$key."_id)
 			}
 		}
 		
-		$new_options=$v1['opt'];
+		$new_options = map_deep( $v1['opt'], 'sanitize_text_field' );
 		
 		$this->opt = array_replace_recursive(
 			
@@ -1170,7 +1170,7 @@ PRIMARY KEY  (".$key."_id)
 			}
 		}
 
-		$new_options=$v1['opt'];
+		$new_options = map_deep( $v1['opt'], 'sanitize_text_field' );
 
 		$this->opt = array_replace_recursive(
 			
@@ -1361,41 +1361,43 @@ PRIMARY KEY  (".$key."_id)
 	public function insert_single_c($v1,$v2)
 	{
 		global $wpdb;
-		$type=$v1;
+		$type = preg_replace('/[^a-z_]/', '', strtolower($v1));
 		$args=$v2;
 		
-		$wpdb->query(
+		$table = $wpdb->prefix . $this->internal['id'] . '_' . $type;
 		
-			"INSERT INTO 
-			".$wpdb->prefix.$this->internal['id']."_".$type."
-			(
-			".$type."_post,
-			".$type."_parent,
-			".$type."_slug,
-			".$type."_status,
-			".$type."_sort,
-			".$type."_created,
-			".$type."_modified,
-			".$type."_title,
-			".$type."_content,
-			".$type."_user,
-			".$type."_group
+		$wpdb->query(
+			$wpdb->prepare(
+				"INSERT INTO `{$table}`
+				(
+					`{$type}_post`,
+					`{$type}_parent`,
+					`{$type}_slug`,
+					`{$type}_status`,
+					`{$type}_sort`,
+					`{$type}_created`,
+					`{$type}_modified`,
+					`{$type}_title`,
+					`{$type}_content`,
+					`{$type}_user`,
+					`{$type}_group`
+				)
+				VALUES
+				(
+					%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
+				)",
+				@$args[$type . '_post'],
+				@$args[$type . '_parent'],
+				@$args[$type . '_slug'],
+				@$args[$type . '_status'],
+				@$args[$type . '_sort'],
+				@$args[$type . '_created'],
+				@$args[$type . '_modified'],
+				@$args[$type . '_title'],
+				@$args[$type . '_content'],
+				@$args[$type . '_user'],
+				@$args[$type . '_group']
 			)
-			VALUES
-			(
-				'".@$args[$type.'_post']."',
-				'".@$args[$type.'_parent']."',
-				'".@$args[$type.'_slug']."',
-				'".@$args[$type.'_status']."',
-				'".@$args[$type.'_sort']."',
-				'".@$args[$type.'_created']."',
-				'".@$args[$type.'_modified']."',
-				'".esc_sql(@$args[$type.'_title'])."',
-				'".esc_sql(@$args[$type.'_content'])."',
-				'".esc_sql(@$args[$type.'_user'])."',
-				'".@$args[$type.'_group']."'
-			
-			)"
 		);
 
 		return $wpdb->insert_id;

@@ -44,7 +44,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 	
 	<form method="post" action="<?php echo esc_url($this->internal['admin_url'].'admin.php?page=settings_'.$this->internal['id']); ?>">
 	
-		<input type="text" style="max-width : 700px;width:100%;font-size:150%;" name="site_account" id="site_account_setup" value="<?php echo esc_attr($_REQUEST['site_account']); ?>"  onfocus="if(this.value == '<?php echo esc_attr($_REQUEST['site_account']); ?>') {this.value=''}" onblur="if(this.value == ''){this.value ='<?php echo esc_attr($_REQUEST['site_account']); ?>'}">
+		<input type="text" style="max-width : 700px;width:100%;font-size:150%;" name="site_account" id="site_account_setup" value="<?php echo esc_attr($_REQUEST['site_account']); ?>"  onfocus="if(this.value == '<?php echo esc_js($_REQUEST['site_account']); ?>') {this.value=''}" onblur="if(this.value == ''){this.value ='<?php echo esc_js($_REQUEST['site_account']); ?>'}">
 		<input type="submit" style="font-size:150%;" value="	Save!	">
 
 
