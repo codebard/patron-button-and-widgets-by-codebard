@@ -7,7 +7,7 @@ Tags: patreon, widgets, crowdfunding, donations, social
 License: GPLv2 or later
 Requires at least: 4.0
 Tested up to: 7.2
-Stable Tag: 2.2.9
+Stable Tag: 2.3.0
 
 Add Patreon buttons to your content and sidebars. Upgrade to Patron Plugin Pro for patron-only posts and powerful features.
 
@@ -69,6 +69,15 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 
 == Upgrade Notice ==
+
+= 2.3.0 =
+
+* Security: Added capability check to setup wizard endpoint
+* Security: Added sanitization to settings saved during setup wizard
+* Security: Added escaping to `$_REQUEST` parameter in setup modal JavaScript output
+* Security: Escaped all customizable language string outputs across admin pages
+* Security: Replaced raw SQL string concatenation with `$wpdb->prepare()` in `insert_single_c()`
+* Security: Added `wp_kses_post()` escaping to action dispatcher output
 
 = 2.2.9 =
 
@@ -262,6 +271,15 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Initial release!
 
 == Changelog ==
+
+= 2.3.0 =
+
+* Security: Added capability check to setup wizard endpoint
+* Security: Added sanitization to settings saved during setup wizard
+* Security: Added escaping to `$_REQUEST` parameter in setup modal JavaScript output
+* Security: Escaped all customizable language string outputs across admin pages
+* Security: Replaced raw SQL string concatenation with `$wpdb->prepare()` in `insert_single_c()`
+* Security: Added `wp_kses_post()` escaping to action dispatcher output
 
 = 2.2.9 =
 

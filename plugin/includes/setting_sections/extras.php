@@ -31,16 +31,16 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 	<a href="https://codebard.com/codebard-help-desk-for-wordpress" target="_blank" aria-label="Download Here">Download Here</a>
 	</div>
 	<hr width="100%">
-	<div class="cb_p6_h2"><?php echo $this->lang['admin_rapier_title']; ?></div>
-	<div class="cb_p6_admin_info"><?php echo $this->lang['admin_rapier_info']; ?>
+	<div class="cb_p6_h2"><?php echo wp_kses_post($this->lang['admin_rapier_title']); ?></div>
+	<div class="cb_p6_admin_info"><?php echo wp_kses_post($this->lang['admin_rapier_info']); ?>
 	
-	<a href="http://codebard.com/rapier-wordpress-theme" target="_blank" aria-label="Rapier Theme"><?php echo $this->lang['admin_rapier_link_text']; ?></a>
+	<a href="http://codebard.com/rapier-wordpress-theme" target="_blank" aria-label="Rapier Theme"><?php echo wp_kses_post($this->lang['admin_rapier_link_text']); ?></a>
 	</div>
 	<hr width="100%">
-<div class="cb_p6_h2"><?php echo $this->lang['extras_join_affiliates_title']; ?></div>
-	<div class="cb_p6_admin_info"><?php echo $this->lang['extras_join_affiliates_explanation']; ?>
+<div class="cb_p6_h2"><?php echo wp_kses_post($this->lang['extras_join_affiliates_title']); ?></div>
+	<div class="cb_p6_admin_info"><?php echo wp_kses_post($this->lang['extras_join_affiliates_explanation']); ?>
 	
-	<a href="http://codebard.com/affiliates" target="_blank" aria-label="Become an affiliate"><?php echo $this->lang['admin_page_affiliate_link_label']; ?></a>
+	<a href="http://codebard.com/affiliates" target="_blank" aria-label="Become an affiliate"><?php echo wp_kses_post($this->lang['admin_page_affiliate_link_label']); ?></a>
 	</div>
 	<hr width="100%">
 	
