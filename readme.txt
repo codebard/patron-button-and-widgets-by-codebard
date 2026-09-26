@@ -7,7 +7,7 @@ Tags: patreon, widgets, crowdfunding, donations, social
 License: GPLv2 or later
 Requires at least: 4.0
 Tested up to: 7.2
-Stable Tag: 2.3.0
+Stable Tag: 2.3.1
 
 Add Patreon buttons to your content and sidebars. Upgrade to Patron Plugin Pro for patron-only posts and powerful features.
 
@@ -69,6 +69,16 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 
 == Upgrade Notice ==
+
+= 2.3.1 =
+
+* Security: Sanitized `$_REQUEST` data with `map_deep()` before dispatching to action handlers
+* Security: Escaped all remaining unescaped variable and option outputs across admin pages
+* Security: Escaped nonce, internal ID, and admin URL outputs in setup and settings templates
+* Security: Added `wp_kses_post()` escaping to language selector, addon display, and notice outputs
+* Security: Used targeted `wp_kses()` allowlist for form/page template output to preserve form structure
+* Fix: Setup modal no longer renders raw PHP code from `$site_account` assignment outside PHP tags
+* Fix: Settings save restored after `wp_kses_post()` mangled form HTML in page templates
 
 = 2.3.0 =
 
@@ -271,6 +281,16 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Initial release!
 
 == Changelog ==
+
+= 2.3.1 =
+
+* Security: Sanitized `$_REQUEST` data with `map_deep()` before dispatching to action handlers
+* Security: Escaped all remaining unescaped variable and option outputs across admin pages
+* Security: Escaped nonce, internal ID, and admin URL outputs in setup and settings templates
+* Security: Added `wp_kses_post()` escaping to language selector, addon display, and notice outputs
+* Security: Used targeted `wp_kses()` allowlist for form/page template output to preserve form structure
+* Fix: Setup modal no longer renders raw PHP code from `$site_account` assignment outside PHP tags
+* Fix: Settings save restored after `wp_kses_post()` mangled form HTML in page templates
 
 = 2.3.0 =
 

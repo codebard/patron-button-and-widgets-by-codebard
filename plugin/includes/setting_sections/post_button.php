@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 $tab=isset($_REQUEST[$this->internal['prefix'].'tab']) ? sanitize_text_field($_REQUEST[$this->internal['prefix'].'tab']) : 'post_button';
 
 
-echo $this->do_admin_settings_form_header($tab);
+echo wp_kses($this->do_admin_settings_form_header($tab), $this->internal['form_kses_allowed']);
 
 		$show_button_under_posts_checked_yes = '';
 		$show_button_under_posts_checked_no = '';
@@ -132,6 +132,6 @@ echo $this->do_admin_settings_form_header($tab);
 
 $this->do_setting_section_additional_settings($tab);
 
-echo $this->do_admin_settings_form_footer($tab);
+echo wp_kses($this->do_admin_settings_form_footer($tab), $this->internal['form_kses_allowed']);
 
 ?>

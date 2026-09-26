@@ -22,12 +22,12 @@ echo '<h2>'.wp_kses_post($this->lang['admin_title_choose_reset_language']).'</h2
 
 echo '<form action="admin.php?page=settings_cb_p6&'.esc_attr($this->internal['prefix']).'tab=languages" name="" method="post" class="'.esc_attr($this->internal['prefix']).'inline_block_form">';
 
-echo $this->do_admin_language_selector();
+echo wp_kses_post($this->do_admin_language_selector());
 
 echo '<input type="hidden" name="'.esc_attr($this->internal['prefix']).'action" value="choose_language">';
 echo '<input type="hidden" name="cb_plugin" value="'.esc_attr($this->internal['id']).'">';
 echo '<input type="hidden" name="'.esc_attr($this->internal['prefix']).'current_language" value="'.esc_attr($this->opt['lang']).'">';
-echo '<input type="hidden" name="cb_plugins_nonce_set_language" value="' . wp_create_nonce( 'cb_plugins_nonce_set_language' ) . '">';
+echo '<input type="hidden" name="cb_plugins_nonce_set_language" value="' . esc_attr( wp_create_nonce( 'cb_plugins_nonce_set_language' ) ) . '">';
 echo '<input type="submit" value="'.esc_attr($this->lang['set_language_button_label']).'" class="'.esc_attr($this->internal['prefix']).'admin_button"  aria-label="Set language">';
 
 echo '</form>';
@@ -38,7 +38,7 @@ echo '<form action="admin.php?page=settings_cb_p6&'.esc_attr($this->internal['pr
 
 echo '<input type="hidden" name="'.esc_attr($this->internal['prefix']).'action" value="reset_languages">';
 echo '<input type="hidden" name="cb_plugin" value="'.esc_attr($this->internal['id']).'">';
-echo '<input type="hidden" name="cb_p6_nonce_reset_languages" value="' . wp_create_nonce( 'cb_p6_nonce_reset_languages' ) . '">';
+echo '<input type="hidden" name="cb_p6_nonce_reset_languages" value="' . esc_attr( wp_create_nonce( 'cb_p6_nonce_reset_languages' ) ) . '">';
 echo '<input type="submit" value="'.esc_attr($this->lang['reset_languages_button_label']).'" class="'.esc_attr($this->internal['prefix']).'admin_button"  aria-label="Reset language">';
 echo '</form>';
 
@@ -69,7 +69,7 @@ foreach($this->lang as $key => $value)
 echo '<input type="hidden" name="'.esc_attr($this->internal['prefix']).'action" value="save_language">';
 echo '<input type="hidden" name="cb_plugin" value="'.esc_attr($this->internal['id']).'">';
 echo '<input type="hidden" name="'.esc_attr($this->internal['prefix']).'lang" value="'.esc_attr($this->opt['lang']).'">';
-echo '<input type="hidden" name="cb_plugins_nonce_save_language_settings" value="' . wp_create_nonce( 'cb_plugins_nonce_save_language_settings' ) . '">';
+echo '<input type="hidden" name="cb_plugins_nonce_save_language_settings" value="' . esc_attr( wp_create_nonce( 'cb_plugins_nonce_save_language_settings' ) ) . '">';
 echo '<br>';
 echo '<input type="submit" value="'.esc_attr($this->lang['set_language_button_label']).'" class="'.esc_attr($this->internal['prefix']).'admin_button"  aria-label="Set language">';
 
