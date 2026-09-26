@@ -44,13 +44,14 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 	
 	<form method="post" action="<?php echo esc_url($this->internal['admin_url'].'admin.php?page=settings_'.$this->internal['id']); ?>">
 	
-		<input type="text" style="max-width : 700px;width:100%;font-size:150%;" name="site_account" id="site_account_setup" value="<?php echo esc_attr($_REQUEST['site_account']); ?>"  onfocus="if(this.value == '<?php echo esc_js($_REQUEST['site_account']); ?>') {this.value=''}" onblur="if(this.value == ''){this.value ='<?php echo esc_js($_REQUEST['site_account']); ?>'}">
+		<?php $site_account = isset($_REQUEST['site_account']) ? sanitize_text_field($_REQUEST['site_account']) : ''; ?>
+		<input type="text" style="max-width : 700px;width:100%;font-size:150%;" name="site_account" id="site_account_setup" value="<?php echo esc_attr($site_account); ?>"  onfocus="if(this.value == '<?php echo esc_js($site_account); ?>') {this.value=''}" onblur="if(this.value == ''){this.value ='<?php echo esc_js($site_account); ?>'}">
 		<input type="submit" style="font-size:150%;" value="	Save!	">
 
 
 	<input type="hidden" name="<?php echo esc_attr($this->internal['id']);?>_action" value="dud">
 	<input type="hidden" name="setup_stage" value="1">
-	<input type="hidden" name="cb_plugins_nonce_setup_wizard" value="<?php echo wp_create_nonce('cb_plugins_nonce_setup_wizard'); ?>">
+	<input type="hidden" name="cb_plugins_nonce_setup_wizard" value="<?php echo esc_attr(wp_create_nonce('cb_plugins_nonce_setup_wizard')); ?>">
 	</form>
 
 	<div style="font-size:125%;font-weight:bold;margin-top:30px;margin-bottom:15px;display:inline-table;width:100%;">If you don't know how to do that, <a href="https://codebard.com/patreon-button-and-plugin-how-to-find-your-profile-address-or-account-name" target="_blank">click here to read the guide</a> - its easy!</div>

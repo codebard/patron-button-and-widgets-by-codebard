@@ -3,7 +3,7 @@
 	Plugin Name: CodeBard's Patron Button and Widgets for Patreon
 	Plugin URI: https://wordpress.org/plugins/patron-button-and-widgets-by-codebard/
 	Description: Patreon Patron Buttons, Widgets and Patreon Functions
-	Version: 2.3.0
+	Version: 2.3.1
 	Author: CodeBard
 	Author URI: https://codebard.com
 	Text Domain: cb_p6
@@ -512,7 +512,7 @@ class cb_p6_core {
 			
 		if($this->internal['requested_action']!='')
 		{
-			$this->{$this->internal['requested_action']}($_REQUEST);
+			$this->{$this->internal['requested_action']}(map_deep($_REQUEST, 'sanitize_text_field'));
 		}		
 	
 	}
@@ -845,12 +845,45 @@ PRIMARY KEY  (".$key."_id)
 		$admin_settings_page_footer = $this->process_lang( $admin_settings_page_footer );
 
 
-		echo wp_kses_post($admin_settings_page_header);		
+		// Custom wp_kses allowlist for plugin form/page templates - permits exactly the HTML elements/attributes used
+		$this->internal['form_kses_allowed'] = array(
+			'form'     => array('action' => true, 'method' => true, 'enctype' => true, 'id' => true, 'class' => true, 'name' => true, 'target' => true),
+			'div'      => array('id' => true, 'class' => true, 'style' => true),
+			'button'   => array('type' => true, 'class' => true, 'name' => true, 'value' => true, 'aria-label' => true, 'id' => true, 'disabled' => true),
+			'input'    => array('type' => true, 'name' => true, 'value' => true, 'id' => true, 'class' => true, 'style' => true, 'size' => true, 'maxlength' => true, 'checked' => true, 'aria-label' => true, 'disabled' => true, 'readonly' => true, 'placeholder' => true, 'src' => true, 'alt' => true),
+			'select'   => array('name' => true, 'id' => true, 'class' => true, 'aria-label' => true, 'disabled' => true),
+			'option'   => array('value' => true, 'selected' => true, 'disabled' => true),
+			'label'    => array('for' => true, 'id' => true, 'class' => true),
+			'textarea' => array('name' => true, 'id' => true, 'class' => true, 'rows' => true, 'cols' => true, 'aria-label' => true),
+			'a'        => array('href' => true, 'target' => true, 'aria-label' => true, 'class' => true, 'id' => true, 'rel' => true),
+			'img'      => array('src' => true, 'style' => true, 'alt' => true, 'width' => true, 'height' => true, 'class' => true, 'id' => true),
+			'h1'       => array('id' => true, 'class' => true, 'style' => true),
+			'h2'       => array('id' => true, 'class' => true, 'style' => true),
+			'h3'       => array('id' => true, 'class' => true, 'style' => true),
+			'h4'       => array('id' => true, 'class' => true, 'style' => true),
+			'p'        => array('id' => true, 'class' => true, 'style' => true),
+			'br'       => array(),
+			'hr'       => array('width' => true, 'style' => true),
+			'b'        => array(),
+			'strong'   => array(),
+			'em'       => array(),
+			'i'        => array(),
+			'span'     => array('style' => true, 'class' => true, 'id' => true),
+			'table'    => array('id' => true, 'class' => true, 'style' => true, 'border' => true, 'cellpadding' => true, 'cellspacing' => true),
+			'tr'       => array('id' => true, 'class' => true, 'style' => true),
+			'td'       => array('id' => true, 'class' => true, 'style' => true, 'colspan' => true, 'rowspan' => true),
+			'th'       => array('id' => true, 'class' => true, 'style' => true, 'colspan' => true, 'rowspan' => true),
+			'ul'       => array('id' => true, 'class' => true, 'style' => true),
+			'ol'       => array('id' => true, 'class' => true, 'style' => true),
+			'li'       => array('id' => true, 'class' => true, 'style' => true),
+		);
 
-		echo $this->do_admin_page_tabs();
+		echo wp_kses($admin_settings_page_header, $this->internal['form_kses_allowed']);
+
+		echo wp_kses_post($this->do_admin_page_tabs());
 		$this->do_setting_section($tab);
 
-		echo wp_kses_post($admin_settings_page_footer);
+		echo wp_kses($admin_settings_page_footer, $this->internal['form_kses_allowed']);
 		
 	}
 	public function do_admin_settings_form_header_c()
@@ -928,7 +961,7 @@ PRIMARY KEY  (".$key."_id)
 
 		if($this->internal['requested_action']!='')
 		{
-			$this->{$this->internal['requested_action']}($_REQUEST);
+			$this->{$this->internal['requested_action']}(map_deep($_REQUEST, 'sanitize_text_field'));
 		}	
 
 	}
@@ -1047,12 +1080,12 @@ PRIMARY KEY  (".$key."_id)
 	{
 
 		// This action outputs log info at the end of the WP footer
-		echo '<br>======================== LOG OF '.$this->internal['plugin_name'].'  ========================<br>';
+		echo '<br>======================== LOG OF '.esc_html($this->internal['plugin_name']).'  ========================<br>';
 
 		foreach($this->internal['log'] as $key => $value)
 		{
 
-			echo $this->internal['log'][$key];
+			echo wp_kses_post($this->internal['log'][$key]);
 			echo '<br>';
 
 		}
@@ -1887,8 +1920,8 @@ PRIMARY KEY  (".$key."_id)
 			$this->internal['content']['perma_notices']=$this->opt['content']['perma_notices'];
 		}
 		 
-		echo $this->prepare_notices('perma','admin');
-		echo $this->prepare_notices('admin','admin');
+		echo wp_kses_post($this->prepare_notices('perma','admin'));
+		echo wp_kses_post($this->prepare_notices('admin','admin'));
 	
 	}
 	public function queue_content_c($v1,$v2,$v3,$v4)

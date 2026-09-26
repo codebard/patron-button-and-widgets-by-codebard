@@ -373,7 +373,7 @@ class cb_p6_plugin extends cb_p6_core
 		echo '<div class="cb_addons_list">';
 		foreach($this->internal['addons'] as $key => $value)
 		{
-			echo $this->display_addon($key);
+			echo wp_kses_post($this->display_addon($key));
 			
 		}
 		echo '</div>';
@@ -390,7 +390,7 @@ class cb_p6_plugin extends cb_p6_core
 	
 		echo '<div class="cb_addon_listing">';	
 		echo '<div class="cb_addon_icon"><a href="'.$this->internal['addons'][$addon_key]['link'].'" target="_blank"><img src="'.$this->internal['plugin_url'].'images/'.$addon['icon'].'" /></a></div>';echo '<div class="cb_addon_title"><a href="'.$this->internal['addons'][$addon_key]['link'].'" target="_blank">'.wp_kses_post($this->lang['addon_'.$addon_key.'_title']).'</a></div>';		
-		echo '<div class="cb_addon_status">'.$this->check_addon_status($addon_key).'</div>';
+		echo '<div class="cb_addon_status">'.wp_kses_post($this->check_addon_status($addon_key)).'</div>';
 		echo '</div>';			
 		
 	}
@@ -411,7 +411,7 @@ class cb_p6_plugin extends cb_p6_core
 		{
 			//plugin is active
 			
-			echo $this->wrapper_check_addon_license($addon_key);
+			echo wp_kses_post($this->wrapper_check_addon_license($addon_key));
 			
 		}
 		else
