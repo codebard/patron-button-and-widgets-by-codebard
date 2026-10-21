@@ -1,13 +1,13 @@
 ===  CodeBard's Patron Button and Widgets for Patreon ===
-Author URI: http://codebard.com
-Plugin URI: https://wordpress.org/plugins/patron-button-and-widgets-by-codebard/
+Author URI: https://codebard.com
+Plugin URI: https://codebard.com/patreon-button-and-plugin-for-wordpress
 Contributors: CodeBard
-Donate link: http://codebard.com/donate
+Donate link: https://codebard.com/donate
 Tags: patreon, widgets, crowdfunding, donations, social
 License: GPLv2 or later
 Requires at least: 4.0
-Tested up to: 7.2
-Stable Tag: 2.3.1
+Tested up to: 7.1.3
+Stable Tag: 2.3.2
 
 Add Patreon buttons to your content and sidebars. Upgrade to Patron Plugin Pro for patron-only posts and powerful features.
 
@@ -69,6 +69,12 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 
 == Upgrade Notice ==
+
+= 2.3.2 =
+
+* Security: Escaped plugin URL in upsell notice image source with `esc_url()`
+* Security: Escaped `get_admin_url()` output in reset settings form action with `esc_url()`
+* Fix: Upsell notice `utm_source` tracking parameter now outputs correctly (was missing `echo`)
 
 = 2.3.1 =
 
@@ -281,6 +287,12 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Initial release!
 
 == Changelog ==
+
+= 2.3.2 =
+
+* Security: Escaped plugin URL in upsell notice image source with `esc_url()`
+* Security: Escaped `get_admin_url()` output in reset settings form action with `esc_url()`
+* Fix: Upsell notice `utm_source` tracking parameter now outputs correctly (was missing `echo`)
 
 = 2.3.1 =
 
